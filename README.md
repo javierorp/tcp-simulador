@@ -1,8 +1,9 @@
 # TFG - Desarrollo de un simulador gráfico de comunicaciones TCP
 
-En proyecto es un Trabajo de Fin de Grado (TFG) para la Universidad de Alcalá (Alcalá de Henares, Madrid, España). Agradecer también la ayuda prestada por la Universidad de Novi Sad (Voivodina, Serbia).
+Este proyecto es un Trabajo de Fin de Grado (TFG) para la Universidad de Alcalá (Alcalá de Henares, Madrid, España). Agradecer también la ayuda prestada por la Universidad de Novi Sad (Voivodina, Serbia).
 
 El objetivo de este trabajo será crear una aplicación web que permita simular una conexión TCP entre un cliente y un servidor de forma gráfica, así como aportar datos de la conexión realizada. La simulación dependerá de una serie de parámetros que el usuario podrá introducir a modo de que pueda personalizar cada configuración y comparar los diferentes escenarios.
+
 
 # Bachelor Thesis - Development of a graphical TCP communications simulator
 
