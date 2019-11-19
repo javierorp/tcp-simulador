@@ -1,27 +1,11 @@
-# TcpSimulador
+# TFG - Desarrollo de un simulador gráfico de comunicaciones TCP
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.18.
+En proyecto es un Trabajo de Fin de Grado (TFG) para la Universidad de Alcalá (Alcalá de Henares, Madrid, España). Agradecer también la ayuda prestada por la Universidad de Novi Sad (Voivodina, Serbia).
 
-## Development server
+El objetivo de este trabajo será crear una aplicación web que permita simular una conexión TCP entre un cliente y un servidor de forma gráfica, así como aportar datos de la conexión realizada. La simulación dependerá de una serie de parámetros que el usuario podrá introducir a modo de que pueda personalizar cada configuración y comparar los diferentes escenarios.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+# Bachelor Thesis - Development of a graphical TCP communications simulator
 
-## Code scaffolding
+This project is a Bachelor Thesis (TFG, Spanish acronym) for the University of Alcalá (Alcalá de Henares, Madrid, Spain). To thank also the help given by the University of Novi Sad (Vojvodina, Serbia).
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+The purpose of this work will be to create a web application that can simulate a TCP connection between a client and a server graphically, as well as provide data of the connection made. The simulation will depend on a series of parameters that the user will be able to introduce so that he can personalize each configuration and compare the different scenarios.
