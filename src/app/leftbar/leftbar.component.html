@@ -1,0 +1,11 @@
+<mat-sidenav-container class="leftmenu">
+    <mat-sidenav  #sidenav mode="side" [opened]="true" [(opened)]="opened"  >
+      Parametros
+      <app-parametrosmenu></app-parametrosmenu>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <p><button mat-button (click)="sidenav.toggle()">X</button></p>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>

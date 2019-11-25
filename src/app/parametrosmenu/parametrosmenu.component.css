@@ -1,0 +1,11 @@
+
+.params-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+.params-container > * {
+    width: 90%;
+    margin: auto;
+  }
+
