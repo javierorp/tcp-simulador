@@ -118,8 +118,13 @@
               "devServerTarget": "tcp-simulador:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "tcp-simulador"
 }
