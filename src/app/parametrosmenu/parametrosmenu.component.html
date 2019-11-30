@@ -1,10 +1,14 @@
+<link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/themes/prism.css" />
+
 <div class="params-container">    
     <mat-form-field>
-        <input matInput matInput [(ngModel)]="tampet" placeholder="Tamaño de la petición del objeto (B)">
+        <input matInput matInput [(ngModel)]="mss" placeholder="MSS(B)">
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput [(ngModel)]="tamobj" placeholder="Tamaño del objeto (B)"/>
+        <input matInput [(ngModel)]="datos" placeholder="Datos(B)"/>
     </mat-form-field>    
 
     <mat-form-field>
@@ -16,39 +20,25 @@
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput [(ngModel)]="servport" placeholder="Puerto del servidor"/>
+        <input matInput [(ngModel)]="snserv" placeholder="SN Servidor"/>
     </mat-form-field>
 
     <mat-form-field>
-        <input matInput [(ngModel)]="servcliport" placeholder="Puerto del cliente"/>
+        <input matInput [(ngModel)]="sncli" placeholder="SN Cliente"/>
     </mat-form-field>
+    
+     <mat-form-field>
+        <mat-label>Algoritmo de congestión</mat-label>
+        <mat-select [(value)]="selected">
+          <mat-option value="reno">TCP Reno</mat-option>
+          <mat-option value="tahoe">TCP Tahoe</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field>
-        <input matInput [(ngModel)]="numsecserv" placeholder="Número de secuencia inicial del servidor"/>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [(ngModel)]="numseccli" placeholder="Número de secuencia inicial del cliente"/>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [(ngModel)]="ipserv" placeholder="Ventana del servidor"/>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [(ngModel)]="ipserv" placeholder="Ventana del cliente"/>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [(ngModel)]="ipserv" placeholder="Timeout constante del servidor"/>
-    </mat-form-field>
-
-    <mat-form-field>
-        <input matInput [(ngModel)]="ipserv" placeholder="Timeout constante del cliente"/>
-    </mat-form-field>
 </div>
 
-<div>
-    <button mat-button color="primary">Ejecutar</button>
 
+
+<div style="text-align: center">
+    <button type="button" class="btn btn-outline-primary">Ejecutar</button>
 </div>
