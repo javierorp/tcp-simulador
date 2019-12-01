@@ -1,4 +1,4 @@
-.leftmenu {
+.menuizq {
     position: absolute;
     top: 60px;
     bottom: 0;
@@ -12,8 +12,8 @@
   }
   
   .bar1, .bar2, .bar3 {
-    width: 25px;
-    height: 3px;
+    width: 20px;
+    height: 2px;
     background-color: #004e99;
     margin: 3px 0;
     transition: 0.4s;
@@ -35,3 +35,32 @@
     padding: 0;
     min-width: 0;
   }
+
+
+  
+.params-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.params-container > * {
+  width: 90%;
+  margin: auto;
+}
+
+.btn-outline-primary {
+color: #004e99;
+border-color: #004e99;
+}
+
+.btn-outline-primary:hover {
+color: #fff;
+background-color: #004e99;
+border-color: #004e99
+}
+
+.mat-option:hover{
+color: #fff;
+background-color: #004e99;
+border-color: #004e99
+}

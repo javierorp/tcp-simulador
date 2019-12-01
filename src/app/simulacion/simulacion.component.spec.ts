@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ParametrosmenuComponent } from './parametrosmenu.component';
+import { SimulacionComponent } from './simulacion.component';
 
-describe('ParametrosmenuComponent', () => {
-  let component: ParametrosmenuComponent;
-  let fixture: ComponentFixture<ParametrosmenuComponent>;
+describe('SimulacionComponent', () => {
+  let component: SimulacionComponent;
+  let fixture: ComponentFixture<SimulacionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ParametrosmenuComponent ]
+      declarations: [ SimulacionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ParametrosmenuComponent);
+    fixture = TestBed.createComponent(SimulacionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
