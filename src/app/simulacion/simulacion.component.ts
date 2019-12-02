@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Simulacion } from '../simulacion';
 
 @Component({
@@ -6,13 +6,11 @@ import { Simulacion } from '../simulacion';
   templateUrl: './simulacion.component.html',
   styleUrls: ['./simulacion.component.css']
 })
-export class SimulacionComponent implements OnInit {
-  
-  @Input() simular : Simulacion;
+export class SimulacionComponent {
+
+  // Obtenemos los datos del componente padre ContenidoComponent
+  @Input() simular: Simulacion;
 
   constructor() { }
-
-  ngOnInit() {
-  }
 
 }

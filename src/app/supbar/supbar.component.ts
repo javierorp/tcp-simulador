@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-supbar',
   templateUrl: './supbar.component.html',
   styleUrls: ['./supbar.component.css']
 })
-export class SupbarComponent implements OnInit {
-  title = 'Simulador gráfico de comunicaciones TCP';
-  constructor() { }
+export class SupbarComponent {
 
-  ngOnInit() {
-  }
+  // Titulo de la aplicacion
+  title = 'Simulador gráfico de comunicaciones TCP';
+  
+  constructor() { }
 
 }

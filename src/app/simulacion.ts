@@ -1,4 +1,5 @@
-export class Simulacion{
+// Clase que tiene lo parametros para hacer la simulacion
+export class Simulacion {
     mss: number;
     datos: number;
     ipserv: string;
@@ -6,4 +7,5 @@ export class Simulacion{
     snserv: number;
     snclien: number;
     algort: number;
+    segperd: string;
 }

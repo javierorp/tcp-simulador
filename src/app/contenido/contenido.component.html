@@ -1,12 +1,12 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/themes/prism.css" />
 
-
 <!-- Barra lateral -->
-<mat-sidenav-container class="menuizq">
+<mat-sidenav-container class="formizq">
   <mat-sidenav #sidenav mode="side" [opened]="true" [(opened)]="opened">
     <div style="text-align: center">Parámetros</div>
 
+    <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
       <mat-form-field>
         <input matInput [(ngModel)]="simulacion.mss" placeholder="MSS(B)">
@@ -33,6 +33,10 @@
       </mat-form-field>
 
       <mat-form-field>
+        <input matInput [(ngModel)]="simulacion.segperd" placeholder="Segmentos perdidos" />
+      </mat-form-field>
+
+      <mat-form-field>
         <mat-label>Algoritmo de congestión</mat-label>
         <mat-select [(value)]="simulacion.algort">
           <mat-option value="1">TCP Reno</mat-option>
@@ -41,8 +45,14 @@
       </mat-form-field>
     </div>
 
+    <!-- Boton de simular y limpiar formulario -->
     <div style="text-align: center">
-      <button type="button" class="btn btn-outline-primary" (click)="simular()">Simular</button>
+      <button title="Simular" type="button" class="btn btn-outline-primary" (click)="simular()">
+        <fa-icon [icon]="faPlay"></fa-icon>
+      </button>
+      <button title="Limpiar formulario" type="button" class="btn btn-outline-primary" (click)="limpiar()">
+        <fa-icon [icon]="faUndo"></fa-icon>
+      </button>
     </div>
   </mat-sidenav>
 
@@ -56,8 +66,11 @@
         <div class="bar3"></div>
       </div>
     </button>
+
     <!-- Simulacion -->
-    <app-simulacion [simular] = "simulacionEnv"></app-simulacion>
+    <div class="contsimulacion" *ngIf="mostrar">
+      <app-simulacion [simular]="simulacionEnv"></app-simulacion>
+    </div>
   </mat-sidenav-content>
 
 </mat-sidenav-container>
