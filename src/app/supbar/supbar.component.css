@@ -1,0 +1,16 @@
+.toolbar {
+  font-family     : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size       : x-large;
+  height          : 60px;
+  margin          : -8px;
+  display         : flex;
+  align-items     : center;
+  background-color: #004e99;
+  color           : white;
+  box-shadow      : 0 2px 5px 0 #0000004d;
+  font-weight     : 100;
+}
+
+.toolbar img {
+  margin: 15px 10px 10px 16px;
+}
