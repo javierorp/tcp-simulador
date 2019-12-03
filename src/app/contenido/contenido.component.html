@@ -1,42 +1,42 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.16.0/themes/prism.css" />
 
-<!-- Barra lateral -->
 <mat-sidenav-container class="formizq">
+  <!-- Barra lateral -->
   <mat-sidenav #sidenav mode="side" [opened]="true" [(opened)]="opened">
     <div style="text-align: center">Parámetros</div>
 
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
-      <mat-form-field>
+      <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
         <input matInput [(ngModel)]="simulacion.mss" placeholder="MSS(B)">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
         <input matInput [(ngModel)]="simulacion.datos" placeholder="Datos(B)" />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
         <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor" />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="IP del cliente (por ejemplo: 127.0.0.1)">
         <input matInput [(ngModel)]="simulacion.ipclien" placeholder="IP del cliente" />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="Número de secuencia por el que comienza el servidor">
         <input matInput [(ngModel)]="simulacion.snserv" placeholder="SN Servidor" />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="Número de secuencia por el que comienza el cliente">
         <input matInput [(ngModel)]="simulacion.snclien" placeholder="SN Cliente" />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="Segmentos que se pierden (separados por ';')">
         <input matInput [(ngModel)]="simulacion.segperd" placeholder="Segmentos perdidos" />
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field title="Algoritmo de congestión a usar">
         <mat-label>Algoritmo de congestión</mat-label>
         <mat-select [(value)]="simulacion.algort">
           <mat-option value="1">TCP Reno</mat-option>
@@ -47,10 +47,10 @@
 
     <!-- Boton de simular y limpiar formulario -->
     <div style="text-align: center">
-      <button title="Simular" type="button" class="btn btn-outline-primary" (click)="simular()">
+      <button type="button" class="btn btn-outline-primary" title="Simular" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button title="Limpiar formulario" type="button" class="btn btn-outline-primary" (click)="limpiar()">
+      <button type="button" class="btn btn-outline-primary" title="Limpiar formulario" (click)="limpiar()">
         <fa-icon [icon]="faUndo"></fa-icon>
       </button>
     </div>
@@ -59,13 +59,18 @@
   <!-- Contenido -->
   <mat-sidenav-content>
     <!-- Boton para ocultar menu -->
-    <button mat-button (click)="sidenav.toggle()">
+    <button mat-button title="Ocultar/mostrar menú" (click)="sidenav.toggle()">
       <div class="container">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
       </div>
     </button>
+
+    <!-- Alerta de navegadores compatibles -->
+    <div class="alerta">
+      <ngb-alert *ngIf="successMessage" type="info" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
+    </div>
 
     <!-- Simulacion -->
     <div class="contsimulacion" *ngIf="mostrar">

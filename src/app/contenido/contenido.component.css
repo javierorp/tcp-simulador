@@ -79,3 +79,14 @@
 .contsimulacion {
   margin: 0 0 0 15px;
 }
+
+/* Alertas */
+.alerta {
+  margin: 10px;
+}
+
+.alert-info {
+  color           : #004e99;
+  background-color: #7db4e926;
+  border-color    : #004e99;
+}

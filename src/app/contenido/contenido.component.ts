@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-contenido',
   templateUrl: './contenido.component.html',
   styleUrls: ['./contenido.component.css']
 })
-export class ContenidoComponent {
+export class ContenidoComponent implements OnInit {
 
   // Iconos de los botones
   faUndo = faUndo;
@@ -41,9 +43,25 @@ export class ContenidoComponent {
     segperd: ""
   };
 
-  constructor() { }
+  // Alerta
+  private _success = new Subject<string>();
+  staticAlertClosed = false;
+  successMessage: string;
 
+  constructor() {
+  }
 
+  ngOnInit() {
+    // Muestra la alerta de los navegadores compatibles
+    setTimeout(() => this.staticAlertClosed = true, 20000);
+
+    this._success.subscribe((message) => this.successMessage = message);
+    this._success.pipe(
+      debounceTime(5000)
+    ).subscribe(() => this.successMessage = null);
+
+    this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi u Opera.');
+  }
   /**
    * TODO: Revisar los parametros antes de asignalos a simulacionEnv
    * @description Asigna los parametros del formulario a la variable simulacionEnv por valor

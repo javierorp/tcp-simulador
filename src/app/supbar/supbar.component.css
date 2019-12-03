@@ -14,3 +14,10 @@
 .toolbar img {
   margin: 15px 10px 10px 16px;
 }
+
+.no-seleccionable {
+  -moz-user-select   : none;
+  -webkit-user-select: none;
+  -ms-user-select    : none;
+  user-select        : none;
+}
