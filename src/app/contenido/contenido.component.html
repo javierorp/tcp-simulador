@@ -9,15 +9,15 @@
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
       <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
-        <input matInput [(ngModel)]="simulacion.mss" placeholder="MSS(B)">
+        <input matInput type="number" min="1" [(ngModel)]="simulacion.mss" placeholder="MSS(B)">
       </mat-form-field>
 
       <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
-        <input matInput [(ngModel)]="simulacion.datos" placeholder="Datos(B)" />
+        <input matInput type="number" min="1" [(ngModel)]="simulacion.datos" placeholder="Datos(B)" />
       </mat-form-field>
 
       <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
-        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor" />
+        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor"/>
       </mat-form-field>
 
       <mat-form-field title="IP del cliente (por ejemplo: 127.0.0.1)">
@@ -25,15 +25,15 @@
       </mat-form-field>
 
       <mat-form-field title="Número de secuencia por el que comienza el servidor">
-        <input matInput [(ngModel)]="simulacion.snserv" placeholder="SN Servidor" />
+        <input matInput type="number" min="0"[(ngModel)]="simulacion.snserv" placeholder="SN Servidor" />
       </mat-form-field>
 
       <mat-form-field title="Número de secuencia por el que comienza el cliente">
-        <input matInput [(ngModel)]="simulacion.snclien" placeholder="SN Cliente" />
+        <input matInput type="number" min="0  " [(ngModel)]="simulacion.snclien" placeholder="SN Cliente" />
       </mat-form-field>
 
-      <mat-form-field title="Segmentos que se pierden (separados por ';')">
-        <input matInput [(ngModel)]="simulacion.segperd" placeholder="Segmentos perdidos" />
+      <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
+        <input matInput [(ngModel)]="simulacion.segperd" placeholder="Segmentos perdidos"/>
       </mat-form-field>
 
       <mat-form-field title="Algoritmo de congestión a usar">
@@ -45,12 +45,15 @@
       </mat-form-field>
     </div>
 
-    <!-- Boton de simular y limpiar formulario -->
+    <!-- Boton de simular, rellenar y limpiar formulario -->
     <div style="text-align: center">
-      <button type="button" class="btn btn-outline-primary" title="Simular" (click)="simular()">
+      <button type="button" class="btn btn-formulario" title="Simular" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button type="button" class="btn btn-outline-primary" title="Limpiar formulario" (click)="limpiar()">
+      <button type="button" class="btn btn-formulario" title="Rellenar con datos aleatorios" (click)="rellenarDatos()">
+        <fa-icon [icon]="faRandom"></fa-icon>
+      </button>
+      <button type="button" class="btn btn-formulario" title="Limpiar formulario" (click)="limpiar()">
         <fa-icon [icon]="faUndo"></fa-icon>
       </button>
     </div>
@@ -58,20 +61,22 @@
 
   <!-- Contenido -->
   <mat-sidenav-content>
-    <!-- Boton para ocultar menu -->
+    <!-- Boton para ocultar o mostar el menu -->
     <button mat-button title="Ocultar/mostrar menú" (click)="sidenav.toggle()">
-      <div class="container">
-        <div class="bar1"></div>
-        <div class="bar2"></div>
-        <div class="bar3"></div>
+      <div class="btn btn-menu">
+        <fa-icon [icon]="faBars"></fa-icon>
       </div>
     </button>
 
     <!-- Alerta de navegadores compatibles -->
     <div class="alerta">
-      <ngb-alert *ngIf="successMessage" type="info" (close)="successMessage = null">{{ successMessage }}</ngb-alert>
-    </div>
+      <ngb-alert *ngIf="infoMsg" type="info" (close)="infoMsg = null">{{ infoMsg }}</ngb-alert>
 
+      <div *ngFor="let alerta of alertas">
+      <ngb-alert type ="danger" (close)="cerrarAlerta(alerta)">
+        <strong>¡Error en {{ alerta.campo }}!</strong> {{ alerta.msg }}</ngb-alert>
+      </div>
+    </div>
     <!-- Simulacion -->
     <div class="contsimulacion" *ngIf="mostrar">
       <app-simulacion [simular]="simulacionEnv"></app-simulacion>
