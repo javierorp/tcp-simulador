@@ -120,16 +120,33 @@ export class ContenidoComponent implements OnInit {
     // Expresion regular para comprobar que la IP sea valida con numeros comprendidos entre 0 y 255
     var ipRegex = new RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$');
 
-    // Se trata la cadena que sontiene los sementes perdidos
+    // Se trata la cadena que contiene los segmentos perdidos
     var segperd: string = this.simulacion.segperd;
     if (segperd != null) {
-      segperd = segperd.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres no numericos
+      segperd = segperd.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
       segperd = segperd.replace(/\s/g, ''); // se eliminan los espacios
       segperd = segperd.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+
+      // Eliminamos los valores duplicados
+      var segperdArr = segperd.split(',');
+      for (var i = 0; i < segperdArr.length; i++) {
+        for (var j = i + 1; j < (segperdArr.length); j++) {
+          if (segperdArr[i] == segperdArr[j])
+            delete segperdArr[j];
+        }
+      }
+      segperd = segperdArr.toString();
+
+      segperd = segperd.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
       segperd = (segperd[0] == ',') ? segperd.substring(1) : segperd; // si el primer caracter es una coma se elimina
       segperd = (segperd[segperd.length - 1] == ',') ? segperd.substring(0, segperd.length - 1) : segperd; // si el ultimo caracter es una coma se elimina
       this.simulacion.segperd = segperd;
     }
+
+    // Se eliminan los espacios en blanco de las IPs
+    this.simulacion.ipserv = this.simulacion.ipserv.replace(/\s/g, '');
+    this.simulacion.ipclien = this.simulacion.ipclien.replace(/\s/g, '');
+
     // Expresion regular para comprbar si segperd son numeros separados por comas
     var segperdRegex = new RegExp('[0-9]+(,[0-9]+)+/g');
 
@@ -159,7 +176,6 @@ export class ContenidoComponent implements OnInit {
 
     return simular;
   }
-
 
   /**
    * TODO: 
