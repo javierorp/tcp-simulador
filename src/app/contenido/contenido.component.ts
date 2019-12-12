@@ -144,6 +144,11 @@ export class ContenidoComponent implements OnInit {
       segperd = segperd.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
       segperd = (segperd[0] == ',') ? segperd.substring(1) : segperd; // si el primer caracter es una coma se elimina
       segperd = (segperd[segperd.length - 1] == ',') ? segperd.substring(0, segperd.length - 1) : segperd; // si el ultimo caracter es una coma se elimina
+      
+      var segperdNum = segperd.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+      segperdNum = segperdNum.sort(); // se ordenan los numeros de menor a mayor
+      segperd = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
+      
       this.simulacion.segperd = segperd;
     }
 
