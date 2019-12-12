@@ -20,6 +20,10 @@ interface Alerta {
 })
 export class ContenidoComponent implements OnInit {
 
+  // Abri cerrar barra lateral
+  opened: boolean;
+
+
   // Iconos de los botones
   faBars = faBars; // menu
   faPlay = faPlay; // simular
@@ -27,7 +31,7 @@ export class ContenidoComponent implements OnInit {
   faUndo = faUndo; // limpiar formulario
 
   // Variable para ocultar o no la simulacion
-  protected mostrar: Boolean = false;
+  public mostrar: Boolean = false;
 
   // Objeto simulacion que obtiene los datos del formulario
   simulacion: Simulacion = {
