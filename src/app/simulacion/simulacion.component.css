@@ -1,0 +1,46 @@
+table {
+    width: 900px;
+    margin-bottom: 10px;
+}
+
+td {
+    border         : 2px solid black;
+    border-collapse: collapse;
+    border-style   : dashed;
+    width          : 20%;
+    height         : 40px;
+}
+
+td.info-izq {
+    border        : hidden;
+    width         : 40%;
+    text-align    : right;
+    padding-right : 10px;
+    vertical-align: middle;
+}
+
+td.info-dcha {
+    border        : hidden;
+    width         : 40%;
+    text-align    : left;
+    padding-left  : 10px;
+    vertical-align: middle;
+}
+
+th.clien {
+    border        : hidden;
+    width         : 40%;
+    text-align    : right;
+    padding-right : 10px;
+    vertical-align: middle;
+
+}
+
+th.serv {
+    border        : hidden;
+    width         : 40%;
+    text-align    : left;
+    padding-left  : 10px;
+    vertical-align: middle;
+
+}

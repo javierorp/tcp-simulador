@@ -4,38 +4,51 @@
 <mat-sidenav-container class="formizq">
   <!-- Barra lateral -->
   <mat-sidenav #sidenav mode="side" [opened]="true" [(opened)]="opened">
-    <div style="text-align: center">Parámetros</div>
-
+    <div style="text-align: center; font-weight: bold; text-decoration: underline; margin-bottom: 10px;">Parámetros</div>
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
-      <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
-        <input matInput type="number" min="1" [(ngModel)]="simulacion.mss" placeholder="MSS(B)">
-      </mat-form-field>
-
-      <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
-        <input matInput type="number" min="1" [(ngModel)]="simulacion.datos" placeholder="Datos(B)" />
-      </mat-form-field>
-
-      <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
-        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor"/>
-      </mat-form-field>
-
+      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Cliente</div>
       <mat-form-field title="IP del cliente (por ejemplo: 127.0.0.1)">
         <input matInput [(ngModel)]="simulacion.ipclien" placeholder="IP del cliente" />
       </mat-form-field>
-
-      <mat-form-field title="Número de secuencia por el que comienza el servidor">
-        <input matInput type="number" min="0"[(ngModel)]="simulacion.snserv" placeholder="SN Servidor" />
+      <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="MSS(B)">
       </mat-form-field>
-
+      <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="Datos(B)" />
+      </mat-form-field>
       <mat-form-field title="Número de secuencia por el que comienza el cliente">
-        <input matInput type="number" min="0  " [(ngModel)]="simulacion.snclien" placeholder="SN Cliente" />
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="Sequential number" />
       </mat-form-field>
-
       <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
-        <input matInput [(ngModel)]="simulacion.segperd" placeholder="Segmentos perdidos"/>
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="Segmentos perdidos"/>
       </mat-form-field>
-
+      <mat-form-field title="Ventana de recepción (en bytes)">
+        <input matInput type="number" min="1"  max="99999999" [(ngModel)]="simulacion.vcclien" placeholder="Ventana de recepción(B)">
+      </mat-form-field>
+      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Servidor</div>
+      <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
+        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor"/>
+      </mat-form-field>
+      <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="MSS(B)">
+      </mat-form-field>
+      <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv" placeholder="Datos(B)" />
+      </mat-form-field>
+      <mat-form-field title="Número de secuencia por el que comienza el servidor">
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="Sequential number" />
+      </mat-form-field>
+      <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
+        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos"/>
+      </mat-form-field>
+      <mat-form-field title="Ventana de recepción (en bytes)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.vcserv" placeholder="Ventana de recepción(B)">
+      </mat-form-field>
+      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">General</div>
+      <mat-form-field title="Tiempo máximo de espera (en segundos) [0 - desactivar]">
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="Timeout(s)" />
+      </mat-form-field>
       <mat-form-field title="Algoritmo de congestión a usar">
         <mat-label>Algoritmo de congestión</mat-label>
         <mat-select [(value)]="simulacion.algort">
@@ -46,7 +59,7 @@
     </div>
 
     <!-- Boton de simular, rellenar y limpiar formulario -->
-    <div style="text-align: center">
+    <div style="text-align: center; margin-bottom: 15px;">
       <button type="button" class="btn btn-formulario" title="Simular" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
@@ -78,7 +91,8 @@
       </div>
     </div>
     <!-- Simulacion -->
-    <div class="contsimulacion" *ngIf="mostrar">
+    <!-- <div class="contsimulacion" *ngIf="mostrar"> -->
+    <div class="contsimulacion">
       <app-simulacion [simular]="simulacionEnv"></app-simulacion>
     </div>
   </mat-sidenav-content>

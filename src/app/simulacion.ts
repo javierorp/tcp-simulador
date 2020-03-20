@@ -1,11 +1,20 @@
 // Clase que tiene lo parametros para hacer la simulacion
 export class Simulacion {
-    mss: number;
-    datos: number;
-    ipserv: string;
+    //Cliente
     ipclien: string;
-    snserv: number;
+    mssclien: number;
+    datosclien: number;
     snclien: number;
+    segperdclien: string;
+    vcclien: number;
+    //Servidor
+    ipserv: string;
+    mssserv: number;
+    datosserv: number;
+    snserv: number;
+    segperdserv: string;
+    vcserv: number;
+    //General
+    timeout: number;
     algort: number;
-    segperd: string;
 }

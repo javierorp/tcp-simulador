@@ -1,9 +1,120 @@
-<p>Valores introducidos:</p>
-<p>MSS(B): {{ simular.mss  }}</p>
-<p>Datos(B): {{ simular.datos  }}</p>
-<p>IP del servidor: {{ simular.ipserv  }}</p>
-<p>IP del cliente: {{ simular.ipclien  }}</p>
-<p>SN Servidor: {{ simular.snserv  }}</p>
-<p>SN Cliente: {{ simular.snclien  }}</p>
-<p>Segmentos perdidos: {{ simular.segperd }}</p>
-<p>Algoritmo de congestión: {{ simular.algort }}</p>
+<table>
+    <tr>
+        <th class="clien">
+            <fa-icon class="fas fa-laptop fa-2x" [icon]="faLaptop"></fa-icon>
+            <br><span>{{ simular.ipclien }}</span>
+        </th>
+        <th></th>
+        <th class="serv">
+            <fa-icon class="fas fa-server fa-2x" [icon]="faServer"></fa-icon>
+            <br><span>{{ simular.ipserv }}</span>
+        </th>
+    </tr>
+</table>
+<table>
+
+    <tr *ngFor="let conversacion of comunicacion">
+
+        <!-- Direccion cliente->servidor -->
+        <span *ngIf="conversacion.dir == 0">
+            <td class="info-izq">
+                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                SN={{ conversacion.sn }},
+                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                D={{ conversacion.d }},
+                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+            </td>
+            <td>
+                <img src="\assets\img\flecha.svg" height="100%" width="100%" />
+            </td>
+            <td class="info-dcha"></td>
+        </span>
+
+        <!-- Direccion servidor->cliente -->
+        <span *ngIf="conversacion.dir == 1">
+            <td class="info-izq"></td>
+            <td>
+                <img src="\assets\img\flecha.svg" height="100%" width="100%" style="transform: scaleX(-1);" />
+            </td>
+            <td class="info-dcha">
+                SN={{ conversacion.sn }},
+                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                D={{ conversacion.d }},
+                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, AN={{ conversacion.mss }}</span>
+                <span *ngIf="conversacion.flag != null">, <strong>{{ conversacion.flag }}</strong></span>
+            </td>
+        </span>
+
+        <!-- Segmento perdido en direccion cliente->servidor -->
+        <span *ngIf="conversacion.dir == -1">
+            <td class="info-izq">
+                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                SN={{ conversacion.sn }},
+                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                D={{ conversacion.d }},
+                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+            </td>
+            <td>
+                <img src="\assets\img\flechaX.svg" height="100%" width="100%" />
+            </td>
+            <td class="info-dcha"></td>
+        </span>
+        <!-- Segmento perdido en direccion servidor->cliente -->
+        <span *ngIf="conversacion.dir == -1">
+            <td class="info-izq"></td>
+            <td>
+                <img src="\assets\img\flechaX.svg" height="100%" width="100%" style="transform: scaleX(-1);"/>
+            </td>
+                            <td class="info-dcha">
+                                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                                SN={{ conversacion.sn }},
+                                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                                D={{ conversacion.d }},
+                                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+                            </td>
+        </span>
+        <span *ngIf="conversacion.dir == -1">
+            <td class="info-izq">
+                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                SN={{ conversacion.sn }},
+                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                D={{ conversacion.d }},
+                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+            </td>
+            <td>
+                <img src="\assets\img\flechaDoble.svg" height="100%" width="100%" class="dobleflecha"/> 
+            </td>
+                            <td class="info-dcha">
+                                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                                SN={{ conversacion.sn }},
+                                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                                D={{ conversacion.d }},
+                                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+                            </td>
+        </span>
+    </tr>
+</table>
+
+<!-- 
+<div>
+    <h3>Valores introducidos:</h3>
+    <h4>Cliente</h4>
+    <p>IP: {{ simular.ipclien  }}
+    <br>MSS(B): {{ simular.mssclien  }}
+    <br>Datos(B): {{ simular.datosclien }}
+    <br>SN: {{ simular.snclien }}
+    <br>Segmentos perdidos: {{ simular.segperdclien }}
+    <br>VC: {{ simular.vcclien }}</p>
+
+    <h4>Servidor</h4>
+    <p>IP: {{ simular.ipserv }}
+    <br>MSS(B): {{ simular.mssserv }}
+    <br>Datos(B): {{ simular.datosserv }}
+    <br>SN: {{ simular.snserv }}
+    <br>Segmentos perdidos: {{ simular.segperdserv }}
+    <br>VC: {{ simular.vcserv }}</p>
+    
+    <h4>General</h4>
+    <p>Timeout: {{ simular.timeout }}
+    <br>Algoritmo de congestión: {{ simular.algort }}</p>
+</div> -->
