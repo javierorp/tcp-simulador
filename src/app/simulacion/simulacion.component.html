@@ -1,13 +1,13 @@
 <table>
     <tr>
         <th class="clien">
-            <fa-icon class="fas fa-laptop fa-2x" [icon]="faLaptop"></fa-icon>
-            <br><span>{{ simular.ipclien }}</span>
+            <fa-icon class="fas fa-laptop fa-2x-laptop" [icon]="faLaptop"></fa-icon>
+            <br><span class="cli">{{ simular.ipclien }}</span>
         </th>
         <th></th>
         <th class="serv">
-            <fa-icon class="fas fa-server fa-2x" [icon]="faServer"></fa-icon>
-            <br><span>{{ simular.ipserv }}</span>
+            <fa-icon class="fas fa-server fa-2x-server" [icon]="faServer"></fa-icon>
+            <br><span class="serv">{{ simular.ipserv }}</span>
         </th>
     </tr>
 </table>
@@ -25,7 +25,7 @@
                 W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
             </td>
             <td>
-                <img src="\assets\img\flecha.svg" height="100%" width="100%" draggable="false"/>
+                <img src="\assets\img\flecha.svg" class="flechacli" draggable="false" />
             </td>
             <td class="info-dcha"></td>
         </span>
@@ -34,7 +34,7 @@
         <span *ngIf="conversacion.dir == 1">
             <td class="info-izq"></td>
             <td>
-                <img src="\assets\img\flecha.svg" height="100%" width="100%" style="transform: scaleX(-1);" draggable="false"/>
+                <img src="\assets\img\flecha.svg" class="flechaserv" style="transform: scaleX(-1);" draggable="false" />
             </td>
             <td class="info-dcha">
                 SN={{ conversacion.sn }},
@@ -55,7 +55,7 @@
                 W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
             </td>
             <td>
-                <img src="\assets\img\flechaX.svg" height="100%" width="100%" draggable="false"/>
+                <img src="\assets\img\flechaX.svg" class="flechaperd" draggable="false" />
             </td>
             <td class="info-dcha"></td>
         </span>
@@ -63,16 +63,18 @@
         <span *ngIf="conversacion.dir == -1">
             <td class="info-izq"></td>
             <td>
-                <img src="\assets\img\flechaX.svg" height="100%" width="100%" style="transform: scaleX(-1);" draggable="false"/>
+                <img src="\assets\img\flechaX.svg" class="flechaperd" style="transform: scaleX(-1);"
+                    draggable="false" />
             </td>
-                            <td class="info-dcha">
-                                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
-                                SN={{ conversacion.sn }},
-                                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
-                                D={{ conversacion.d }},
-                                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
-                            </td>
+            <td class="info-dcha">
+                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                SN={{ conversacion.sn }},
+                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                D={{ conversacion.d }},
+                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+            </td>
         </span>
+        <!-- Segmento ambas direcciones cliente<->servidor -->
         <span *ngIf="conversacion.dir == -1">
             <td class="info-izq">
                 <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
@@ -82,18 +84,20 @@
                 W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
             </td>
             <td>
-                <img src="\assets\img\flechaDoble.svg" height="100%" width="100%" class="dobleflecha" draggable="false"/> 
+                <img src="\assets\img\flechaDoble.svg" class="flecha" draggable="false" />
             </td>
-                            <td class="info-dcha">
-                                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
-                                SN={{ conversacion.sn }},
-                                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
-                                D={{ conversacion.d }},
-                                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
-                            </td>
+            <td class="info-dcha">
+                <span *ngIf="conversacion.flag != null"><strong>{{ conversacion.flag }}</strong>,</span>
+                SN={{ conversacion.sn }},
+                <span *ngIf="conversacion.an != 0">AN={{ conversacion.an }},</span>
+                D={{ conversacion.d }},
+                W={{ conversacion.w }}<span *ngIf="conversacion.mss != 0">, MSS={{ conversacion.mss }}</span>
+            </td>
         </span>
+
     </tr>
 </table>
+
 
 <!-- 
 <div>
