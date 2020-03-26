@@ -77,3 +77,13 @@
   background-color: #7db4e926;
   border-color    : #004e99;
 }
+
+
+.infoparametros {
+  opacity: 0.6;
+  margin-left: 6px;
+}
+
+.infoparametros:hover {
+  opacity: 1.0;
+}

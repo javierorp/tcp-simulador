@@ -1,11 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faRandom } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { debounceTime, ignoreElements } from 'rxjs/operators';
+import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Interfaz para las alertas
 interface Alerta {
@@ -28,6 +31,7 @@ export class ContenidoComponent implements OnInit {
   faPlay = faPlay; // simular
   faRandom = faRandom; // rellenar formulario con datos aleatorios
   faUndo = faUndo; // limpiar formulario
+  faQuestionCircle = faQuestionCircle; // informacion sobre los parametros
 
   // Variable para ocultar o no la simulacion
   public mostrar: Boolean = false;
@@ -80,7 +84,7 @@ export class ContenidoComponent implements OnInit {
   infoMsg: string;
   alertas: Alerta[];
 
-  constructor() {
+  constructor(private modalService: NgbModal) {
   }
 
   ngOnInit() {
@@ -93,6 +97,14 @@ export class ContenidoComponent implements OnInit {
     this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi u Opera.');
   }
 
+  /**
+   * TODO: 
+   * @description Abre una ventana con la informacion sonbre los parametros
+   * @author javierorp
+   */
+  open() {
+    const modalRef = this.modalService.open(InfoparametrosComponent);
+  }
 
   /**
    * TODO: Revisar los parametros antes de asignalos a simulacionEnv

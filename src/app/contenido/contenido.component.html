@@ -4,7 +4,12 @@
 <mat-sidenav-container class="formizq">
   <!-- Barra lateral -->
   <mat-sidenav #sidenav mode="side" [opened]="true">
-    <div style="text-align: center; font-weight: bold; text-decoration: underline; margin-bottom: 10px;">Parámetros</div>
+    <div style="text-align: center;">
+      <span style="font-weight: bold; text-decoration: underline; margin-bottom: 10px;">Parámetros</span>
+      <button class="btn infoparametros" mat-button title="Información sobre los parámetros" (click)="open()">
+        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+      </button>
+    </div>
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Cliente</div>
@@ -18,7 +23,7 @@
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="Datos(B)" />
       </mat-form-field>
       <mat-form-field title="Número de secuencia por el que comienza el cliente">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="Sequential number" />
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="SN" />
       </mat-form-field>
       <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
         <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="Segmentos perdidos"/>
@@ -37,7 +42,7 @@
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv" placeholder="Datos(B)" />
       </mat-form-field>
       <mat-form-field title="Número de secuencia por el que comienza el servidor">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="Sequential number" />
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="<SN>" />
       </mat-form-field>
       <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
         <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos"/>

@@ -2,4 +2,7 @@
 <div class="toolbar" role="banner">
   <img width="120" alt="v.α Universidad de Alcalá" src="assets\img\uah_alpha_logo_hor.png" />
   <span class="no-seleccionable">{{ title }}</span>
+  <button class="btn acercade" mat-button title="Acerca de" (click)="open()">
+    <fa-icon [icon]="faInfoCircle"></fa-icon>
+  </button>
 </div>

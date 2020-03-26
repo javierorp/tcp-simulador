@@ -21,3 +21,23 @@
   -ms-user-select    : none;
   user-select        : none;
 }
+
+.acercade {
+  color      : #fff;
+  border     : none;
+  margin-left: 2px;
+  position: absolute;
+  right: 0;
+}
+
+.acercade:hover {
+  color           : #004e99;
+  background-color: #fff;
+  border-color    : #fff;
+}
+
+.mat-button {
+  min-width: 10px;
+  margin-right: 10px;
+  margin-top: 3px;
+}
