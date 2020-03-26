@@ -1,0 +1,30 @@
+.modal-content {
+    width: 150%;
+    margin-left: -20%;
+}
+
+.modal-body {
+    text-align: justify;
+}
+
+
+.btn-modal {
+    color       : #004e99;
+    border-color: #004e99;
+    margin-left : 10px;
+    margin-top  : 10px;
+}
+
+.btn-modal:hover {
+    color           : #fff;
+    background-color: #004e99;
+    border-color    : #004e99
+}
+
+img.herramientas {
+    opacity: 0.6;
+}
+
+img.herramientas:hover {
+    opacity: 1.0;
+}

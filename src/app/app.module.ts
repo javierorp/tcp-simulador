@@ -18,15 +18,19 @@ import { MatDividerModule } from '@angular/material/divider';
 import { SupbarComponent } from './supbar/supbar.component';
 import { ContenidoComponent } from './contenido/contenido.component';
 import { SimulacionComponent } from './simulacion/simulacion.component';
+import { AcercadeComponent } from './acercade/acercade.component';
 // Otros
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { InfoparametrosComponent } from './infoparametros/infoparametros.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SupbarComponent,
     ContenidoComponent,
-    SimulacionComponent
+    SimulacionComponent,
+    AcercadeComponent,
+    InfoparametrosComponent
   ],
   imports: [
     BrowserModule,
