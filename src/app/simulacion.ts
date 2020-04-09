@@ -16,5 +16,6 @@ export class Simulacion {
     vcserv: number;
     //General
     timeout: number;
-    algort: number;
+    algort: string;
+    cierre: string;
 }

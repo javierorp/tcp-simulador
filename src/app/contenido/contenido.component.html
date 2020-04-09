@@ -12,6 +12,7 @@
     </div>
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
+      <!-- Cliente -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Cliente</div>
       <mat-form-field title="IP del cliente (por ejemplo: 127.0.0.1)">
         <input matInput [(ngModel)]="simulacion.ipclien" placeholder="IP del cliente" />
@@ -31,6 +32,7 @@
       <mat-form-field title="Ventana de recepción (en bytes)">
         <input matInput type="number" min="1"  max="99999999" [(ngModel)]="simulacion.vcclien" placeholder="Ventana de recepción(B)">
       </mat-form-field>
+      <!-- Servidor -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Servidor</div>
       <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
         <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor"/>
@@ -42,7 +44,7 @@
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv" placeholder="Datos(B)" />
       </mat-form-field>
       <mat-form-field title="Número de secuencia por el que comienza el servidor">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="<SN>" />
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="SN" />
       </mat-form-field>
       <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
         <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos"/>
@@ -50,6 +52,7 @@
       <mat-form-field title="Ventana de recepción (en bytes)">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.vcserv" placeholder="Ventana de recepción(B)">
       </mat-form-field>
+      <!-- General -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">General</div>
       <mat-form-field title="Tiempo máximo de espera (en segundos) [0 - desactivar]">
         <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="Timeout(s)" />
@@ -61,10 +64,17 @@
           <mat-option value="2">TCP Tahoe</mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field title="Dispositivo que inicia el cierre de conexión">
+        <mat-label>Cierre de conexión</mat-label>
+        <mat-select [(value)]="simulacion.cierre">
+          <mat-option value="1">Cliente</mat-option>
+          <mat-option value="2">Servidor</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <!-- Boton de simular, rellenar y limpiar formulario -->
-    <div style="text-align: center; margin-bottom: 15px;">
+    <div style="margin-bottom: 15px;">
       <button type="button" class="btn btn-formulario" title="Simular" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
@@ -72,7 +82,7 @@
         <fa-icon [icon]="faRandom"></fa-icon>
       </button>
       <button type="button" class="btn btn-formulario" title="Limpiar formulario" (click)="limpiar()">
-        <fa-icon [icon]="faUndo"></fa-icon>
+        <fa-icon [icon]="faEraser"></fa-icon>
       </button>
     </div>
   </mat-sidenav>

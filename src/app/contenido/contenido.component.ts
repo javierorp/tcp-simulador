@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { faEraser } from '@fortawesome/free-solid-svg-icons';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faRandom } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
@@ -30,7 +30,7 @@ export class ContenidoComponent implements OnInit {
   faBars = faBars; // menu
   faPlay = faPlay; // simular
   faRandom = faRandom; // rellenar formulario con datos aleatorios
-  faUndo = faUndo; // limpiar formulario
+  faEraser = faEraser; // limpiar formulario
   faQuestionCircle = faQuestionCircle; // informacion sobre los parametros
 
   // Variable para ocultar o no la simulacion
@@ -53,8 +53,9 @@ export class ContenidoComponent implements OnInit {
     segperdserv: null,
     vcserv: null,
     //General
-    timeout: 0,
-    algort: null
+    timeout: null,
+    algort: "",
+    cierre: "1"
   };
 
   // Objeto que se le enviara a SimulacionComponent para simular
@@ -75,7 +76,8 @@ export class ContenidoComponent implements OnInit {
     vcserv: null,
     //General
     timeout: 0,
-    algort: null
+    algort: "",
+    cierre: ""
   };
 
   // Alertas
@@ -95,6 +97,7 @@ export class ContenidoComponent implements OnInit {
     this._success.subscribe((message) => this.infoMsg = message);
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi u Opera.');
+    
   }
 
   /**
@@ -133,9 +136,10 @@ export class ContenidoComponent implements OnInit {
       var segperdserv: string = this.simulacion.segperdserv;
       var vcserv: number = this.simulacion.vcserv;
       var timeout: number = this.simulacion.timeout;
-      var algort: number = this.simulacion.algort;
+      var algort: string = this.simulacion.algort;
+      var cierre: string = this.simulacion.cierre;
 
-      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, vcclien, ipserv, mssserv, datosserv, snserv, segperdserv, vcserv, timeout, algort };
+      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, vcclien, ipserv, mssserv, datosserv, snserv, segperdserv, vcserv, timeout, algort, cierre };
 
       // Permitimos que se visualice la simulacion
       this.mostrar = true;
@@ -189,6 +193,10 @@ export class ContenidoComponent implements OnInit {
       segperdclien = segperdclien.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
       segperdclien = (segperdclien[0] == ',') ? segperdclien.substring(1) : segperdclien; // si el primer caracter es una coma se elimina
       segperdclien = (segperdclien[segperdclien.length - 1] == ',') ? segperdclien.substring(0, segperdclien.length - 1) : segperdclien; // si el ultimo caracter es una coma se elimina
+
+      if (segperdclien == "0")
+        segperdclien = ""
+
       this.simulacion.segperdclien = segperdclien;
     }
 
@@ -214,6 +222,10 @@ export class ContenidoComponent implements OnInit {
       segperdserv = segperdserv.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
       segperdserv = (segperdserv[0] == ',') ? segperdserv.substring(1) : segperdserv; // si el primer caracter es una coma se elimina
       segperdserv = (segperdserv[segperdserv.length - 1] == ',') ? segperdserv.substring(0, segperdserv.length - 1) : segperdserv; // si el ultimo caracter es una coma se elimina
+
+      if (segperdserv == "0")
+        segperdserv = ""
+      
       this.simulacion.segperdserv = segperdserv;
     }
 
@@ -227,6 +239,7 @@ export class ContenidoComponent implements OnInit {
     if (this.simulacion.datosserv > 99999999) this.simulacion.datosserv = 99999999;
     if (this.simulacion.snserv > 9999999) this.simulacion.snserv = 9999999;
     if (this.simulacion.vcserv > 99999999) this.simulacion.vcserv = 99999999;
+    if (this.simulacion.timeout == null) this.simulacion.timeout = 0;
     if (this.simulacion.timeout > 99999999) this.simulacion.timeout = 99999999;
 
     // -----ALERTAS-----
@@ -266,13 +279,15 @@ export class ContenidoComponent implements OnInit {
     //General
     if (this.simulacion.timeout < 0)
       this.alertas.push({ campo: "Timeout", msg: "El timeout debe ser igual o mayor que 0. Un valor 0 desactiva el timeout." });
-    if (this.simulacion.algort == null)
+    if (this.simulacion.algort == "")
       this.alertas.push({ campo: "Algoritmo de congestión", msg: "Debe seleccionar un algoritmo de congestión a usar." });
+    if (this.simulacion.cierre == "")
+      this.alertas.push({ campo: "Cierre de conexión", msg: "Debe seleccionar el dispositivo que va a cerrar la conexión." });
 
     //Se comprueba si se debe simular o no, retorna 'false' si alguno de los parametros es incorrecto y 'true' si todos lo son
     simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.vcclien < 1 ||
     !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.vcserv < 1 ||
-    this.simulacion.timeout < 0 || this.simulacion.algort == null) ? false : true;
+    this.simulacion.timeout < 0 || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
 
     return simular;
   }
@@ -296,8 +311,10 @@ export class ContenidoComponent implements OnInit {
     this.simulacion.snserv = this.numAleatorio(1, 500, 5);
     this.simulacion.vcserv = this.numAleatorio(0, 8000, 1000);
     //General
+    this.simulacion.timeout = this.numAleatorio(0, 100, 10)
+    this.simulacion.algort = this.numAleatorio(1, 3, 1).toString();
+    this.simulacion.cierre = this.numAleatorio(1, 3, 1).toString();
 
-    
   }
 
   /**
@@ -339,10 +356,11 @@ export class ContenidoComponent implements OnInit {
     var segperdserv: string = "";
     var vcserv: number = null;
     //General
-    var timeout: number = 0;
-    var algort: number = null;
+    var timeout: number = null;
+    var algort: string = "";
+    var cierre: string = "1";
 
-    this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, vcclien, ipserv, mssserv, datosserv, snserv, segperdserv, vcserv, timeout, algort };
+    this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, vcclien, ipserv, mssserv, datosserv, snserv, segperdserv, vcserv, timeout, algort, cierre };
 
     // Ocultamos la simulacion
     this.mostrar = false;
