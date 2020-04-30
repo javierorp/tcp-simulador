@@ -1,5 +1,5 @@
 table {
-    width        : 900px;
+    width        : 1000px;
     margin-bottom: 10px;
 }
 
@@ -86,3 +86,8 @@ span.serv {
     color: #3e5e3e;
 }
 
+.pgbar
+{
+    width: 80%;
+    margin-top: 20%;
+}

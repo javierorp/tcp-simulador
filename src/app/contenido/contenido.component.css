@@ -19,6 +19,7 @@
   margin-left: 2px;
   position   : fixed;
   margin-top : -15px;
+  z-index: 1;
 }
 
 .btn-menu:hover {
@@ -79,10 +80,6 @@
   color           : #004e99;
   background-color: #7db4e926;
   border-color    : #004e99;
-}
-
-.alert-danger {
-  z-index: -1
 }
 
 .infoparametros {

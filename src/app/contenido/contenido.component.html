@@ -30,7 +30,7 @@
         <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="Segmentos perdidos"/>
       </mat-form-field>
       <mat-form-field title="Ventana de recepción (en bytes)">
-        <input matInput type="number" min="1"  max="99999999" [(ngModel)]="simulacion.vcclien" placeholder="Ventana de recepción(B)">
+        <input matInput type="number" min="1"  max="99999999" [(ngModel)]="simulacion.wclien" placeholder="Ventana de recepción(B)">
       </mat-form-field>
       <!-- Servidor -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Servidor</div>
@@ -50,7 +50,7 @@
         <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos"/>
       </mat-form-field>
       <mat-form-field title="Ventana de recepción (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.vcserv" placeholder="Ventana de recepción(B)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv" placeholder="Ventana de recepción(B)">
       </mat-form-field>
       <!-- General -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">General</div>
@@ -100,16 +100,20 @@
     <div class="alerta">
       <ngb-alert *ngIf="infoMsg" type="info" (close)="infoMsg = null">{{ infoMsg }}</ngb-alert>
 
+    <!-- Alerta de errores en el formulario -->
       <div *ngFor="let alerta of alertas">
       <ngb-alert type ="danger" (close)="cerrarAlerta(alerta)">
         <strong>¡Error en {{ alerta.campo }}!</strong> {{ alerta.msg }}</ngb-alert>
       </div>
     </div>
     <!-- Simulacion -->
-    <!-- <div class="contsimulacion" *ngIf="mostrar"> -->
-    <div class="contsimulacion">
+    <p style="text-align: left;"><br>
+      <b style="color: red">NOTA:</b> Aún no se han añadido la ventana de congestión y la funcionalidad de segmentos perdidos.
+  </p>
+    <div class="contsimulacion" *ngIf="mostrar">
       <app-simulacion [simular]="simulacionEnv"></app-simulacion>
     </div>
+
   </mat-sidenav-content>
 
 </mat-sidenav-container>

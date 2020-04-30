@@ -6,14 +6,14 @@ export class Simulacion {
     datosclien: number;
     snclien: number;
     segperdclien: string;
-    vcclien: number;
+    wclien: number;
     //Servidor
     ipserv: string;
     mssserv: number;
     datosserv: number;
     snserv: number;
     segperdserv: string;
-    vcserv: number;
+    wserv: number;
     //General
     timeout: number;
     algort: string;

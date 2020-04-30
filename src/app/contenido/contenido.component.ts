@@ -44,14 +44,14 @@ export class ContenidoComponent implements OnInit {
     datosclien: null,
     snclien: null,
     segperdclien: null,
-    vcclien: null,
+    wclien: null,
     //Servidor
     ipserv: "192.168.0.1",
     mssserv: null,
     datosserv: null,
     snserv: null,
     segperdserv: null,
-    vcserv: null,
+    wserv: null,
     //General
     timeout: null,
     algort: "",
@@ -66,14 +66,14 @@ export class ContenidoComponent implements OnInit {
     datosclien: null,
     snclien: null,
     segperdclien: "",
-    vcclien: null,
+    wclien: null,
     //Servidor
     ipserv: "",
     mssserv: null,
     datosserv: null,
     snserv: null,
     segperdserv: "",
-    vcserv: null,
+    wserv: null,
     //General
     timeout: 0,
     algort: "",
@@ -96,10 +96,11 @@ export class ContenidoComponent implements OnInit {
 
     this._success.subscribe((message) => this.infoMsg = message);
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
-    this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi u Opera.');
+    this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi, Opera o Edge.');
     
   }
 
+  
   /**
    * TODO: 
    * @description Abre una ventana con la informacion sonbre los parametros
@@ -108,6 +109,7 @@ export class ContenidoComponent implements OnInit {
   open() {
     const modalRef = this.modalService.open(InfoparametrosComponent);
   }
+
 
   /**
    * TODO: Revisar los parametros antes de asignalos a simulacionEnv
@@ -128,18 +130,18 @@ export class ContenidoComponent implements OnInit {
       var datosclien: number = this.simulacion.datosclien;
       var snclien: number = this.simulacion.snclien;
       var segperdclien: string = this.simulacion.segperdclien;
-      var vcclien: number = this.simulacion.vcclien;
+      var wclien: number = this.simulacion.wclien;
       var ipserv: string = this.simulacion.ipserv;
       var mssserv: number = this.simulacion.mssserv;
       var datosserv: number = this.simulacion.datosserv;
       var snserv: number = this.simulacion.snserv;
       var segperdserv: string = this.simulacion.segperdserv;
-      var vcserv: number = this.simulacion.vcserv;
+      var wserv: number = this.simulacion.wserv;
       var timeout: number = this.simulacion.timeout;
       var algort: string = this.simulacion.algort;
       var cierre: string = this.simulacion.cierre;
 
-      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, vcclien, ipserv, mssserv, datosserv, snserv, segperdserv, vcserv, timeout, algort, cierre };
+      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
 
       // Permitimos que se visualice la simulacion
       this.mostrar = true;
@@ -148,6 +150,7 @@ export class ContenidoComponent implements OnInit {
       this.mostrar = false;
     }
   }
+
 
   /**
    * TODO: 
@@ -234,11 +237,11 @@ export class ContenidoComponent implements OnInit {
     if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
     if (this.simulacion.datosclien > 99999999) this.simulacion.datosclien = 99999999;
     if (this.simulacion.snclien > 9999999) this.simulacion.snclien = 9999999;
-    if (this.simulacion.vcclien > 99999999) this.simulacion.vcclien = 99999999;
+    if (this.simulacion.wclien > 99999999) this.simulacion.wclien = 99999999;
     if (this.simulacion.mssserv > 99999999) this.simulacion.mssserv = 99999999;
     if (this.simulacion.datosserv > 99999999) this.simulacion.datosserv = 99999999;
     if (this.simulacion.snserv > 9999999) this.simulacion.snserv = 9999999;
-    if (this.simulacion.vcserv > 99999999) this.simulacion.vcserv = 99999999;
+    if (this.simulacion.wserv > 99999999) this.simulacion.wserv = 99999999;
     if (this.simulacion.timeout == null) this.simulacion.timeout = 0;
     if (this.simulacion.timeout > 99999999) this.simulacion.timeout = 99999999;
 
@@ -259,8 +262,8 @@ export class ContenidoComponent implements OnInit {
       this.alertas.push({ campo: "Segmentos perdidos del cliente", msg: "Los segmentos que se pierden deben ser numeros separados por comas." });
     if (this.simulacion.mssclien < 1)
       this.alertas.push({ campo: "MSS(B) del cliente", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
-    if (this.simulacion.vcclien < 1)
-      this.alertas.push({ campo: "VC del cliente", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
+    if (this.simulacion.wclien < 1)
+      this.alertas.push({ campo: "Ventana de recepción del cliente", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
     //Servidor
       if (!ipRegex.test(this.simulacion.ipserv))
       this.alertas.push({ campo: "IP del servidor", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
@@ -274,8 +277,8 @@ export class ContenidoComponent implements OnInit {
       this.alertas.push({ campo: "Segmentos perdidos del servidor", msg: "Los segmentos que se pierden deben ser numeros separados por comas." });
     if (this.simulacion.mssserv < 1)
       this.alertas.push({ campo: "MSS(B) del servidor", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
-    if (this.simulacion.vcserv < 1)
-      this.alertas.push({ campo: "VC del servidor", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
+    if (this.simulacion.wserv < 1)
+      this.alertas.push({ campo: "Ventana de recepción del servidor", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
     //General
     if (this.simulacion.timeout < 0)
       this.alertas.push({ campo: "Timeout", msg: "El timeout debe ser igual o mayor que 0. Un valor 0 desactiva el timeout." });
@@ -285,12 +288,13 @@ export class ContenidoComponent implements OnInit {
       this.alertas.push({ campo: "Cierre de conexión", msg: "Debe seleccionar el dispositivo que va a cerrar la conexión." });
 
     //Se comprueba si se debe simular o no, retorna 'false' si alguno de los parametros es incorrecto y 'true' si todos lo son
-    simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.vcclien < 1 ||
-    !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.vcserv < 1 ||
+    simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.wclien < 1 ||
+    !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.wserv < 1 ||
     this.simulacion.timeout < 0 || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
 
     return simular;
   }
+
 
   /**
    * TODO: 
@@ -300,22 +304,25 @@ export class ContenidoComponent implements OnInit {
    */
   rellenarDatos(): void {
     //Cliente
+    this.simulacion.ipclien = "127.0." + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString()
     this.simulacion.mssclien = this.numAleatorio(100, 2000, 10);
     this.simulacion.datosclien = this.numAleatorio(100, 5000, 10);
     this.simulacion.snclien = this.numAleatorio(1, 500, 5);
-    this.simulacion.vcclien = this.numAleatorio(0, 8000, 1000);
+    this.simulacion.wclien = this.numAleatorio(0, 8000, 1000);
 
     //Servidor
+    this.simulacion.ipserv = "192.168." + + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString()
     this.simulacion.mssserv = this.numAleatorio(100, 2000, 10);
     this.simulacion.datosserv = this.numAleatorio(100, 5000, 10);
     this.simulacion.snserv = this.numAleatorio(1, 500, 5);
-    this.simulacion.vcserv = this.numAleatorio(0, 8000, 1000);
+    this.simulacion.wserv = this.numAleatorio(0, 8000, 1000);
     //General
     this.simulacion.timeout = this.numAleatorio(0, 100, 10)
     this.simulacion.algort = this.numAleatorio(1, 3, 1).toString();
     this.simulacion.cierre = this.numAleatorio(1, 3, 1).toString();
 
   }
+
 
   /**
    * TODO: 
@@ -326,12 +333,13 @@ export class ContenidoComponent implements OnInit {
    * @param multiplo numero del que seran multiplos los valores obtenidos
    * @returns aleatorio 
    */
-  numAleatorio(min, max, multiplo): number {
+  numAleatorio(min: number, max: number, multiplo: number): number {
     var numero: number = Math.floor(Math.random() * (max - min) + min);
     var modulo: number = (numero % multiplo);
     var redondeo: number = (modulo != 0) ? (multiplo - modulo) : 0;
     return numero + redondeo;
   }
+
 
   /**
    * TODO:
@@ -347,24 +355,25 @@ export class ContenidoComponent implements OnInit {
     var datosclien: number = null;
     var snclien: number = null;
     var segperdclien: string = "";
-    var vcclien: number = null;
+    var wclien: number = null;
     //Servidor
     var ipserv: string = "192.168.0.1";
     var mssserv: number = null;
     var datosserv: number = null;
     var snserv: number = null;
     var segperdserv: string = "";
-    var vcserv: number = null;
+    var wserv: number = null;
     //General
     var timeout: number = null;
     var algort: string = "";
     var cierre: string = "1";
 
-    this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, vcclien, ipserv, mssserv, datosserv, snserv, segperdserv, vcserv, timeout, algort, cierre };
+    this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
 
     // Ocultamos la simulacion
     this.mostrar = false;
   }
+
 
   /**
    * TODO:
