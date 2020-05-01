@@ -21,41 +21,46 @@
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="MSS(B)">
       </mat-form-field>
       <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="Datos(B)" />
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien"
+          placeholder="Datos(B)" />
       </mat-form-field>
       <mat-form-field title="Número de secuencia por el que comienza el cliente">
         <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="SN" />
       </mat-form-field>
       <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
-        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="Segmentos perdidos"/>
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="Segmentos perdidos" />
       </mat-form-field>
       <mat-form-field title="Ventana de recepción (en bytes)">
-        <input matInput type="number" min="1"  max="99999999" [(ngModel)]="simulacion.wclien" placeholder="Ventana de recepción(B)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien"
+          placeholder="Ventana de recepción(B)">
       </mat-form-field>
       <!-- Servidor -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Servidor</div>
       <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
-        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor"/>
+        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor" />
       </mat-form-field>
       <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="MSS(B)">
       </mat-form-field>
       <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv" placeholder="Datos(B)" />
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv"
+          placeholder="Datos(B)" />
       </mat-form-field>
       <mat-form-field title="Número de secuencia por el que comienza el servidor">
         <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="SN" />
       </mat-form-field>
       <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
-        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos"/>
+        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos" />
       </mat-form-field>
       <mat-form-field title="Ventana de recepción (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv" placeholder="Ventana de recepción(B)">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv"
+          placeholder="Ventana de recepción(B)">
       </mat-form-field>
       <!-- General -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">General</div>
       <mat-form-field title="Tiempo máximo de espera (en segundos) [0 - desactivar]">
-        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="Timeout(s)" />
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout"
+          placeholder="Timeout(s)" />
       </mat-form-field>
       <mat-form-field title="Algoritmo de congestión a usar">
         <mat-label>Algoritmo de congestión</mat-label>
@@ -100,17 +105,17 @@
     <div class="alerta">
       <ngb-alert *ngIf="infoMsg" type="info" (close)="infoMsg = null">{{ infoMsg }}</ngb-alert>
 
-    <!-- Alerta de errores en el formulario -->
+      <!-- Alerta de errores en el formulario -->
       <div *ngFor="let alerta of alertas">
-      <ngb-alert type ="danger" (close)="cerrarAlerta(alerta)">
-        <strong>¡Error en {{ alerta.campo }}!</strong> {{ alerta.msg }}</ngb-alert>
+        <ngb-alert type="danger" (close)="cerrarAlerta(alerta)">
+          <strong>¡Error en {{ alerta.campo }}!</strong> {{ alerta.msg }}</ngb-alert>
       </div>
     </div>
     <!-- Simulacion -->
     <p style="text-align: left;"><br>
-      <b style="color: red">NOTA:</b> Aún no se han añadido la ventana de congestión y la funcionalidad de segmentos perdidos.
-  </p>
-    <div class="contsimulacion" *ngIf="mostrar">
+      <b style="color: red; margin-left: 10px;">NOTA:</b> Aún no se ha añadido la funcionalidad de segmentos perdidos.
+    </p>
+    <div class="contsimulacion" *ngIf="ejecutar">
       <app-simulacion [simular]="simulacionEnv"></app-simulacion>
     </div>
 

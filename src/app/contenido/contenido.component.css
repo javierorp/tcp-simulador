@@ -1,3 +1,12 @@
+/* Colores de fondo */
+.mat-drawer-container {
+  background-color: white;
+}
+
+.mat-drawer {
+  background-color: white;
+}
+
 /* Formulario izquierdo */
 .formizq {
   position: absolute;
@@ -19,7 +28,7 @@
   margin-left: 2px;
   position   : fixed;
   margin-top : -15px;
-  z-index: 1;
+  z-index    : 1;
 }
 
 .btn-menu:hover {
@@ -67,7 +76,7 @@
 
 /* Simulacion */
 .contsimulacion {
-  margin: 0 0 0 15px;
+  margin    : 0 0 0 15px;
   text-align: -webkit-center;
 }
 
@@ -82,6 +91,7 @@
   border-color    : #004e99;
 }
 
+/* Boton de informacion de los parametros */
 .infoparametros {
   opacity    : 0.6;
   margin-left: 6px;

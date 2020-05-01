@@ -34,7 +34,7 @@ export class ContenidoComponent implements OnInit {
   faQuestionCircle = faQuestionCircle; // informacion sobre los parametros
 
   // Variable para ocultar o no la simulacion
-  public mostrar: Boolean = false;
+  public ejecutar: Boolean = false;
 
   // Objeto simulacion que obtiene los datos del formulario
   simulacion: Simulacion = {
@@ -97,10 +97,10 @@ export class ContenidoComponent implements OnInit {
     this._success.subscribe((message) => this.infoMsg = message);
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi, Opera o Edge.');
-    
+
   }
 
-  
+
   /**
    * TODO: 
    * @description Abre una ventana con la informacion sonbre los parametros
@@ -144,10 +144,10 @@ export class ContenidoComponent implements OnInit {
       this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
 
       // Permitimos que se visualice la simulacion
-      this.mostrar = true;
+      this.ejecutar = true;
     }
     else {
-      this.mostrar = false;
+      this.ejecutar = false;
     }
   }
 
@@ -228,7 +228,7 @@ export class ContenidoComponent implements OnInit {
 
       if (segperdserv == "0")
         segperdserv = ""
-      
+
       this.simulacion.segperdserv = segperdserv;
     }
 
@@ -265,7 +265,7 @@ export class ContenidoComponent implements OnInit {
     if (this.simulacion.wclien < 1)
       this.alertas.push({ campo: "Ventana de recepción del cliente", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
     //Servidor
-      if (!ipRegex.test(this.simulacion.ipserv))
+    if (!ipRegex.test(this.simulacion.ipserv))
       this.alertas.push({ campo: "IP del servidor", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
     if (this.simulacion.mssserv < 1)
       this.alertas.push({ campo: "MSS(B) del servidor", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
@@ -289,8 +289,8 @@ export class ContenidoComponent implements OnInit {
 
     //Se comprueba si se debe simular o no, retorna 'false' si alguno de los parametros es incorrecto y 'true' si todos lo son
     simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.wclien < 1 ||
-    !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.wserv < 1 ||
-    this.simulacion.timeout < 0 || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
+      !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.wserv < 1 ||
+      this.simulacion.timeout < 0 || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
 
     return simular;
   }
@@ -371,7 +371,7 @@ export class ContenidoComponent implements OnInit {
     this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
 
     // Ocultamos la simulacion
-    this.mostrar = false;
+    this.ejecutar = false;
   }
 
 

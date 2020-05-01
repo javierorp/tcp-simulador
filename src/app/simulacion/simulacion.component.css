@@ -1,3 +1,4 @@
+/* Tabla general */
 table {
     width        : 1000px;
     margin-bottom: 10px;
@@ -45,6 +46,15 @@ th.serv {
 
 }
 
+/* Tabla de flujo */
+table.flujo {
+    width        : 1000px;
+    margin-bottom: 30px;
+    padding-right: 40px;
+}
+
+
+/* Imagenes del flujo */
 img.flechacli {
     height: 100%;
     width : 100%;
@@ -68,6 +78,7 @@ img.flecha {
     width : 100%;
 }
 
+/* Iconos */
 .fa-2x-laptop {
     font-size: 2em;
     color    : #3e3e7e;
@@ -78,16 +89,29 @@ img.flecha {
     color    : #3e5e3e
 }
 
-span.cli {
+/* IPs */
+span.ipcli {
     color: #3e3e7e;
 }
 
-span.serv {
+span.ipserv {
     color: #3e5e3e;
 }
 
-.pgbar
-{
-    width: 80%;
-    margin-top: 20%;
+/* Gif de carga */
+div.load {
+    margin-top: 5%;
+}
+
+/* Ventana de congestion*/
+span.vcserv {
+    background-color: #3e5e3e;
+    color           : white;
+    border-radius   : 4px;
+}
+
+span.vccli {
+    background-color: #3e3e7e;
+    color           : white;
+    border-radius   : 4px;
 }
