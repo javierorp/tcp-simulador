@@ -2,51 +2,51 @@
     <table>
         <tr>
             <th class="clien">
-                <fa-icon class="fas fa-laptop fa-2x-laptop" [icon]="faLaptop" title="Cliente"></fa-icon>
-                <br><span class="ipcli" title="IP del cliente">{{ ipclien }}</span>
+                <fa-icon class="fas fa-laptop fa-2x-laptop" [icon]="faLaptop" title="{{ 'simulacion.clien' | translate }}"></fa-icon>
+                <br><span class="ipcli" title="{{ 'simulacion.ipclien' | translate }}">{{ ipclien }}</span>
             </th>
             <th></th>
             <th class="serv">
-                <fa-icon class="fas fa-server fa-2x-server" [icon]="faServer" title="Servidor"></fa-icon>
-                <br><span class="ipserv" title="IP del servidor">{{ ipserv }}</span>
+                <fa-icon class="fas fa-server fa-2x-server" [icon]="faServer" title="{{ 'simulacion.serv' | translate }}"></fa-icon>
+                <br><span class="ipserv" title="{{ 'simulacion.ipserv' | translate }}">{{ ipserv }}</span>
             </th>
         </tr>
     </table>
 
     <table class="flujo">
         <tr *ngFor="let conversacion of comunicacion">
-            <!-- Segmento bidireccional cliente<->servidor -->
+            <!-- {{ 'simulacion.seg' | translate }} bidireccional cliente<->servidor -->
             <span *ngIf="conversacion.dir == 0">
                 <td class="info-izq">
-                    <span *ngIf="conversacion.vc != 0" title="Ventana de congestión"
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vccli">&nbsp;VC={{ conversacion.vc }}&nbsp;</span>
                     <span *ngIf="conversacion.flagcli != null"
                         title="Flags"><strong>{{ conversacion.flagcli }}</strong>,
                     </span>
-                    <span title="Número de secuencia">&nbsp;SN={{ conversacion.sncli }}, </span>
-                    <span *ngIf="conversacion.msscli != 0" title="Tamaño máximo de segmento">
+                    <span title="{{ 'simulacion.sn' | translate }}">&nbsp;SN={{ conversacion.sncli }}, </span>
+                    <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.msscli }},
                     </span>
-                    <span *ngIf="conversacion.ancli != 0" title="Número de reconocimiento"> AN={{ conversacion.ancli }},
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}"> AN={{ conversacion.ancli }},
                     </span>
-                    <span title="Datos enviados">D={{ conversacion.dcli }}, </span>
-                    <span title="Ventana de recepción">W={{ conversacion.wcli }}</span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
                 </td>
                 <td>
-                    <span title="Segmento {{ conversacion.numseg }}">
+                    <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                         <img src="assets\img\flechaDoble.svg" alt="cliente<---->servidor" class="flecha"
                             draggable="false" />
                     </span>
                 </td>
                 <td class="info-dcha">
-                    <span title="Número de secuencia">SN={{ conversacion.snserv }}, </span>
-                    <span *ngIf="conversacion.mssserv != 0" title="Tamaño máximo de segmento">
+                    <span title="{{ 'simulacion.sn' | translate }}">SN={{ conversacion.snserv }}, </span>
+                    <span *ngIf="conversacion.mssserv != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.mssserv }}, </span>
-                    <span *ngIf="conversacion.anserv != 0" title="Número de reconocimiento">
+                    <span *ngIf="conversacion.anserv != 0" title="{{ 'simulacion.an' | translate }}">
                         AN={{ conversacion.anserv }},
                     </span>
-                    <span title="Datos enviados">D={{ conversacion.dserv }}, </span>
-                    <span title="Ventana de recepción">W={{ conversacion.wserv }}</span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dserv }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wserv }}</span>
                     <span *ngIf="conversacion.flagserv != null" title="Flags">,
                         <strong>{{ conversacion.flagserv }}</strong>
                     </span>
@@ -59,23 +59,23 @@
                     <span *ngIf="conversacion.flagcli != null"
                         title="Flags"><strong>{{ conversacion.flagcli }}</strong>,
                     </span>
-                    <span title="Número de secuencia">SN={{ conversacion.sncli }}, </span>
-                    <span *ngIf="conversacion.msscli != 0" title="Tamaño máximo de segmento">
+                    <span title="{{ 'simulacion.sn' | translate }}">SN={{ conversacion.sncli }}, </span>
+                    <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.msscli }},
                     </span>
-                    <span *ngIf="conversacion.ancli != 0" title="Número de reconocimiento"> AN={{ conversacion.ancli }},
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}"> AN={{ conversacion.ancli }},
                     </span>
-                    <span title="Datos enviados">D={{ conversacion.dcli }}, </span>
-                    <span title="Ventana de recepción">W={{ conversacion.wcli }}</span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
                 </td>
                 <td>
-                    <span title="Segmento {{ conversacion.numseg }}">
+                    <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                         <img src="assets\img\flecha.svg" alt="cliente----><!--servidor" class="flechacli"
                             draggable="false" />
                     </span>
                 </td>
                 <td class="info-dcha">
-                    <span *ngIf="conversacion.vc != 0" title="Ventana de congestión"
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vcserv">&nbsp;VC={{ conversacion.vc }}&nbsp;</span>
                 </td>
             </span>
@@ -83,47 +83,47 @@
             <!-- Direccion servidor->cliente -->
             <span *ngIf="conversacion.dir == 2">
                 <td class="info-izq">
-                    <span *ngIf="conversacion.vc != 0" title="Ventana de congestión"
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vccli">&nbsp;VC={{ conversacion.vc }}&nbsp;</span>
                 </td>
                 <td>
-                    <span title="Segmento {{ conversacion.numseg }}">
+                    <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                         <img src="assets\img\flecha.svg" alt="cliente<----servidor" class="flechaserv"
                             style="transform: scaleX(-1);" draggable="false" />
                     </span>
                 </td>
                 <td class="info-dcha">
-                    <span title="Número de secuencia">SN={{ conversacion.snserv }}, </span>
-                    <span *ngIf="conversacion.mssserv != 0" title="Tamaño máximo de segmento">
+                    <span title="{{ 'simulacion.sn' | translate }}">SN={{ conversacion.snserv }}, </span>
+                    <span *ngIf="conversacion.mssserv != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.mssserv }}, </span>
-                    <span *ngIf="conversacion.anserv != 0" title="Número de reconocimiento">
+                    <span *ngIf="conversacion.anserv != 0" title="{{ 'simulacion.an' | translate }}">
                         AN={{ conversacion.anserv }},
                     </span>
-                    <span title="Datos enviados">D={{ conversacion.dserv }}, </span>
-                    <span title="Ventana de recepción">W={{ conversacion.wserv }}</span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dserv }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wserv }}</span>
                     <span *ngIf="conversacion.flagserv != null" title="Flags">,
                         <strong>{{ conversacion.flagserv }}</strong>
                     </span>
                 </td>
             </span>
 
-            <!-- Segmento perdido en direccion cliente->servidor -->
+            <!-- {{ 'simulacion.seg' | translate }} perdido en direccion cliente->servidor -->
             <span *ngIf="conversacion.dir == -1">
                 <td class="info-izq">
                     <span *ngIf="conversacion.flagcli != null"
                         title="Flags"><strong>{{ conversacion.flagcli }}</strong>,
                     </span>
-                    <span title="Número de secuencia">SN={{ conversacion.sncli }}, </span>
-                    <span *ngIf="conversacion.msscli != 0" title="Tamaño máximo de segmento">
+                    <span title="{{ 'simulacion.sn' | translate }}">SN={{ conversacion.sncli }}, </span>
+                    <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.msscli }},
                     </span>
-                    <span *ngIf="conversacion.ancli != 0" title="Número de reconocimiento"> AN={{ conversacion.ancli }},
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}"> AN={{ conversacion.ancli }},
                     </span>
-                    <span title="Datos enviados">D={{ conversacion.dcli }}, </span>
-                    <span title="Ventana de recepción">W={{ conversacion.wcli }}</span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
                 </td>
                 <td>
-                    <span title="Segmento {{ conversacion.numseg }}">
+                    <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                         <img src="assets\img\flechaX.svg" alt="clientes--X  servidor" class="flechaperd"
                             draggable="false" />
                     </span>
@@ -131,24 +131,24 @@
                 <td class="info-dcha"></td>
             </span>
 
-            <!-- Segmento perdido en direccion servidor->cliente -->
+            <!-- {{ 'simulacion.seg' | translate }} perdido en direccion servidor->cliente -->
             <span *ngIf="conversacion.dir == -2">
                 <td class="info-izq"></td>
                 <td>
-                    <span title="Segmento {{ conversacion.numseg }}">
+                    <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
                         <img src="assets\img\flechaX.svg" alt="cliente  X--servidor" class="flechaperd"
                             style="transform: scaleX(-1);" draggable="false" />
                     </span>
                 </td>
                 <td class="info-dcha">
-                    <span title="Número de secuencia">SN={{ conversacion.snserv }}, </span>
-                    <span *ngIf="conversacion.mssserv != 0" title="Tamaño máximo de segmento">
+                    <span title="{{ 'simulacion.sn' | translate }}">SN={{ conversacion.snserv }}, </span>
+                    <span *ngIf="conversacion.mssserv != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.mssserv }}, </span>
-                    <span *ngIf="conversacion.anserv != 0" title="Número de reconocimiento">
+                    <span *ngIf="conversacion.anserv != 0" title="{{ 'simulacion.an' | translate }}">
                         AN={{ conversacion.anserv }},
                     </span>
-                    <span title="Datos enviados">D={{ conversacion.dserv }}, </span>
-                    <span title="Ventana de recepción">W={{ conversacion.wserv }}</span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dserv }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wserv }}</span>
                     <span *ngIf="conversacion.flagserv != null" title="Flags">,
                         <strong>{{ conversacion.flagserv }}</strong>
                     </span>
@@ -170,7 +170,7 @@
     <br>MSS(B): {{ simular.mssclien  }}
     <br>Datos(B): {{ simular.datosclien }}
     <br>SN: {{ simular.snclien }}
-    <br>Segmentos perdidos: {{ simular.segperdclien }}
+    <br>{{ 'simulacion.seg' | translate }}s perdidos: {{ simular.segperdclien }}
     <br>VC: {{ simular.vcclien }}</p>
 
     <h4 style="text-align: left;">Servidor</h4>
@@ -178,7 +178,7 @@
     <br>MSS(B): {{ simular.mssserv }}
     <br>Datos(B): {{ simular.datosserv }}
     <br>SN: {{ simular.snserv }}
-    <br>Segmentos perdidos: {{ simular.segperdserv }}
+    <br>{{ 'simulacion.seg' | translate }}s perdidos: {{ simular.segperdserv }}
     <br>VC: {{ simular.vcserv }}</p>
     
     <h4 style="text-align: left;">General</h4>

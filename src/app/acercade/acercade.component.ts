@@ -7,6 +7,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./acercade.component.css']
 })
 export class AcercadeComponent {
+
+  titulo: string = null;
+  texto: string = null;
+  texto2: string = null;
+  repo: string = null;
+  cerrar: string = null;
+
   constructor(public activeModal: NgbActiveModal) { }
 
 }
