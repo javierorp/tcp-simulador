@@ -5,88 +5,84 @@
   <!-- Barra lateral -->
   <mat-sidenav #sidenav mode="side" [opened]="true">
     <div style="text-align: center;">
-      <span style="font-weight: bold; text-decoration: underline; margin-bottom: 10px;">Parámetros</span>
-      <button class="btn infoparametros" mat-button title="Información sobre los parámetros" (click)="open()">
+      <span style="font-weight: bold; text-decoration: underline; margin-bottom: 10px;">{{ 'contenido.parametros' | translate }}</span>
+      <button class="btn infoparametros" mat-button title="{{ 'contenido.parametros-tooltip' | translate }}" (click)="open()">
         <fa-icon [icon]="faQuestionCircle"></fa-icon>
       </button>
     </div>
     <!-- Parametros a introducir por el usuario -->
     <div class="params-container">
       <!-- Cliente -->
-      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Cliente</div>
-      <mat-form-field title="IP del cliente (por ejemplo: 127.0.0.1)">
-        <input matInput [(ngModel)]="simulacion.ipclien" placeholder="IP del cliente" />
+      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.clien' | translate }}</div>
+      <mat-form-field title="{{ 'contenido.ipclien-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.ipclien" placeholder="{{ 'contenido.ipclien' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="MSS(B)">
+      <mat-form-field title="{{ 'contenido.mssclien-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="{{ 'contenido.mssclien' | translate }}">
       </mat-form-field>
-      <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien"
-          placeholder="Datos(B)" />
+      <mat-form-field title="{{ 'contenido.datosclien-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="{{ 'contenido.datosclien' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Número de secuencia por el que comienza el cliente">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="SN" />
+      <mat-form-field title="{{ 'contenido.snclien-tooltip' | translate }}">
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="{{ 'contenido.snclien' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
-        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="Segmentos perdidos" />
+      <mat-form-field title="{{ 'contenido.segperdclien-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.mssclien' | translate }}"/>
       </mat-form-field>
-      <mat-form-field title="Ventana de recepción (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien"
-          placeholder="Ventana de recepción(B)">
+      <mat-form-field title="{{ 'contenido.wclien-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien" placeholder="{{ 'contenido.wclien' | translate }}">
       </mat-form-field>
       <!-- Servidor -->
-      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">Servidor</div>
-      <mat-form-field title="IP del servidor (por ejemplo: 192.168.0.1)">
-        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="IP del servidor" />
+      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.serv' | translate }}</div>
+      <mat-form-field title="{{ 'contenido.ipserv-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.ipserv" placeholder="{{ 'contenido.ipserv' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Tamaño máximo de segmento a enviar (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="MSS(B)">
+      <mat-form-field title="{{ 'contenido.mssserv-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="{{ 'contenido.mssserv' | translate }}">
       </mat-form-field>
-      <mat-form-field title="Tamaño de los datos a enviar (en bytes)">
+      <mat-form-field title="{{ 'contenido.datosserv-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv"
-          placeholder="Datos(B)" />
+          placeholder="{{ 'contenido.datosserv' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Número de secuencia por el que comienza el servidor">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="SN" />
+      <mat-form-field title="{{ 'contenido.snserv-tooltip' | translate }}">
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="{{ 'contenido.snserv' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Segmentos que se pierden separados por comas ',' (por ejemplo: 1,2,4)">
-        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="Segmentos perdidos" />
+      <mat-form-field title="{{ 'contenido.segperdserv-tooltip' | translate }}">
+        <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="{{ 'contenido.segperdserv' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Ventana de recepción (en bytes)">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv"
-          placeholder="Ventana de recepción(B)">
+      <mat-form-field title="{{ 'contenido.wserv-tooltip' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv" placeholder="{{ 'contenido.wserv' | translate }}">
       </mat-form-field>
       <!-- General -->
-      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">General</div>
-      <mat-form-field title="Tiempo máximo de espera (en segundos) [0 - desactivar]">
-        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout"
-          placeholder="Timeout(s)" />
+      <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.general' | translate }}</div>
+      <mat-form-field title="{{ 'contenido.timeout-tooltip' | translate }}">
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="{{ 'contenido.timeout' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="Algoritmo de congestión a usar">
-        <mat-label>Algoritmo de congestión</mat-label>
+      <mat-form-field title="{{ 'contenido.algort-tooltip' | translate }}">
+        <mat-label>{{ 'contenido.algort-tooltip' | translate }}</mat-label>
         <mat-select [(value)]="simulacion.algort">
           <mat-option value="1">TCP Reno</mat-option>
           <mat-option value="2">TCP Tahoe</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field title="Dispositivo que inicia el cierre de conexión">
-        <mat-label>Cierre de conexión</mat-label>
+      <mat-form-field title="{{ 'contenido.cierre-tooltip' | translate }}">
+        <mat-label>{{ 'contenido.cierre' | translate }}</mat-label>
         <mat-select [(value)]="simulacion.cierre">
-          <mat-option value="1">Cliente</mat-option>
-          <mat-option value="2">Servidor</mat-option>
+          <mat-option value="1">{{ 'contenido.clien' | translate }}</mat-option>
+          <mat-option value="2">{{ 'contenido.serv' | translate }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
 
     <!-- Boton de simular, rellenar y limpiar formulario -->
     <div style="margin-bottom: 15px;">
-      <button type="button" class="btn btn-formulario" title="Simular" (click)="simular()">
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
-      <button type="button" class="btn btn-formulario" title="Rellenar con datos aleatorios" (click)="rellenarDatos()">
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.rellenar' | translate }}" (click)="rellenarDatos()">
         <fa-icon [icon]="faRandom"></fa-icon>
       </button>
-      <button type="button" class="btn btn-formulario" title="Limpiar formulario" (click)="limpiar()">
+      <button type="button" class="btn btn-formulario" title="{{ 'contenido.limpiar' | translate }}" (click)="limpiar()">
         <fa-icon [icon]="faEraser"></fa-icon>
       </button>
     </div>
@@ -95,7 +91,7 @@
   <!-- Contenido -->
   <mat-sidenav-content>
     <!-- Boton para ocultar o mostar el menu -->
-    <button mat-button title="Ocultar/mostrar menú" (click)="sidenav.toggle()">
+    <button mat-button title="{{ 'contenido.menu' | translate }}" (click)="sidenav.toggle()">
       <div class="btn btn-menu">
         <fa-icon [icon]="faBars"></fa-icon>
       </div>
@@ -108,12 +104,12 @@
       <!-- Alerta de errores en el formulario -->
       <div *ngFor="let alerta of alertas">
         <ngb-alert type="danger" (close)="cerrarAlerta(alerta)">
-          <strong>¡Error en {{ alerta.campo }}!</strong> {{ alerta.msg }}</ngb-alert>
+          <strong>{{ alerta.campo }}</strong> {{ alerta.msg }}</ngb-alert>
       </div>
     </div>
     <!-- Simulacion -->
     <p style="text-align: left;"><br>
-      <b style="color: red; margin-left: 10px;">NOTA:</b> Aún no se ha añadido la funcionalidad de segmentos perdidos.
+      <b style="color: red; margin-left: 10px;">{{ 'contenido.nota' | translate }}:</b> {{ 'contenido.nota-texto' | translate }}
     </p>
     <div class="contsimulacion" *ngIf="ejecutar">
       <app-simulacion [simular]="simulacionEnv"></app-simulacion>

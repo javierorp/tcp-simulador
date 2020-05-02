@@ -1,25 +1,25 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h4 class="modal-title">Parámetros necesarios para llevar a cabo la simulación <a href="https://es.wikipedia.org/wiki/Protocolo_de_control_de_transmisión" target="_blank" title="+ información">TCP</a></h4>
+        <h4 class="modal-title">{{ titulo }} <a href="{{ tcp_link }}" target="_blank" title="{{ masinfo }}">+</a></h4>
     </div>
     <div class="modal-body">       
-        Se tienen en cuenta los siguientes supuestos:
+        {{ supuestos }}
         <ul style="list-style-type: square;">
-            <li>El tiempo de propagación será de "medio tic".</li>
-            <li>La longitud de datos de SYN, SYN ACK, ACK, FIN será de 0 bytes.</li>
+            <li>{{ supuesto1 }}</li>
+            <li>{{ supuesto2 }}</li>
         </ul>
         <span>
-            <b>- <a href="https://es.wikipedia.org/wiki/IPv4" target="_blank" title="+ información">IP (<i>Internet Protocol</i>):</a></b> identificador de la interfaz red de un dispositivo. Se usará IPv4 (32 bits), con formato [0-255].[0-255].[0-255].[0-255].<br>
-            <b>- <a href="https://es.wikipedia.org/wiki/Tamaño_Máximo_de_Segmento" target="_blank" title="+ información">MSS (<i>Maximum Segment Size</i>):</a></b> tamaño máximo, en bytes, que un dispositivo puedo recibir en un único segmento sin fragmentar.<br>
-            <b>- <a href="https://es.wikipedia.org/wiki/Segmento_TCP" target="_blank" title="+ información">Datos:</a></b> tamaño, en bytes, de los datos que se van a enviar.<br>
-            <b>- <a href="https://es.wikipedia.org/wiki/Protocolo_de_control_de_transmisión#Números_iniciales_de_secuencia" target="_blank" title="+ información">SN  (<i>Sequencial Number</i>):</a></b> número inicial de secuencia, intercambiado al inicio por ambos dispositivos, son los identificadores de los datos dentro del flujo de bytes con la finalidad de identificar y contar los bytes de la aplicación.<br>
-            <b>- <span style="color: #023163">Segmentos perdidos:</span></b> segmentos que no llegan al dispositivo de destino.<br>
-            <b>- <a href="https://es.wikipedia.org/wiki/Ventana_deslizante#Funcionamiento_de_la_ventana_de_recepción" target="_blank" title="+ información">Ventana de recepción:</a></b> búfer, en bytes, que posee el dispositivo en el que almacenar tramas desordenadas y posteriormente ordenarlas.<br>
-            <b>- <span style="color: #023163">Timeout:</span></b> tiempo máximo, en segundos,  para considerar que un paquete se ha perdido al no haber recibido su confirmación correspondiente. <br>
-            <b>- <span style="color: #023163">Algoritmo de congestión:</span></b> algoritmo a usar cuando hay congestión en la red. En este caso se puede elegir entre TCP Tahoe y TCP Reno.
+            <b>- <a href="{{ ip_link }}" target="_blank" title="{{ masinfo }}">{{ ip }}:</a></b> {{ ip_text }}<br>
+            <b>- <a href="{{ mss_link }}" target="_blank" title="{{ masinfo }}">{{ mss }}:</a></b> {{ mss_text }}<br>
+            <b>- <a href="{{ datos_link }}" target="_blank" title="{{ masinfo }}">{{ datos }}:</a></b> {{ datos_text }}<br>
+            <b>- <a href="{{ sn_link }}" target="_blank" title="{{ masinfo }}">{{ sn }}:</a></b> {{ sn_text }}<br>
+            <b>- <span style="color: #023163">{{ segperd }}:</span></b> {{ segperd_text }}<br>
+            <b>- <a href="{{ w_link }}" target="_blank" title="{{ masinfo }}">{{ w }}</a></b> {{ w_text }}<br>
+            <b>- <span style="color: #023163">{{ timeout }}:</span></b> {{ timeout_text }}<br>
+            <b>- <span style="color: #023163">{{ alg }}:</span></b> {{ alg_text }}
         </span>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')" title="Cerrar">Cerrar</button>
+        <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')" title="{{ cerrar }}">{{ cerrar }}</button>
     </div>
 </div>

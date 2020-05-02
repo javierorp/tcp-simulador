@@ -19,9 +19,13 @@ import { SupbarComponent } from './supbar/supbar.component';
 import { ContenidoComponent } from './contenido/contenido.component';
 import { SimulacionComponent } from './simulacion/simulacion.component';
 import { AcercadeComponent } from './acercade/acercade.component';
-// Otros
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { InfoparametrosComponent } from './infoparametros/infoparametros.component';
+// Otros
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // Iconos
+// Traduccion
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -44,7 +48,17 @@ import { InfoparametrosComponent } from './infoparametros/infoparametros.compone
     MatRadioModule,
     MatSelectModule,
     MatDividerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (http: HttpClient) => {
+          return new TranslateHttpLoader(http);
+        },
+        deps: [HttpClient]
+      }
+    })
   ],
   exports: [
     MatInputModule

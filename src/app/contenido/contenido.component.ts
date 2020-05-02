@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faEraser } from '@fortawesome/free-solid-svg-icons';
@@ -6,9 +6,10 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faRandom } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
-import { debounceTime, ignoreElements } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateService } from '@ngx-translate/core';
 
 // Interfaz para las alertas
 interface Alerta {
@@ -17,6 +18,7 @@ interface Alerta {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush, // Evitar el error 'Expression has changed after it was checked'
   selector: 'app-contenido',
   templateUrl: './contenido.component.html',
   styleUrls: ['./contenido.component.css']
@@ -55,7 +57,7 @@ export class ContenidoComponent implements OnInit {
     //General
     timeout: null,
     algort: "",
-    cierre: "1"
+    cierre: ""
   };
 
   // Objeto que se le enviara a SimulacionComponent para simular
@@ -86,18 +88,18 @@ export class ContenidoComponent implements OnInit {
   infoMsg: string;
   alertas: Alerta[];
 
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal, private translate: TranslateService) {
   }
 
   ngOnInit() {
-    // Muestra la alerta de los navegadores compatibles durante 5 segundos
-    var duracion: number = 5000; //en milisegundos
-    setTimeout(() => this.staticAlertClosed = true, 20000);
+    // // Muestra la alerta de los navegadores compatibles durante 5 segundos
+    // var duracion: number = 5000; //en milisegundos
 
-    this._success.subscribe((message) => this.infoMsg = message);
-    this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
-    this._success.next('Se recomienda usar los navegadores Firefox, Chrome o basados en Chromium, como Vivaldi, Opera o Edge.');
+    // setTimeout(() => this.staticAlertClosed = true, 20000);
 
+    // this._success.subscribe((message) => this.infoMsg = message);
+    // this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
+    // this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
   }
 
 
@@ -108,6 +110,40 @@ export class ContenidoComponent implements OnInit {
    */
   open() {
     const modalRef = this.modalService.open(InfoparametrosComponent);
+    this.translate.get('infoparametros.titulo').subscribe(value => { modalRef.componentInstance.titulo = value; });
+    this.translate.get('infoparametros.tcp-link').subscribe(value => { modalRef.componentInstance.tcp_link = value; });
+    this.translate.get('infoparametros.masinfo').subscribe(value => { modalRef.componentInstance.masinfo = value; });
+    this.translate.get('infoparametros.supuestos').subscribe(value => { modalRef.componentInstance.supuestos = value; });
+    this.translate.get('infoparametros.supuesto1').subscribe(value => { modalRef.componentInstance.supuesto1 = value; });
+    this.translate.get('infoparametros.supuesto2').subscribe(value => { modalRef.componentInstance.supuesto2 = value; });
+    this.translate.get('infoparametros.ip').subscribe(value => { modalRef.componentInstance.ip = value; });
+    this.translate.get('infoparametros.ip-link').subscribe(value => { modalRef.componentInstance.ip_link = value; });
+    this.translate.get('infoparametros.ip-text').subscribe(value => { modalRef.componentInstance.ip_text = value; });
+    this.translate.get('infoparametros.mss').subscribe(value => { modalRef.componentInstance.mss = value; });
+    this.translate.get('infoparametros.mss-link').subscribe(value => { modalRef.componentInstance.mss_link = value; });
+    this.translate.get('infoparametros.mss-text').subscribe(value => { modalRef.componentInstance.mss_text = value; });
+    this.translate.get('infoparametros.datos').subscribe(value => { modalRef.componentInstance.datos = value; });
+    this.translate.get('infoparametros.datos-link').subscribe(value => { modalRef.componentInstance.datos_link = value; });
+    this.translate.get('infoparametros.datos-text').subscribe(value => { modalRef.componentInstance.datos_text = value; });
+    this.translate.get('infoparametros.sn').subscribe(value => { modalRef.componentInstance.sn = value; });
+    this.translate.get('infoparametros.sn-link').subscribe(value => { modalRef.componentInstance.sn_link = value; });
+    this.translate.get('infoparametros.sn-text').subscribe(value => { modalRef.componentInstance.sn_text = value; });
+    this.translate.get('infoparametros.segperd').subscribe(value => { modalRef.componentInstance.segperd = value; });
+    this.translate.get('infoparametros.segperd-link').subscribe(value => { modalRef.componentInstance.segperd_link = value; });
+    this.translate.get('infoparametros.segperd-text').subscribe(value => { modalRef.componentInstance.segperd_text = value; });
+    this.translate.get('infoparametros.w').subscribe(value => { modalRef.componentInstance.w = value; });
+    this.translate.get('infoparametros.w-link').subscribe(value => { modalRef.componentInstance.w_link = value; });
+    this.translate.get('infoparametros.w-text').subscribe(value => { modalRef.componentInstance.w_text = value; });
+    this.translate.get('infoparametros.vc').subscribe(value => { modalRef.componentInstance.vc = value; });
+    this.translate.get('infoparametros.vc-link').subscribe(value => { modalRef.componentInstance.vc_link = value; });
+    this.translate.get('infoparametros.vc-text').subscribe(value => { modalRef.componentInstance.vc_text = value; });
+    this.translate.get('infoparametros.timeout').subscribe(value => { modalRef.componentInstance.timeout = value; });
+    this.translate.get('infoparametros.timeout-link').subscribe(value => { modalRef.componentInstance.timeout_link = value; });
+    this.translate.get('infoparametros.timeout-text').subscribe(value => { modalRef.componentInstance.timeout_text = value; });
+    this.translate.get('infoparametros.alg').subscribe(value => { modalRef.componentInstance.alg = value; });
+    this.translate.get('infoparametros.alg-link').subscribe(value => { modalRef.componentInstance.alg_link = value; });
+    this.translate.get('infoparametros.alg-text').subscribe(value => { modalRef.componentInstance.alg_text = value; });
+    this.translate.get('infoparametros.cerrar').subscribe(value => { modalRef.componentInstance.cerrar = value; });
   }
 
 
@@ -251,41 +287,37 @@ export class ContenidoComponent implements OnInit {
     //Se comprueban todos los parametros y se incluyen las alertas en caso de ser necesarias
     //Cliente
     if (!ipRegex.test(this.simulacion.ipclien))
-      this.alertas.push({ campo: "IP del cliente", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.ipclien') + ": ", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
     if (this.simulacion.mssclien < 1)
-      this.alertas.push({ campo: "MSS(B) del cliente", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.mssclien') + ": ", msg: this.translate.instant('contenido.error-mss') });
     if (this.simulacion.datosclien < 1)
-      this.alertas.push({ campo: "Datos(B) del cliente", msg: "El tamaño de los datos a enviar (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.datosclien') + ": ", msg: this.translate.instant('contenido.error-datosclien') });
     if (this.simulacion.snclien < 1)
-      this.alertas.push({ campo: "SN del cliente", msg: "El número de secuencia por el que comienza el cliente debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snclien') + ": ", msg: this.translate.instant('contenido.error-snclien') });
     if (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien))
-      this.alertas.push({ campo: "Segmentos perdidos del cliente", msg: "Los segmentos que se pierden deben ser numeros separados por comas." });
-    if (this.simulacion.mssclien < 1)
-      this.alertas.push({ campo: "MSS(B) del cliente", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdclien') });
     if (this.simulacion.wclien < 1)
-      this.alertas.push({ campo: "Ventana de recepción del cliente", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wclien') + ": ", msg: this.translate.instant('contenido.error-wclien') });
     //Servidor
     if (!ipRegex.test(this.simulacion.ipserv))
-      this.alertas.push({ campo: "IP del servidor", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.ipserv') + ": ", msg: this.translate.instant('contenido.error-ipserv') });
     if (this.simulacion.mssserv < 1)
-      this.alertas.push({ campo: "MSS(B) del servidor", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.mssserv') + ": ", msg: this.translate.instant('contenido.error-mssserv') });
     if (this.simulacion.datosserv < 1)
-      this.alertas.push({ campo: "Datos(B) del servidor", msg: "El tamaño de los datos a enviar (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.datosserv') + ": ", msg: this.translate.instant('contenido.error-datosserv') });
     if (this.simulacion.snserv < 1)
-      this.alertas.push({ campo: "SN del servidor", msg: "El número de secuencia por el que comienza el servidor debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snserv') + ": ", msg: this.translate.instant('contenido.error-snserv') });
     if (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv))
-      this.alertas.push({ campo: "Segmentos perdidos del servidor", msg: "Los segmentos que se pierden deben ser numeros separados por comas." });
-    if (this.simulacion.mssserv < 1)
-      this.alertas.push({ campo: "MSS(B) del servidor", msg: "El tamaño máximo de segmento a enviar (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdserv') });
     if (this.simulacion.wserv < 1)
-      this.alertas.push({ campo: "Ventana de recepción del servidor", msg: "La ventana de recepción (en bytes) debe ser mayor que 0." });
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wserv') + ": ", msg: this.translate.instant('contenido.error-wserv') });
     //General
-    if (this.simulacion.timeout < 0)
-      this.alertas.push({ campo: "Timeout", msg: "El timeout debe ser igual o mayor que 0. Un valor 0 desactiva el timeout." });
+    if (this.simulacion.timeout < 0 || this.simulacion.timeout == null)
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.timeout') + ": ", msg: this.translate.instant('contenido.error-timeout') });
     if (this.simulacion.algort == "")
-      this.alertas.push({ campo: "Algoritmo de congestión", msg: "Debe seleccionar un algoritmo de congestión a usar." });
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.algort') + ": ", msg: this.translate.instant('contenido.error-algort') });
     if (this.simulacion.cierre == "")
-      this.alertas.push({ campo: "Cierre de conexión", msg: "Debe seleccionar el dispositivo que va a cerrar la conexión." });
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.cierre') + ": ", msg: this.translate.instant('contenido.error-cierre') });
 
     //Se comprueba si se debe simular o no, retorna 'false' si alguno de los parametros es incorrecto y 'true' si todos lo son
     simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.wclien < 1 ||
@@ -366,7 +398,7 @@ export class ContenidoComponent implements OnInit {
     //General
     var timeout: number = null;
     var algort: string = "";
-    var cierre: string = "1";
+    var cierre: string = "";
 
     this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
 
