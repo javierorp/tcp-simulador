@@ -1,3 +1,4 @@
+/* Barra de herramientas */
 .toolbar {
   font-family     : 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size       : x-large;
@@ -22,12 +23,13 @@
   user-select        : none;
 }
 
+/* Boton Acerca de...*/
 .acercade {
   color      : #fff;
   border     : none;
   margin-left: 2px;
-  position: absolute;
-  right: 0;
+  position   : absolute;
+  right      : 0;
 }
 
 .acercade:hover {
@@ -37,8 +39,67 @@
 }
 
 .mat-button {
-  min-width: 10px;
+  min-width   : 10px;
   margin-right: 10px;
-  margin-top: 3px;
+  margin-top  : 3px;
 }
 
+/* Boton seleccion de idioma */
+.seleccion {
+  position    : absolute;
+  right       : 0;
+  margin-right: 50px;
+  margin-top  : 3px;
+}
+
+.bandera {
+  margin: 10px 5px 10px 10px !important;
+}
+
+.btn-idioma {
+  padding: 0px;
+  margin : 0px;
+  color  : white;
+
+}
+
+.textoidioma {
+  font-size   : 15px;
+  margin-right: 8px;
+}
+
+.btn-idioma:hover {
+  background-color: white;
+  color           : #004e99;
+}
+
+/* Triangulo del desplegable*/
+.dropdown-toggle:after {
+  color       : white;
+  margin-right: 4px;
+  margin-left : -3px;
+}
+
+.dropdown-toggle:hover::after {
+  color: #004e99;
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+/* Desplegable */
+.dropdown-item:focus,
+.dropdown-item:hover {
+  color           : white;
+  text-decoration : none;
+  background-color: #004e99;
+}
+
+.dropdown-item {
+  padding: 0px;
+}
+
+.dropdown-menu {
+  padding: 0px;
+}

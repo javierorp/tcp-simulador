@@ -5,7 +5,27 @@
     <img width="120" alt="v.α Universidad de Alcalá" src="assets\img\uah_alpha_logo_hor.png" />
   </a>
   <span class="no-seleccionable">{{ title }}</span>
+
   <button class="btn acercade" mat-button title="Acerca de" (click)="open()">
     <fa-icon [icon]="faInfoCircle"></fa-icon>
   </button>
+
+  <div ngbDropdown class="seleccion">
+    <button class="btn btn-idioma" title="Idioma" ngbDropdownToggle>
+      <img class="bandera" width="16px" alt="{{bandera}}" src="assets\img\flags\{{ bandera }}_round.png" /><span
+        class="textoidioma">{{ idiomaSeleccionado }}</span>
+    </button>
+    <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="lenguaje">
+      <button ngbDropdownItem *ngFor="let idioma of idiomas" (click)="CambiarIdioma(idioma)" title="{{ idioma }}">
+        <span *ngIf="idioma === 'Español'">
+          <img width="32px" alt="{{bandera}}" src="assets\img\flags\spain.png" />
+        </span>
+        <span *ngIf="idioma === 'English'">
+          <img width="32px" alt="{{bandera}}" src="assets\img\flags\united_kingdom.png" />
+        </span>
+        {{ idioma }}
+      </button>
+    </div>
+  </div>
+
 </div>

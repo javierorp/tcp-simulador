@@ -13,6 +13,9 @@ export class SupbarComponent {
   // Titulo de la aplicacion
   title = 'Simulador gráfico de comunicaciones TCP';
   faInfoCircle = faInfoCircle;
+  idiomas: string[] = ["Español", "English"];
+  idiomaSeleccionado: string = "Español";
+  bandera: string = "spain";
 
   constructor(private modalService: NgbModal) { }
 
@@ -25,4 +28,13 @@ export class SupbarComponent {
     const modalRef = this.modalService.open(AcercadeComponent);
   }
 
+
+
+  CambiarIdioma(idioma: string) {
+    this.idiomaSeleccionado = idioma;
+    if (idioma == "Español")
+      this.bandera = "spain"
+    else if (idioma == "English")
+      this.bandera = "united_kingdom"
+  }
 }
