@@ -27,7 +27,7 @@
         <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="{{ 'contenido.snclien' | translate }}" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.segperdclien-tooltip' | translate }}">
-        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.mssclien' | translate }}"/>
+        <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien' | translate }}"/>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.wclien-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien" placeholder="{{ 'contenido.wclien' | translate }}">
@@ -57,6 +57,9 @@
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.general' | translate }}</div>
       <mat-form-field title="{{ 'contenido.timeout-tooltip' | translate }}">
         <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="{{ 'contenido.timeout' | translate }}" />
+      </mat-form-field>
+      <mat-form-field title="{{ 'contenido.umbral-tooltip' | translate }}">
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.algort-tooltip' | translate }}">
         <mat-label>{{ 'contenido.algort-tooltip' | translate }}</mat-label>

@@ -22,7 +22,21 @@ export class SupbarComponent {
   public idiomaActivo = 'es';
 
   constructor(private titleService: Title, private modalService: NgbModal, private translate: TranslateService) {
-    this.translate.setDefaultLang(this.idiomaActivo);
+
+    var naviLang =  navigator.language;
+
+    if(naviLang.toUpperCase().indexOf("ES") == 0) {
+      this.translate.setDefaultLang("es");
+      this.idiomaSeleccionado = this.idiomas[0];
+      this.bandera = "spain";
+    }
+    else {
+    this.translate.setDefaultLang("en");
+    this.idiomaSeleccionado = this.idiomas[1];
+    this.bandera = "united_kingdom";
+
+    }
+
     this.translate.get('index.titulo').subscribe(value => { titleService.setTitle(value); });
   }
 

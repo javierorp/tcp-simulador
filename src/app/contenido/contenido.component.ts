@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { faEraser } from '@fortawesome/free-solid-svg-icons';
@@ -6,10 +6,10 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faRandom } from '@fortawesome/free-solid-svg-icons';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
+import { debounceTime } from 'rxjs/operators';
 
 // Interfaz para las alertas
 interface Alerta {
@@ -18,12 +18,11 @@ interface Alerta {
 }
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush, // Evitar el error 'Expression has changed after it was checked'
   selector: 'app-contenido',
   templateUrl: './contenido.component.html',
   styleUrls: ['./contenido.component.css']
 })
-export class ContenidoComponent implements OnInit {
+export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   // Abrir o cerrar barra lateral
   opened: boolean;
@@ -56,6 +55,7 @@ export class ContenidoComponent implements OnInit {
     wserv: null,
     //General
     timeout: null,
+    umbral: null,
     algort: "",
     cierre: ""
   };
@@ -78,6 +78,7 @@ export class ContenidoComponent implements OnInit {
     wserv: null,
     //General
     timeout: 0,
+    umbral: 0,
     algort: "",
     cierre: ""
   };
@@ -88,23 +89,27 @@ export class ContenidoComponent implements OnInit {
   infoMsg: string;
   alertas: Alerta[];
 
-  constructor(private modalService: NgbModal, private translate: TranslateService) {
+  constructor(private modalService: NgbModal, private translate: TranslateService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    // // Muestra la alerta de los navegadores compatibles durante 5 segundos
-    // var duracion: number = 5000; //en milisegundos
+    // Muestra la alerta de los navegadores compatibles durante 5 segundos
+    var duracion: number = 10000; //en milisegundos
 
-    // setTimeout(() => this.staticAlertClosed = true, 20000);
+    setTimeout(() => this.staticAlertClosed = true, 20000);
 
-    // this._success.subscribe((message) => this.infoMsg = message);
-    // this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
-    // this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
+    this._success.subscribe((message) => this.infoMsg = message);
+    this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
+    this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
+  }
+
+  ngAfterContentChecked() {
+    // Forzamos la detecion de cambios despues de que el contenido se haya comprobado para evitar el error ExpressionChangedAfterItHasBeenCheckedError
+    this.cdr.detectChanges();
   }
 
 
   /**
-   * TODO: 
    * @description Abre una ventana con la informacion sonbre los parametros
    * @author javierorp
    */
@@ -174,10 +179,11 @@ export class ContenidoComponent implements OnInit {
       var segperdserv: string = this.simulacion.segperdserv;
       var wserv: number = this.simulacion.wserv;
       var timeout: number = this.simulacion.timeout;
+      var umbral: number = this.simulacion.umbral;
       var algort: string = this.simulacion.algort;
       var cierre: string = this.simulacion.cierre;
 
-      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
+      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre };
 
       // Permitimos que se visualice la simulacion
       this.ejecutar = true;
@@ -280,6 +286,7 @@ export class ContenidoComponent implements OnInit {
     if (this.simulacion.wserv > 99999999) this.simulacion.wserv = 99999999;
     if (this.simulacion.timeout == null) this.simulacion.timeout = 0;
     if (this.simulacion.timeout > 99999999) this.simulacion.timeout = 99999999;
+    if (this.simulacion.umbral > 99999999) this.simulacion.umbral = 99999999;
 
     // -----ALERTAS-----
     // Se eliminan todas las alertas
@@ -314,6 +321,8 @@ export class ContenidoComponent implements OnInit {
     //General
     if (this.simulacion.timeout < 0 || this.simulacion.timeout == null)
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.timeout') + ": ", msg: this.translate.instant('contenido.error-timeout') });
+    if (this.simulacion.umbral <= 0 || this.simulacion.umbral == null)
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.umbral') + ": ", msg: this.translate.instant('contenido.error-umbral') });
     if (this.simulacion.algort == "")
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.algort') + ": ", msg: this.translate.instant('contenido.error-algort') });
     if (this.simulacion.cierre == "")
@@ -322,7 +331,7 @@ export class ContenidoComponent implements OnInit {
     //Se comprueba si se debe simular o no, retorna 'false' si alguno de los parametros es incorrecto y 'true' si todos lo son
     simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.wclien < 1 ||
       !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.wserv < 1 ||
-      this.simulacion.timeout < 0 || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
+      this.simulacion.timeout < 0 || this.simulacion.umbral <= 0 || this.simulacion.umbral == null || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
 
     return simular;
   }
@@ -350,6 +359,7 @@ export class ContenidoComponent implements OnInit {
     this.simulacion.wserv = this.numAleatorio(0, 8000, 1000);
     //General
     this.simulacion.timeout = this.numAleatorio(0, 100, 10)
+    this.simulacion.umbral = this.numAleatorio(1, 50, 1)
     this.simulacion.algort = this.numAleatorio(1, 3, 1).toString();
     this.simulacion.cierre = this.numAleatorio(1, 3, 1).toString();
 
@@ -397,10 +407,11 @@ export class ContenidoComponent implements OnInit {
     var wserv: number = null;
     //General
     var timeout: number = null;
+    var umbral: number = null;
     var algort: string = "";
     var cierre: string = "";
 
-    this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, algort, cierre };
+    this.simulacion = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre };
 
     // Ocultamos la simulacion
     this.ejecutar = false;

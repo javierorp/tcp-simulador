@@ -16,6 +16,7 @@ export class Simulacion {
     wserv: number;
     //General
     timeout: number;
+    umbral: number;
     algort: string;
     cierre: string;
 }
