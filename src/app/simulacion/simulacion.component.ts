@@ -229,7 +229,8 @@ export class SimulacionComponent implements OnChanges {
     }
 
     // El servidor envia el primer paquete con ACK incluido
-    snserv += dservenv
+    snserv += 1;
+    dservenv = mss;
     anserv = snclien + dclienenv;
 
     let flag: string = null;
@@ -271,7 +272,6 @@ export class SimulacionComponent implements OnChanges {
 
     // ----- Envio de datos servidor->cliente -----
     envack = 0;
-    snserv += 1;
     anserv += 1;
 
     for (var i = 1; i < numpqtserv; i++) {
@@ -489,7 +489,7 @@ export class SimulacionComponent implements OnChanges {
 
 
     // El servidor envia el primer paquete con ACK incluido
-    snserv++;
+    snserv += 1;
     dservenv = mss;
     if (anserv > ultackserv) {
       vcclien += Math.floor((anserv - ultackserv) / mss);
@@ -514,7 +514,6 @@ export class SimulacionComponent implements OnChanges {
 
     // ----- Envio de datos servidor->cliente -----
     envack = 0;
-    snserv += 1;
     anserv += 1;
     for (var i = 1; i < numpqtserv; i++) {
       snserv += dservenv;
