@@ -58,15 +58,15 @@
       <mat-form-field title="{{ 'contenido.timeout-tooltip' | translate }}">
         <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="{{ 'contenido.timeout' | translate }}" />
       </mat-form-field>
-      <mat-form-field title="{{ 'contenido.umbral-tooltip' | translate }}">
-        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}" />
-      </mat-form-field>
       <mat-form-field title="{{ 'contenido.algort-tooltip' | translate }}">
         <mat-label>{{ 'contenido.algort-tooltip' | translate }}</mat-label>
         <mat-select [(value)]="simulacion.algort">
           <mat-option value="1">TCP Reno</mat-option>
           <mat-option value="2">TCP Tahoe</mat-option>
         </mat-select>
+      </mat-form-field>
+      <mat-form-field title="{{ 'contenido.umbral-tooltip' | translate }}">
+        <input matInput [disabled]="simulacion.algort != '1'" type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}"/>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.cierre-tooltip' | translate }}">
         <mat-label>{{ 'contenido.cierre' | translate }}</mat-label>
