@@ -67,15 +67,14 @@ export class SimulacionComponent implements OnChanges {
     /*----------PRUEBA----------*/
     // this.simular.snclien = 345;
     // this.simular.mssclien = 100;
-    // this.simular.datosclien = 5500;
+    // this.simular.datosclien = 500;
     // this.simular.wclien = 8000;
     // this.simular.snserv = 190;
     // this.simular.mssserv = 680;
-    // this.simular.datosserv = 3000
+    // this.simular.datosserv = 750
     // this.simular.wserv = 2000;
-    // this.simular.cierre = "1";
     // this.simular.algort = "1";
-    // this.simular.umbral = 10;
+    // this.simular.umbral = 3;
 
     if (this.simular.algort == "1")
       this.simularReno();
@@ -113,18 +112,18 @@ export class SimulacionComponent implements OnChanges {
     let cierre: string = this.simular.cierre;
 
     /*-----VARIABLES-----*/
+    let mss: number = Math.min(mssclien, mssserv); // Se elige el minimo MSS
     let nseg: number = 0;
     let anclien: number = 0;
     let anserv: number = 0;
-    let numpqtcli: number = Math.floor(datosclien / mssclien);
-    let modpqtcli: number = datosclien % mssclien;
-    let numpqtserv: number = Math.floor(datosserv / mssserv);
-    let modpqtserv: number = datosserv % mssserv;
+    let numpqtcli: number = Math.floor(datosclien / mss);
+    let modpqtcli: number = datosclien % mss;
+    let numpqtserv: number = Math.floor(datosserv / mss);
+    let modpqtserv: number = datosserv % mss;
     let dclienenv: number = 0;
     let dservenv: number = 0;
     let vcclien: number = 1;
     let vcserv: number = 1;
-    let mss: number = 0;
     let ultackclien: number = 0;
     let ultackserv: number = 0;
     let vcc: number = 0;
@@ -142,9 +141,6 @@ export class SimulacionComponent implements OnChanges {
     anclien = snserv + 1;
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "ACK", sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: vcserv });
     ultackclien = anclien;
-
-    // Se elige el minimo MSS
-    mss = Math.min(mssclien, mssserv);
 
     // ----- Envio de datos cliente->servidor -----
     var envack = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
@@ -174,7 +170,7 @@ export class SimulacionComponent implements OnChanges {
           }
         }
 
-
+        snserv++;
         this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: flag, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
         ultackclien = anclien;
         ultackserv = anserv;
@@ -214,7 +210,7 @@ export class SimulacionComponent implements OnChanges {
             flag = "EC";
           }
         }
-
+        snserv++;
         this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: flag, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
         ultackclien = anclien;
         ultackserv = anserv;
@@ -232,7 +228,7 @@ export class SimulacionComponent implements OnChanges {
       }
     }
 
-    // El servidor envia el ACK correspondiente al ultimo paquete
+    // El servidor envia el primer paquete con ACK incluido
     snserv += dservenv
     anserv = snclien + dclienenv;
 
@@ -258,59 +254,113 @@ export class SimulacionComponent implements OnChanges {
     } else {
       vcc = 0;
     }
-
     this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: flag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
     ultackserv = anserv;
     flag = null;
+    
+    // El cliente espera 1.5 ticks y envia el ACK correspondiente
+    this.comunicacion.push({ numseg: null, dir: null, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+    
+    snclien += dclienenv;
+    dclienenv = 0;
+    anclien = snserv + dservenv;
+    vcc = ++vcserv; 
+    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: vcc });
+    ultackclien = anclien;
+    ultackserv = anserv;
 
     // ----- Envio de datos servidor->cliente -----
+    envack = 0;
     snserv += 1;
-    for (var i = 0; i < numpqtserv; i++) {
+    anserv += 1;
+
+    for (var i = 1; i < numpqtserv; i++) {
       snserv += dservenv;
       dservenv = mss;
-      if (anserv > ultackserv) {
-        vcclien += Math.floor((anserv - ultackserv) / mss);
-        vcc = vcclien;
-      } else {
-        vcc = 0;
+
+      if (nseg > 4 && envack >= 2) {
+        if (anclien > ultackclien) {
+          vcserv += Math.floor((anclien - ultackclien) / mss);
+          vcc = vcserv;
+        } else {
+          vcc = 0;
+        }
+        snclien++;
+        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
+        ultackclien = anclien;
+        ultackserv = anserv;
+        envack = 0;
       }
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
-      ultackserv = anserv;
+      else {
+        anclien = snserv + dservenv;
+        this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: 0 });
+        ultackserv = anserv;
+        envack++;
+      }
     }
 
     // El servidor envia el ultimo paquete con los datos restantes
     if (modpqtserv != 0) {
-      snserv = snserv + dservenv
-      dservenv = modpqtserv
-      if (anserv > ultackserv) {
-        vcclien += Math.floor((anserv - ultackserv) / mss);
-        vcc = vcclien;
-      } else {
-        vcc = 0;
+      snserv += dservenv;
+      ultackserv = anclien;
+      dservenv = modpqtserv;
+
+      if (nseg > 4 && envack >= 2) {
+        if (anclien > ultackclien) {
+          vcserv += Math.floor((anclien - ultackclien) / mss);
+          vcc = vcserv;
+        } else {
+          vcc = 0;
+        }
+        snclien++;
+        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
+        ultackclien = anclien;
+        ultackserv = anserv;
       }
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
+      else {
+        if (anserv > ultackserv) {
+          vcclien += Math.floor((anserv - ultackserv) / mss);
+          vcc = vcclien;
+        } else {
+          vcc = 0;
+        }
+        this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: 0 });
+        ultackserv = anserv;
+      }
     }
 
+      // El cliente espera 1.5 ticks y envia el ACK correspondiente
+      this.comunicacion.push({ numseg: null, dir: null, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+
+
+    snclien ++;
+    dclienenv = 0;
+    anclien = snserv + dservenv;
+    vcc = ++vcserv; 
+    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: vcc });
+    ultackclien = anclien;
+    ultackserv = anserv;
 
     // ----- Cierre -----
-    if (cierre == "1") { //Cliente cierra la conexion
-      snclien = snclien + dclienenv;
+    if (cierre == "1") { //Cliente cierra la conexion;
       anclien = snserv + dservenv;
+      snclien += 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "FIN", sncli: snclien, ancli: anclien, dcli: 0, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
       snserv = snserv + dservenv;
       anserv = snclien + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: "FIN, ACK", snserv: snserv, anserv: anserv, dserv: 0, wserv: wserv, mssserv: 0, vc: 0 });
 
-      snclien = snclien + 1;
+      snclien += 1;
       anclien = snserv + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "ACK", sncli: snclien, ancli: anclien, dcli: 0, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
     }
     else { // Servidor cierra la conexion
       snserv = snserv + dservenv;
+      anserv = snclien + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: "FIN", snserv: snserv, anserv: anserv, dserv: 0, wserv: wserv, mssserv: 0, vc: 0 });
 
-      snclien = snclien + dclienenv;
+      snclien = snclien + 1;
       anclien = snserv + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "FIN, ACK", sncli: snclien, ancli: anclien, dcli: 0, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
@@ -319,6 +369,7 @@ export class SimulacionComponent implements OnChanges {
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: "ACK", snserv: snserv, anserv: anserv, dserv: 0, wserv: wserv, mssserv: 0, vc: 0 });
     }
   }
+
 
 
   /**
@@ -348,18 +399,18 @@ export class SimulacionComponent implements OnChanges {
     let cierre: string = this.simular.cierre;
 
     /*-----VARIABLES-----*/
+    let mss: number = Math.min(mssclien, mssserv); // Se elige el minimo MSS
     let nseg: number = 0;
     let anclien: number = 0;
     let anserv: number = 0;
-    let numpqtcli: number = Math.floor(datosclien / mssclien);
-    let modpqtcli: number = datosclien % mssclien;
-    let numpqtserv: number = Math.floor(datosserv / mssserv);
-    let modpqtserv: number = datosserv % mssserv;
+    let numpqtcli: number = Math.floor(datosclien / mss);
+    let modpqtcli: number = datosclien % mss;
+    let numpqtserv: number = Math.floor(datosserv / mss);
+    let modpqtserv: number = datosserv % mss;
     let dclienenv: number = 0;
     let dservenv: number = 0;
     let vcclien: number = 1;
     let vcserv: number = 1;
-    let mss: number = 0;
     let ultackclien: number = 0;
     let ultackserv: number = 0;
     let vcc: number = 0;
@@ -377,9 +428,6 @@ export class SimulacionComponent implements OnChanges {
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "ACK", sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: vcserv });
     ultackclien = anclien;
 
-    // Se elige el minimo MSS
-    mss = Math.min(mssclien, mssserv);
-
     // ----- Envio de datos cliente->servidor -----
     var envack = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
 
@@ -395,7 +443,7 @@ export class SimulacionComponent implements OnChanges {
         } else {
           vcc = 0;
         }
-
+        snserv++;
         this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
         ultackclien = anclien;
         ultackserv = anserv;
@@ -413,7 +461,7 @@ export class SimulacionComponent implements OnChanges {
     if (modpqtcli != 0) {
       snclien += dclienenv;
       ultackclien = anserv;
-      dclienenv = modpqtcli
+      dclienenv = modpqtcli;
 
       if (nseg > 4 && envack >= 2) {
         if (anserv > ultackserv) {
@@ -422,7 +470,7 @@ export class SimulacionComponent implements OnChanges {
         } else {
           vcc = 0;
         }
-
+        snserv++;
         this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
         ultackclien = anclien;
         ultackserv = anserv;
@@ -439,14 +487,12 @@ export class SimulacionComponent implements OnChanges {
       }
     }
 
-    // El servidor envia el ACK correspondiente al ultimo paquete
-    snserv += dservenv
-    anserv = snclien + dclienenv
+
+    // El servidor envia el primer paquete con ACK incluido
+    snserv++;
+    dservenv = mss;
     if (anserv > ultackserv) {
-      let inc = Math.round((anserv - ultackserv) / mss);
-      if (inc == 0)
-        inc = 1;
-      vcclien += inc;
+      vcclien += Math.floor((anserv - ultackserv) / mss);
       vcc = vcclien;
     } else {
       vcc = 0;
@@ -454,54 +500,109 @@ export class SimulacionComponent implements OnChanges {
     this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
     ultackserv = anserv;
 
+    // El cliente espera 1.5 ticks y envia el ACK correspondiente
+    this.comunicacion.push({ numseg: null, dir: null, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+    
+    snclien += dclienenv;
+    dclienenv = 0;
+    anclien = snserv + dservenv;
+    vcc = ++vcserv; 
+    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: vcc });
+    ultackclien = anclien;
+    ultackserv = anserv;
+ 
+
     // ----- Envio de datos servidor->cliente -----
+    envack = 0;
     snserv += 1;
-    for (var i = 0; i < numpqtserv; i++) {
+    anserv += 1;
+    for (var i = 1; i < numpqtserv; i++) {
       snserv += dservenv;
       dservenv = mss;
-      if (anserv > ultackserv) {
-        vcclien += Math.floor((anserv - ultackserv) / mss);
-        vcc = vcclien;
-      } else {
-        vcc = 0;
+
+      if (nseg > 4 && envack >= 2) {
+        if (anclien > ultackclien) {
+          vcserv += Math.floor((anclien - ultackclien) / mss);
+          vcc = vcserv;
+        } else {
+          vcc = 0;
+        }
+        snclien++;
+        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
+        ultackclien = anclien;
+        ultackserv = anserv;
+        envack = 0;
       }
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
-      ultackserv = anserv;
+      else {
+        anclien = snserv + dservenv;
+        this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: 0 });
+        ultackserv = anserv;
+        envack++;
+      }
     }
 
     // El servidor envia el ultimo paquete con los datos restantes
     if (modpqtserv != 0) {
-      snserv = snserv + dservenv
-      dservenv = modpqtserv
-      if (anserv > ultackserv) {
-        vcclien += Math.floor((anserv - ultackserv) / mss);
-        vcc = vcclien;
-      } else {
-        vcc = 0;
+      snserv += dservenv;
+      ultackserv = anclien;
+      dservenv = modpqtserv;
+
+      if (nseg > 4 && envack >= 2) {
+        if (anclien > ultackclien) {
+          vcserv += Math.floor((anclien - ultackclien) / mss);
+          vcc = vcserv;
+        } else {
+          vcc = 0;
+        }
+        snclien++;
+        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
+        ultackclien = anclien;
+        ultackserv = anserv;
       }
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: vcc });
+      else {
+        if (anserv > ultackserv) {
+          vcclien += Math.floor((anserv - ultackserv) / mss);
+          vcc = vcclien;
+        } else {
+          vcc = 0;
+        }
+        this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: snserv, anserv: anserv, dserv: dservenv, wserv: wserv, mssserv: 0, vc: 0 });
+        ultackserv = anserv;
+      }
     }
 
+      // El cliente espera 1.5 ticks y envia el ACK correspondiente
+      this.comunicacion.push({ numseg: null, dir: null, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+
+
+    snclien ++;
+    dclienenv = 0;
+    anclien = snserv + dservenv;
+    vcc = ++vcserv; 
+    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: null, sncli: snclien, ancli: anclien, dcli: dclienenv, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: vcc });
+    ultackclien = anclien;
+    ultackserv = anserv;
 
     // ----- Cierre -----
-    if (cierre == "1") { //Cliente cierra la conexion
-      snclien = snclien + dclienenv;
+    if (cierre == "1") { //Cliente cierra la conexion;
       anclien = snserv + dservenv;
+      snclien += 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "FIN", sncli: snclien, ancli: anclien, dcli: 0, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
       snserv = snserv + dservenv;
       anserv = snclien + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: "FIN, ACK", snserv: snserv, anserv: anserv, dserv: 0, wserv: wserv, mssserv: 0, vc: 0 });
 
-      snclien = snclien + 1;
+      snclien += 1;
       anclien = snserv + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "ACK", sncli: snclien, ancli: anclien, dcli: 0, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
     }
     else { // Servidor cierra la conexion
       snserv = snserv + dservenv;
+      anserv = snclien + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: null, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: "FIN", snserv: snserv, anserv: anserv, dserv: 0, wserv: wserv, mssserv: 0, vc: 0 });
 
-      snclien = snclien + dclienenv;
+      snclien = snclien + 1;
       anclien = snserv + 1;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: "FIN, ACK", sncli: snclien, ancli: anclien, dcli: 0, wcli: wclien, msscli: 0, flagserv: null, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 

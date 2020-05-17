@@ -17,7 +17,22 @@
 
     <table class="flujo">
         <tr *ngFor="let conversacion of comunicacion">
-            <!-- {{ 'simulacion.seg' | translate }} bidireccional cliente<->servidor -->
+             <!-- Espacio en blanco en la tabla -->
+             <span *ngIf="conversacion.dir == null">
+                <td class="info-izq">
+                </td>
+                <td>
+                    <span title="">
+                        <img src="assets\img\vacio.svg" alt="null" class="flecha"
+                            draggable="false" />
+                    </span>
+                </td>
+                <td class="info-dcha">
+                </td>
+            </span>
+
+
+            <!-- Direccion bidireccional cliente<->servidor con VC en cliente-->
             <span *ngIf="conversacion.dir == 0">
                 <td class="info-izq">
                     <span *ngIf="conversacion.flagcli == 'EC'" title="{{ 'simulacion.ec' | translate }}"
@@ -55,6 +70,45 @@
                     <span *ngIf="conversacion.flagserv != null" title="Flags">,
                         <strong>{{ conversacion.flagserv }}</strong>
                     </span>
+                </td>
+            </span>
+
+            <!-- Direccion bidireccional cliente<->servidor con VC en servidor-->
+            <span *ngIf="conversacion.dir == 10">
+                <td class="info-izq">
+                    <span *ngIf="conversacion.flagcli != null && conversacion.flagcli != 'EC'"
+                        title="Flags"><strong>{{ conversacion.flagcli }}</strong>,
+                    </span>
+                    <span title="{{ 'simulacion.sn' | translate }}">&nbsp;SN={{ conversacion.sncli }}, </span>
+                    <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
+                        MSS={{ conversacion.msscli }},
+                    </span>
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}">
+                        AN={{ conversacion.ancli }},
+                    </span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
+                </td>
+                <td>
+                    <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
+                        <img src="assets\img\flechaDoble.svg" alt="cliente<---->servidor" class="flecha"
+                            draggable="false" />
+                    </span>
+                </td>
+                <td class="info-dcha">
+                    <span title="{{ 'simulacion.sn' | translate }}">SN={{ conversacion.snserv }}, </span>
+                    <span *ngIf="conversacion.mssserv != 0" title="{{ 'simulacion.mss' | translate }}">
+                        MSS={{ conversacion.mssserv }}, </span>
+                    <span *ngIf="conversacion.anserv != 0" title="{{ 'simulacion.an' | translate }}">
+                        AN={{ conversacion.anserv }},
+                    </span>
+                    <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dserv }}, </span>
+                    <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wserv }}</span>
+                    <span *ngIf="conversacion.flagserv != null" title="Flags">,
+                        <strong>{{ conversacion.flagserv }}</strong>
+                    </span>&nbsp;
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
+                    class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                 </td>
             </span>
 
