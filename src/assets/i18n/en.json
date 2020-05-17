@@ -69,7 +69,7 @@
     "error-segperdserv": "The lost segments have to be numbers separated by commas.",
     "error-wserv": "The reception window (in bytes) must be greater than 0.",
     "error-timeout": "The timeout must be equal to or greater than 0. 0 disables the timeout.",
-    "error-umbral": "The threshold/ssthresh must be greater than 0.",
+    "error-umbral": "The threshold/ssthresh must be greater than 1.",
     "error-algort": "You must select a congestion algorithm to use.",
     "error-cierre": "You must select the device to initiate the connection closure."
   },
@@ -85,7 +85,9 @@
     "an": "Acknowledge Number",
     "datos": "Data sent",
     "w": "Reception window",
-    "seg": "Segment"
+    "seg": "Segment",
+    "ec_letra": "CA",
+    "ec": "Congestion avoidance"
   },
   "acercade": {
     "titulo": "About...",

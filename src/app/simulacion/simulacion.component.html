@@ -2,12 +2,14 @@
     <table>
         <tr>
             <th class="clien">
-                <fa-icon class="fas fa-laptop fa-2x-laptop" [icon]="faLaptop" title="{{ 'simulacion.clien' | translate }}"></fa-icon>
+                <fa-icon class="fas fa-laptop fa-2x-laptop" [icon]="faLaptop"
+                    title="{{ 'simulacion.clien' | translate }}"></fa-icon>
                 <br><span class="ipcli" title="{{ 'simulacion.ipclien' | translate }}">{{ ipclien }}</span>
             </th>
             <th></th>
             <th class="serv">
-                <fa-icon class="fas fa-server fa-2x-server" [icon]="faServer" title="{{ 'simulacion.serv' | translate }}"></fa-icon>
+                <fa-icon class="fas fa-server fa-2x-server" [icon]="faServer"
+                    title="{{ 'simulacion.serv' | translate }}"></fa-icon>
                 <br><span class="ipserv" title="{{ 'simulacion.ipserv' | translate }}">{{ ipserv }}</span>
             </th>
         </tr>
@@ -18,16 +20,19 @@
             <!-- {{ 'simulacion.seg' | translate }} bidireccional cliente<->servidor -->
             <span *ngIf="conversacion.dir == 0">
                 <td class="info-izq">
+                    <span *ngIf="conversacion.flagcli == 'EC'" title="{{ 'simulacion.ec' | translate }}"
+                        class="ec">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>&nbsp;
                     <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
-                    <span *ngIf="conversacion.flagcli != null"
+                    <span *ngIf="conversacion.flagcli != null && conversacion.flagcli != 'EC'"
                         title="Flags"><strong>{{ conversacion.flagcli }}</strong>,
                     </span>
                     <span title="{{ 'simulacion.sn' | translate }}">&nbsp;SN={{ conversacion.sncli }}, </span>
                     <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.msscli }},
                     </span>
-                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}"> AN={{ conversacion.ancli }},
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}">
+                        AN={{ conversacion.ancli }},
                     </span>
                     <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                     <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
@@ -63,7 +68,8 @@
                     <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.msscli }},
                     </span>
-                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}"> AN={{ conversacion.ancli }},
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}">
+                        AN={{ conversacion.ancli }},
                     </span>
                     <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                     <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>
@@ -83,6 +89,9 @@
             <!-- Direccion servidor->cliente -->
             <span *ngIf="conversacion.dir == 2">
                 <td class="info-izq">
+                    <span *ngIf="conversacion.flagcli == 'EC'" title="{{ 'simulacion.ec' | translate }}"
+                        class="ec">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>&nbsp;
+
                     <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
                         class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                 </td>
@@ -117,7 +126,8 @@
                     <span *ngIf="conversacion.msscli != 0" title="{{ 'simulacion.mss' | translate }}">
                         MSS={{ conversacion.msscli }},
                     </span>
-                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}"> AN={{ conversacion.ancli }},
+                    <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}">
+                        AN={{ conversacion.ancli }},
                     </span>
                     <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dcli }}, </span>
                     <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wcli }}</span>

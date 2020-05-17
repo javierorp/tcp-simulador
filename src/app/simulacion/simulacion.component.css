@@ -115,3 +115,11 @@ span.vccli {
     color           : white;
     border-radius   : 4px;
 }
+
+span.ec {
+    color           : red;
+    border-style: double;
+    border-color: red;
+    font-weight: bold;
+    border-radius   : 4px;
+}
