@@ -116,10 +116,27 @@ span.vccli {
     border-radius   : 4px;
 }
 
-span.ec {
+span.modo {
     color           : red;
     border-style: double;
     border-color: red;
     font-weight: bold;
     border-radius   : 4px;
 }
+
+span.flagcli {
+    color: #3e3e7e;
+    border-style: none;
+    border-color: #3e3e7e;
+    font-weight: bold;
+    border-radius   : 4px;
+}
+
+span.flagserv {
+    color: #3e5e3e;
+    border-style: none;
+    border-color: #3e5e3e;
+    font-weight: bold;
+    border-radius   : 4px;
+}
+

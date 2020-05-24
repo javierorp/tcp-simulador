@@ -323,7 +323,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.timeout') + ": ", msg: this.translate.instant('contenido.error-timeout') });
     if (this.simulacion.algort == "")
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.algort') + ": ", msg: this.translate.instant('contenido.error-algort') });
-      if (this.simulacion.algort == "1" && (this.simulacion.umbral <= 1 || this.simulacion.umbral == null))
+      if (this.simulacion.umbral <= 1 || this.simulacion.umbral == null)
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.umbral') + ": ", msg: this.translate.instant('contenido.error-umbral') });
     if (this.simulacion.cierre == "")
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.cierre') + ": ", msg: this.translate.instant('contenido.error-cierre') });
@@ -331,7 +331,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     //Se comprueba si se debe simular o no, retorna 'false' si alguno de los parametros es incorrecto y 'true' si todos lo son
     simular = (!ipRegex.test(this.simulacion.ipclien) || this.simulacion.mssclien < 1 || this.simulacion.datosclien < 1 || this.simulacion.snclien < 1 || (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien)) || this.simulacion.wclien < 1 ||
       !ipRegex.test(this.simulacion.ipserv) || this.simulacion.mssserv < 1 || this.simulacion.datosserv < 1 || this.simulacion.snserv < 1 || (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv)) || this.simulacion.wserv < 1 ||
-      this.simulacion.timeout < 0 || (this.simulacion.algort == "1" && (this.simulacion.umbral <= 1 || this.simulacion.umbral == null)) || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
+      this.simulacion.timeout < 0 || this.simulacion.umbral <= 1 || this.simulacion.umbral == null || this.simulacion.algort == "" || this.simulacion.cierre == "") ? false : true;
 
     return simular;
   }
@@ -345,25 +345,22 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    */
   rellenarDatos(): void {
     //Cliente
-    this.simulacion.ipclien = "127.0." + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString()
+    this.simulacion.ipclien = "127.0." + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString();
     this.simulacion.mssclien = this.numAleatorio(100, 2000, 10);
     this.simulacion.datosclien = this.numAleatorio(100, 5000, 10);
     this.simulacion.snclien = this.numAleatorio(1, 500, 5);
     this.simulacion.wclien = this.numAleatorio(0, 8000, 1000);
 
     //Servidor
-    this.simulacion.ipserv = "192.168." + + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString()
+    this.simulacion.ipserv = "192.168." + + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString();
     this.simulacion.mssserv = this.numAleatorio(100, 2000, 10);
     this.simulacion.datosserv = this.numAleatorio(100, 5000, 10);
     this.simulacion.snserv = this.numAleatorio(1, 500, 5);
     this.simulacion.wserv = this.numAleatorio(0, 8000, 1000);
     //General
-    this.simulacion.timeout = this.numAleatorio(0, 10, 1)
+    this.simulacion.timeout = this.numAleatorio(0, 10, 1);
     this.simulacion.algort = this.numAleatorio(1, 3, 1).toString();
-    if(this.simulacion.algort == "1")
-      this.simulacion.umbral = this.numAleatorio(2, 10, 1)
-    else
-      this.simulacion.umbral = null;
+    this.simulacion.umbral = this.numAleatorio(2, 10, 1);
     this.simulacion.cierre = this.numAleatorio(1, 3, 1).toString();
 
   }

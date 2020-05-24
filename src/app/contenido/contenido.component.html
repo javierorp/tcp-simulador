@@ -66,7 +66,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.umbral-tooltip' | translate }}">
-        <input matInput [disabled]="simulacion.algort != '1'" type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}"/>
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}"/>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.cierre-tooltip' | translate }}">
         <mat-label>{{ 'contenido.cierre' | translate }}</mat-label>
