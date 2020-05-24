@@ -86,8 +86,18 @@
     "datos": "Datos enviados",
     "w": "Ventana de recepción",
     "seg": "Segmento",
+    "syn_letra": "SYN",
+    "syn": "Flag de sincronización",
+    "ack_letra": "ACK",
+    "ack": "Flag de reconocimiento",
+    "fin_letra": "FIN",
+    "fin": "Flag de finalización",
     "ec_letra": "EC",
-    "ec": "Evitación de la congestión"
+    "ec": "Evitación de la Congestión",
+    "al_letra": "AL",
+    "al": "Arranque Lento",
+    "rr_letra": "RR",
+    "rr": "Recuperación Rápida"
   },
   "acercade": {
     "titulo": "Acerca de...",

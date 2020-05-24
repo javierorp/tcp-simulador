@@ -86,8 +86,18 @@
     "datos": "Data sent",
     "w": "Reception window",
     "seg": "Segment",
+    "syn_letra": "SYN",
+    "syn": "Synchronization flag",
+    "ack_letra": "ACK",
+    "ack": "Acknowledgment flag",
+    "fin_letra": "FIN",
+    "fin": "Finalitation flag",
     "ec_letra": "CA",
-    "ec": "Congestion avoidance"
+    "ec": "Congestion Avoidance",
+    "al_letra": "SS",
+    "al": "Slow Start",
+    "rr_letra": "FR",
+    "rr": "Fast Recovery"
   },
   "acercade": {
     "titulo": "About...",
