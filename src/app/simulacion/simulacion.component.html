@@ -87,7 +87,10 @@
                     <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dserv }}, </span>
                     <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wserv }}</span>&nbsp;
                     <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
-                    class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
+                    class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>&nbsp;
+                    <span *ngIf="conversacion.flagserv[3] != ''" title="{{ 'simulacion.al' | translate }}" class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
+                    <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}" class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+                    <span *ngIf="conversacion.flagserv[5] != ''" title="{{ 'simulacion.rr' | translate }}" class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>
                 </td>
             </span>
 
@@ -118,7 +121,10 @@
                 </td>
                 <td class="info-dcha">
                     <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
-                        class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
+                        class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>&nbsp;
+                        <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}"
+                        class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+                    
                 </td>
             </span>
 

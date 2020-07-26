@@ -101,6 +101,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this._success.subscribe((message) => this.infoMsg = message);
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
+
+    // this.test();
   }
 
   ngAfterContentChecked() {
@@ -153,7 +155,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
 
   /**
-   * TODO: Revisar los parametros antes de asignalos a simulacionEnv
+   * TODO:
    * @description Asigna los parametros del formulario a la variable simulacionEnv por valor
    *              que es el atributo del componente hijo SimulacionComponents
    * @author javierorp
@@ -323,7 +325,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.timeout') + ": ", msg: this.translate.instant('contenido.error-timeout') });
     if (this.simulacion.algort == "")
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.algort') + ": ", msg: this.translate.instant('contenido.error-algort') });
-      if (this.simulacion.umbral <= 1 || this.simulacion.umbral == null)
+    if (this.simulacion.umbral <= 1 || this.simulacion.umbral == null)
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.umbral') + ": ", msg: this.translate.instant('contenido.error-umbral') });
     if (this.simulacion.cierre == "")
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.cierre') + ": ", msg: this.translate.instant('contenido.error-cierre') });
@@ -428,4 +430,74 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.alertas.splice(this.alertas.indexOf(alerta), 1);
   }
 
+  /* TEST */
+  test(): void {
+    // this.test1();
+    // this.test2();
+    this.test3();
+    this.simular();
+  }
+
+  test1(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 200;
+    this.simulacion.datosclien = 1790;
+    this.simulacion.snclien = 400;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 7000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 1390;
+    this.simulacion.datosserv = 1790;
+    this.simulacion.snserv = 95;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 10;
+    this.simulacion.umbral = 5;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "1";
+  }
+
+  test2(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 430;
+    this.simulacion.datosclien = 2060;
+    this.simulacion.snclien = 400;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 7000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 420;
+    this.simulacion.datosserv = 3350;
+    this.simulacion.snserv = 95;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 10;
+    this.simulacion.umbral = 4;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "1";
+  }
+
+  test3(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 400;
+    this.simulacion.datosclien = 200;
+    this.simulacion.snclien = 400;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 7000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 400;
+    this.simulacion.datosserv = 200;
+    this.simulacion.snserv = 95;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 10;
+    this.simulacion.umbral = 4;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "1";
+  }
 }
