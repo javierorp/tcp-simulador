@@ -33,7 +33,9 @@ interface Comunicacion {
 // Interfaz para el cliente y el servidor
 interface Maquina {
   sn: number; // numero de secuencia
+  ult_sn: number; // ultimo numero de secuencia
   an: number; // numero de reconocimento
+  ult_an: number; // ultimo numero de reconocimento
   data: number; // tamnyo de lo datos enviados
   w: number; // tamanyo de la ventana de recepcion permitida para la entidad contraria
   segperd: string; // segmentos perdidos
@@ -80,8 +82,8 @@ export class SimulacionComponent implements OnChanges {
    */
   generarSimulacion() {
     this.comunicacion = [];
-    this.cli = { sn: 0, an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
-    this.serv = { sn: 0, an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
+    this.cli = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
+    this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
     this.ipclien = this.simular.ipclien;
     this.ipserv = this.simular.ipserv;
 
@@ -112,7 +114,9 @@ export class SimulacionComponent implements OnChanges {
     // Cliente
     let mssclien: number = this.simular.mssclien;
     this.cli.sn = this.simular.snclien;
+    this.cli.ult_sn = 0;
     this.cli.an = 0;
+    this.cli.ult_an = 0;
     this.cli.data = this.simular.datosclien;
     this.cli.w = this.simular.wclien;
     this.cli.segperd = this.simular.segperdclien;
@@ -123,7 +127,9 @@ export class SimulacionComponent implements OnChanges {
     // Servidor
     let mssserv: number = this.simular.mssserv;
     this.serv.sn = this.simular.snserv;
+    this.serv.ult_sn = 0;
     this.serv.an = 0;
+    this.serv.ult_an = 0;
     this.serv.data = this.simular.datosserv;
     this.serv.w = this.simular.wserv;
     this.serv.segperd = this.simular.segperdserv;
@@ -136,7 +142,6 @@ export class SimulacionComponent implements OnChanges {
     let umbral: number = this.simular.umbral;
     let algort: string = this.simular.algort;
     let cierre: string = this.simular.cierre;
-
     /*-----VARIABLES-----*/
     // General
     let mss: number = Math.min(mssclien, mssserv); // Se elige el minimo MSS
@@ -154,10 +159,13 @@ export class SimulacionComponent implements OnChanges {
     // ----- Conexion -----
     // Enviamos los segmentos de SYN; SYN, ACK; y ACK
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+    this.serv.ult_an = this.serv.an;
     this.serv.an = this.cli.sn + 1;
     this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: mssserv, vc: this.cli.vc });
     this.serv.flags = nullflag;
+    this.cli.ult_sn = this.cli.sn;
     this.cli.sn += 1;
+    this.cli.ult_an = this.cli.an;
     this.cli.an = this.serv.sn + 1;
     this.cli.flags = ack;
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
@@ -178,17 +186,17 @@ export class SimulacionComponent implements OnChanges {
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
       // El servidor manda el ACK del primer paquete
+      this.serv.ult_sn = this.serv.sn;
       this.serv.sn += 1;
+      this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + denv;
-      this.incrementarVC(this.cli);
+      this.incrementarVC(this.cli, this.serv, mss);
       this.comprobarEC(this.cli, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
+      this.cli.ult_an = this.serv.an;
       this.cli.an += 1;
     }
-
     let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
-    let ultAnServ: number = this.serv.an; // Ultimo AN enviado por el servidor
-    let ultSnCli: number = this.cli.sn; // Ultimo SN del cliente
     let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
     for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) {
       if (numPqtClienEnv == numPqtClien) // Si es el ultimo paquete a enviar, se envian los datos restantes
@@ -196,39 +204,45 @@ export class SimulacionComponent implements OnChanges {
 
       if (envAck == this.cli.vc) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
-        this.incrementarVC(this.cli);
-        this.comprobarEC(this.cli, umbral);
+        this.serv.ult_sn = this.serv.sn;
         this.serv.sn++;
-        this.serv.an = ultSnCli + (ultSnCli - ultAnServ);
+        this.serv.ult_an = this.serv.an;
+        this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
+        this.incrementarVC(this.cli, this.serv, mss);
+        this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
-        ultSnCli = this.cli.sn;
+        this.cli.ult_sn = this.cli.sn;
         this.cli.vcCtrl++;
+        this.cli.ult_an = this.cli.an;
         this.cli.an++;
-        ultAnServ = this.serv.an;
         numPqtClienEnv--;
         envAck = 0;
       }
       else if (envAck < 2) // El numero de paquetes enviados no alcanza al ACK
       {
+        this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
         this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
-        ultSnCli = this.cli.sn;
+        this.cli.ult_sn = this.cli.sn;
         ultDataEnv = denv;
         envAck++;
       }
       else { // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK
+        this.cli.ult_sn = this.cli.sn;
         this.cli.sn += ultDataEnv;
-        this.incrementarVC(this.cli);
-        this.comprobarEC(this.cli, umbral);
+        this.serv.ult_sn = this.serv.sn;
         this.serv.sn++;
-        this.serv.an = ultSnCli + (ultSnCli - ultAnServ);
+        this.serv.ult_an = this.serv.an;
+        this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
+        this.incrementarVC(this.cli, this.serv, mss);
+        this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
         ultDataEnv = denv;
-        ultSnCli = this.cli.sn;
+        this.cli.ult_sn = this.cli.sn;
         this.cli.vcCtrl++;
+        this.cli.ult_an = this.cli.an;
         this.cli.an++;
-        ultAnServ = this.serv.an;
         envAck = 0;
       }
 
@@ -237,49 +251,50 @@ export class SimulacionComponent implements OnChanges {
     }
 
     // El servidor espera 1.5 ticks por si recibe otro paquete
-    this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+    if(envAck != 2)
+      this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
-    // El servidor envia el ACK del ultimo paquete
+    // El servidor envia el primer paquete de datos junto al ACK del ultimo paquete
     if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha enviado ya
-      this.incrementarVC(this.cli);
-      this.comprobarEC(this.cli, umbral);
+      this.serv.ult_an = this.serv.an;
+      this.serv.an = this.cli.ult_sn + denv;
+      if (numPqtServ == 0)
+        denv = modPqtServ;
+      else
+        denv = mss;
+      this.serv.ult_sn = this.serv.sn;
       this.serv.sn++;
-      this.serv.an = ultSnCli + denv;
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
-      ultSnCli = this.cli.sn;
+      this.incrementarVC(this.cli, this.serv, mss);
+      this.comprobarEC(this.cli, umbral);
+      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
+      this.cli.ult_sn = this.cli.sn;
       this.cli.vcCtrl++;
+      this.cli.ult_an = this.cli.an;
       this.cli.an++;
-      ultAnServ = this.serv.an;
+      this.serv.ult_an = this.serv.an;
       this.cli.flags = nullflag;
+      numPqtServEnv++;
     }
 
 
     // >>>>> Envio de datos servidor->cliente <<<<<
-    if (numPqtServ == 0)
-      denv = modPqtServ;
-    else
-      denv = mss;
-    // El servidor envía el primer paquete
-    this.serv.sn++;
-    this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0 });
-    numPqtServEnv++;
-
     if (numPqtServ != 0) // Si hay mas de un paquete a enviar
     {
       // El cliente espera 1.5 ticks por si recibe otro paquete
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
-      // El cliente manda el ACK del primer paquete   
-      this.cli.sn = ultAnServ;
+      // El cliente manda el ACK del primer paquete
+      this.cli.ult_sn = this.cli.sn;
+      this.cli.sn = this.serv.ult_an;
+      this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + denv;
-      this.incrementarVC(this.serv);
+      this.incrementarVC(this.serv, this.cli, mss);
       this.comprobarEC(this.serv, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
+      this.serv.ult_an = this.serv.an;
       this.serv.an += 1;
     }
 
-    let ultAnCli: number = this.cli.an; // Ultimo AN enviado por el servidor
-    let ultSnServ: number = this.serv.sn; // Ultimo SN del cliente
     ultDataEnv = denv; // Tamanyo de los ultimos datos enviados
     envAck = 0;
     for (; numPqtServEnv <= numPqtServ; numPqtServEnv++) {
@@ -288,39 +303,45 @@ export class SimulacionComponent implements OnChanges {
 
       if (envAck == this.serv.vc) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
-        this.incrementarVC(this.serv);
-        this.comprobarEC(this.serv, umbral);
+        this.cli.ult_sn = this.cli.sn;
         this.cli.sn++;
-        this.cli.an = ultSnServ + (ultSnServ - ultAnCli);
+        this.cli.ult_an = this.cli.an;
+        this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
+        this.incrementarVC(this.serv, this.cli, mss);
+        this.comprobarEC(this.serv, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
-        ultSnServ = this.serv.sn;
+        this.serv.ult_sn = this.serv.sn;
         this.serv.vcCtrl++;
+        this.serv.ult_an = this.serv.an;
         this.serv.an++;
-        ultAnCli = this.cli.an;
         numPqtServEnv--;
         envAck = 0;
       }
       else if (envAck < 2) // El numero de paquetes enviados no alcanza al ACK
       {
+        this.serv.ult_sn = this.serv.sn;
         this.serv.sn += ultDataEnv;
         this.comprobarEC(this.serv, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: 0 });
-        ultSnServ = this.serv.sn;
+        this.serv.ult_sn = this.serv.sn;
         ultDataEnv = denv;
         envAck++;
       }
       else { // Cada 2 paquetes enviados por el cliente, el servidor envia un ACK
+        this.serv.ult_sn = this.serv.sn;
         this.serv.sn += ultDataEnv;
-        this.incrementarVC(this.serv);
-        this.comprobarEC(this.serv, umbral);
+        this.cli.ult_sn = this.cli.sn;
         this.cli.sn++;
-        this.cli.an = ultSnServ + (ultSnServ - ultAnCli);
+        this.cli.ult_an = this.cli.an;
+        this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
+        this.incrementarVC(this.serv, this.cli, mss);
+        this.comprobarEC(this.serv, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vc });
         ultDataEnv = denv;
-        ultSnServ = this.serv.sn;
+        this.serv.ult_sn = this.serv.sn;
         this.serv.vcCtrl++;
+        this.serv.ult_an = this.serv.an;
         this.serv.an++;
-        ultAnCli = this.cli.an;
         envAck = 0;
       }
 
@@ -333,48 +354,62 @@ export class SimulacionComponent implements OnChanges {
 
     // El cliente envia el ACK del ultimo paquete
     if (envAck != 0 || (envAck == 0 && numPqtServEnv != 0)) { // Si el ACK no se ha enviado ya
-      this.incrementarVC(this.serv);
-      this.comprobarEC(this.serv, umbral);
+      this.cli.ult_sn = this.cli.sn;
       this.cli.sn++;
-      this.cli.an = ultSnServ + denv;
+      this.cli.ult_an = this.cli.an;
+      this.cli.an = this.serv.ult_sn + denv;
+      this.incrementarVC(this.serv, this.cli, mss);
+      this.comprobarEC(this.serv, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
-      ultSnServ = this.serv.sn;
+      this.serv.ult_sn = this.serv.sn;
       this.serv.vcCtrl++;
+      this.serv.ult_an = this.serv.an;
       this.serv.an++;
-      ultAnCli = this.cli.an;
+      this.cli.ult_an = this.cli.an;
     }
 
     // ----- Cierre -----
     // Enviamos los segmentos de FIN; FIN, ACK; y ACK
     if (cierre == "1") { // El cliente cierra la conexion
       //FIN
+      this.cli.ult_sn = this.cli.sn;
       this.cli.sn++;
       this.cli.flags = fin;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
       // FIN, ACK
+      this.serv.ult_sn = this.serv.sn;
       this.serv.sn += denv;
+      this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = finack;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 });
       // ACK
+      this.cli.ult_sn = this.cli.sn;
       this.cli.sn++;
+      this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + 1;
       this.cli.flags = ack;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
     } else { // El servidor cierra la conexion
       // FIN
+      this.serv.ult_sn = this.serv.sn;
       this.serv.sn += denv;
+      this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = fin;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 });
       // FIN, ACK
+      this.cli.ult_sn = this.cli.sn;
       this.cli.sn++;
+      this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + 1;
       this.cli.flags = finack;
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
       // ACK
+      this.serv.ult_sn = this.serv.sn;
       this.serv.sn++;
+      this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + 1;
       this.serv.flags = ack;
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: 0 });
@@ -406,12 +441,19 @@ export class SimulacionComponent implements OnChanges {
      * @author javierorp
      * @returns
      */
-  incrementarVC(maq: Maquina) {
-    if ((maq.ec == true && maq.vcCtrl == maq.vc) || maq.ec == false) { // Si EC ya está activo y el número de ACKs es igual a VC, o si EC no ha sido activado, se invrementa VC
-      maq.vc++;
-      maq.vcCtrl = 0;
-    }
-    return maq;
+  incrementarVC(maqVC: Maquina, maqACK: Maquina, mss: number) {
+    // if ((maqVC.ec == true && maqVC.vcCtrl == maqVC.vc) || maqVC.ec == false) { // Si EC ya está activo y el número de ACKs es igual a VC, o si EC no ha sido activado, se incrementa VC
+    //   maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
+    //   maqVC.vcCtrl = 0;
+    // }
+
+    if (maqVC.ec == false) // Si EC ya está activo y el número de ACKs es igual a VC, o si EC no ha sido activado, se incrementa VC
+      maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
+    else
+      maqVC.vc++;
+    maqVC.vcCtrl = 0;
+
+    return maqVC;
   }
 
 

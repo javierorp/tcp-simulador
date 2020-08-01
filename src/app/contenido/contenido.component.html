@@ -18,19 +18,19 @@
         <input matInput [(ngModel)]="simulacion.ipclien" placeholder="{{ 'contenido.ipclien' | translate }}" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.mssclien-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="{{ 'contenido.mssclien' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssclien" placeholder="{{ 'contenido.mssclien' | translate }}" (blur)="simulacion.mssclien = limpiarParametros(simulacion.mssclien)"/>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.datosclien-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="{{ 'contenido.datosclien' | translate }}" />
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosclien" placeholder="{{ 'contenido.datosclien' | translate }}" (blur)="simulacion.datosclien = limpiarParametros(simulacion.datosclien)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.snclien-tooltip' | translate }}">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="{{ 'contenido.snclien' | translate }}" />
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snclien" placeholder="{{ 'contenido.snclien' | translate }}" (blur)="simulacion.snclien = limpiarParametros(simulacion.snclien)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.segperdclien-tooltip' | translate }}">
         <input matInput [(ngModel)]="simulacion.segperdclien" placeholder="{{ 'contenido.segperdclien' | translate }}"/>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.wclien-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien" placeholder="{{ 'contenido.wclien' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wclien" placeholder="{{ 'contenido.wclien' | translate }}" (blur)="simulacion.wclien = limpiarParametros(simulacion.wclien)" />
       </mat-form-field>
       <!-- Servidor -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.serv' | translate }}</div>
@@ -38,25 +38,25 @@
         <input matInput [(ngModel)]="simulacion.ipserv" placeholder="{{ 'contenido.ipserv' | translate }}" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.mssserv-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="{{ 'contenido.mssserv' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.mssserv" placeholder="{{ 'contenido.mssserv' | translate }}" (blur)="simulacion.mssserv = limpiarParametros(simulacion.mssserv)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.datosserv-tooltip' | translate }}">
         <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.datosserv"
-          placeholder="{{ 'contenido.datosserv' | translate }}" />
+          placeholder="{{ 'contenido.datosserv' | translate }}" (blur)="simulacion.datosserv = limpiarParametros(simulacion.datosserv)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.snserv-tooltip' | translate }}">
-        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="{{ 'contenido.snserv' | translate }}" />
+        <input matInput type="number" min="0" max="9999999" [(ngModel)]="simulacion.snserv" placeholder="{{ 'contenido.snserv' | translate }}" (blur)="simulacion.snserv = limpiarParametros(simulacion.snserv)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.segperdserv-tooltip' | translate }}">
         <input matInput [(ngModel)]="simulacion.segperdserv" placeholder="{{ 'contenido.segperdserv' | translate }}" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.wserv-tooltip' | translate }}">
-        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv" placeholder="{{ 'contenido.wserv' | translate }}">
+        <input matInput type="number" min="1" max="99999999" [(ngModel)]="simulacion.wserv" placeholder="{{ 'contenido.wserv' | translate }}" (blur)="simulacion.wserv = limpiarParametros(simulacion.wserv)" />
       </mat-form-field>
       <!-- General -->
       <div style="text-align: left; font-weight: bold; margin-bottom: 5px;">{{ 'contenido.general' | translate }}</div>
       <mat-form-field title="{{ 'contenido.timeout-tooltip' | translate }}">
-        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="{{ 'contenido.timeout' | translate }}" />
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.timeout" placeholder="{{ 'contenido.timeout' | translate }}" (blur)="simulacion.timeout = limpiarParametros(simulacion.timeout)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.algort-tooltip' | translate }}">
         <mat-label>{{ 'contenido.algort-tooltip' | translate }}</mat-label>
@@ -66,7 +66,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.umbral-tooltip' | translate }}">
-        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}"/>
+        <input matInput type="number" min="0" max="99999999" [(ngModel)]="simulacion.umbral" placeholder="{{ 'contenido.umbral' | translate }}" (blur)="simulacion.umbral = limpiarParametros(simulacion.umbral)" />
       </mat-form-field>
       <mat-form-field title="{{ 'contenido.cierre-tooltip' | translate }}">
         <mat-label>{{ 'contenido.cierre' | translate }}</mat-label>

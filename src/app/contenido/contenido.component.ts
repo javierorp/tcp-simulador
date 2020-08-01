@@ -102,7 +102,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
 
-    // this.test();
+    this.test();
   }
 
   ngAfterContentChecked() {
@@ -430,11 +430,23 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.alertas.splice(this.alertas.indexOf(alerta), 1);
   }
 
+    /**
+   * TODO:
+   * @description Impide que se puedan poner decimales en la entrada de datos
+   * @author javierorp
+   * @param param parametro del input
+   */
+  limpiarParametros(param:number) : number{
+    param = Math.floor(param);
+    return param;
+  }
+
   /* TEST */
   test(): void {
     // this.test1();
     // this.test2();
-    this.test3();
+    // this.test3();
+    this.test4();
     this.simular();
   }
 
@@ -454,7 +466,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.segperdserv = "";
     this.simulacion.wserv = 1000;
     this.simulacion.timeout = 10;
-    this.simulacion.umbral = 5;
+    this.simulacion.umbral = 2;
     this.simulacion.algort = "1";
     this.simulacion.cierre = "1";
   }
@@ -500,4 +512,27 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.algort = "1";
     this.simulacion.cierre = "1";
   }
+
+  test4(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 410;
+    this.simulacion.datosclien = 990;
+    this.simulacion.snclien = 35;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 8000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 480;
+    this.simulacion.datosserv = 3170;
+    this.simulacion.snserv = 200;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 4000;
+    this.simulacion.timeout = 5;
+    this.simulacion.umbral = 9;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "2";
+  }
+
+
 }
