@@ -13,6 +13,7 @@ export class AcercadeComponent {
   texto2: string = null;
   repo: string = null;
   cerrar: string = null;
+  appVersion = require('../../../package.json');
 
   constructor(public activeModal: NgbActiveModal) { }
 

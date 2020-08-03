@@ -28,3 +28,11 @@ img.herramientas {
 img.herramientas:hover {
     opacity: 1.0;
 }
+
+.version{
+    position: absolute;
+    left: 0;
+    margin-left: 15px;
+    font-size: 14px;
+    color: grey;
+}
