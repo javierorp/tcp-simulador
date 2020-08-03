@@ -454,7 +454,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
     this.simulacion.mssclien = 200;
-    this.simulacion.datosclien = 1790;
+    this.simulacion.datosclien = 1800;
     this.simulacion.snclien = 400;
     this.simulacion.segperdclien = "";
     this.simulacion.wclien = 7000;

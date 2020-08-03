@@ -4771,7 +4771,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 vc: this.cli.vc
               });
               this.cli.ult_an = this.serv.an;
-              this.cli.an += 1;
             }
 
           var envAck = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
@@ -4785,7 +4784,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (envAck == this.cli.vc) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
               {
                 this.serv.ult_sn = this.serv.sn;
-                this.serv.sn++;
                 this.serv.ult_an = this.serv.an;
                 this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
                 this.incrementarVC(this.cli, this.serv, mss);
@@ -4810,7 +4808,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.cli.ult_sn = this.cli.sn;
                 this.cli.vcCtrl++;
                 this.cli.ult_an = this.cli.an;
-                this.cli.an++;
                 numPqtClienEnv--;
                 envAck = 0;
               } else if (envAck < 2) // El numero de paquetes enviados no alcanza al ACK
@@ -4843,7 +4840,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.cli.ult_sn = this.cli.sn;
               this.cli.sn += ultDataEnv;
               this.serv.ult_sn = this.serv.sn;
-              this.serv.sn++;
               this.serv.ult_an = this.serv.an;
               this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
               this.incrementarVC(this.cli, this.serv, mss);
@@ -4869,11 +4865,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.cli.ult_sn = this.cli.sn;
               this.cli.vcCtrl++;
               this.cli.ult_an = this.cli.an;
-              this.cli.an++;
-              envAck = 0;
+              envAck = 1;
             }
 
-            if (envAck == 0 && numPqtClienEnv + 1 == numPqtClien && modPqtClien == 0) // Si es el ultimo paquete a enviar y no hay mas datos a enviar salimos del bucle
+            if (envAck == 1 && numPqtClienEnv + 1 == numPqtClien && modPqtClien == 0) // Si es el ultimo paquete a enviar y no hay mas datos a enviar salimos del bucle
               numPqtClienEnv++;
           } // El servidor espera 1.5 ticks por si recibe otro paquete
 
@@ -4898,11 +4893,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           if (envAck != 0 || envAck == 0 && modPqtClien != 0) {
             // Si el ACK no se ha enviado ya
+            if (envAck == 0 && modPqtClien != 0) {
+              this.cli.ult_sn = this.cli.sn;
+              this.cli.sn += denv;
+            }
+
             this.serv.ult_an = this.serv.an;
             this.serv.an = this.cli.ult_sn + denv;
             if (numPqtServ == 0) denv = modPqtServ;else denv = mss;
             this.serv.ult_sn = this.serv.sn;
-            this.serv.sn++;
             this.incrementarVC(this.cli, this.serv, mss);
             this.comprobarEC(this.cli, umbral);
             this.comunicacion.push({
@@ -4977,8 +4976,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 vc: this.serv.vc
               });
               this.serv.ult_an = this.serv.an;
-              this.serv.an += 1;
-            }
+            } else {
+            this.cli.an = this.serv.sn + denv;
+          }
 
           ultDataEnv = denv; // Tamanyo de los ultimos datos enviados
 
@@ -4991,7 +4991,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (envAck == this.serv.vc) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
               {
                 this.cli.ult_sn = this.cli.sn;
-                this.cli.sn++;
                 this.cli.ult_an = this.cli.an;
                 this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
                 this.incrementarVC(this.serv, this.cli, mss);
@@ -5016,7 +5015,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                 this.serv.ult_sn = this.serv.sn;
                 this.serv.vcCtrl++;
                 this.serv.ult_an = this.serv.an;
-                this.serv.an++;
                 numPqtServEnv--;
                 envAck = 0;
               } else if (envAck < 2) // El numero de paquetes enviados no alcanza al ACK
@@ -5049,7 +5047,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.serv.ult_sn = this.serv.sn;
               this.serv.sn += ultDataEnv;
               this.cli.ult_sn = this.cli.sn;
-              this.cli.sn++;
               this.cli.ult_an = this.cli.an;
               this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
               this.incrementarVC(this.serv, this.cli, mss);
@@ -5075,16 +5072,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
               this.serv.ult_sn = this.serv.sn;
               this.serv.vcCtrl++;
               this.serv.ult_an = this.serv.an;
-              this.serv.an++;
-              envAck = 0;
+              envAck = 1;
             }
 
-            if (envAck == 0 && numPqtServEnv + 1 == numPqtServ && modPqtServ == 0) // Si es el ultimo paquete a enviar y no hay mas datos a enviar salimos del bucle
+            if (envAck == 1 && numPqtServEnv + 1 == numPqtServ && modPqtServ == 0) // Si es el ultimo paquete a enviar y no hay mas datos a enviar salimos del bucle
               numPqtServEnv++;
           } // El cliente espera 1.5 ticks por si recibe otro paquete
 
 
-          this.comunicacion.push({
+          if (envAck != 2) this.comunicacion.push({
             numseg: null,
             dir: null,
             flagcli: nullflag,
@@ -5102,10 +5098,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             vc: 0
           }); // El cliente envia el ACK del ultimo paquete
 
-          if (envAck != 0 || envAck == 0 && numPqtServEnv != 0) {
+          if (envAck != 0 || envAck == 0 && numPqtServEnv == 0) {
             // Si el ACK no se ha enviado ya
             this.cli.ult_sn = this.cli.sn;
-            this.cli.sn++;
             this.cli.ult_an = this.cli.an;
             this.cli.an = this.serv.ult_sn + denv;
             this.incrementarVC(this.serv, this.cli, mss);
@@ -5130,17 +5125,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.serv.ult_sn = this.serv.sn;
             this.serv.vcCtrl++;
             this.serv.ult_an = this.serv.an;
-            this.serv.an++;
             this.cli.ult_an = this.cli.an;
-          } // ----- Cierre -----
-          // Enviamos los segmentos de FIN; FIN, ACK; y ACK
+          } // El cliente espera 1.5 tick por si hay intercambio de informacion y luego se procede a cerrar
 
+
+          if (envAck == 2 && cierre == "1") this.comunicacion.push({
+            numseg: null,
+            dir: null,
+            flagcli: nullflag,
+            sncli: 0,
+            ancli: 0,
+            dcli: 0,
+            wcli: 0,
+            msscli: 0,
+            flagserv: nullflag,
+            snserv: 0,
+            anserv: 0,
+            dserv: 0,
+            wserv: 0,
+            mssserv: 0,
+            vc: 0
+          }); // ----- Cierre -----
+          // Enviamos los segmentos de FIN; FIN, ACK; y ACK
 
           if (cierre == "1") {
             // El cliente cierra la conexion
             //FIN
             this.cli.ult_sn = this.cli.sn;
-            this.cli.sn++;
             this.cli.flags = fin;
             this.comunicacion.push({
               numseg: ++nseg,
@@ -5211,7 +5222,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             this.serv.ult_sn = this.serv.sn;
             this.serv.sn += denv;
             this.serv.ult_an = this.serv.an;
-            this.serv.an = this.cli.sn + 1;
             this.serv.flags = fin;
             this.comunicacion.push({
               numseg: ++nseg,
@@ -5232,7 +5242,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             }); // FIN, ACK
 
             this.cli.ult_sn = this.cli.sn;
-            this.cli.sn++;
             this.cli.ult_an = this.cli.an;
             this.cli.an = this.serv.sn + 1;
             this.cli.flags = finack;
