@@ -26,6 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'; // Iconos
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ErrorComponent } from './error/error.component';
 
 export function createTranslateLoader(http: HttpClient) {
   http.head("https://github.com/javierorp/tcp-simulador/tree/master/src/");
@@ -39,7 +40,8 @@ export function createTranslateLoader(http: HttpClient) {
     ContenidoComponent,
     SimulacionComponent,
     AcercadeComponent,
-    InfoparametrosComponent
+    InfoparametrosComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,

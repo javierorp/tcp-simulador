@@ -10,11 +10,15 @@ import { env } from 'process';
 
 // Interfaz de los datos a representar
 interface Comunicacion {
-  dir: number; //  0 bidireccional cliente<->servidor
-  //  1 direccion cliente->servidor
-  //  2 direccion servidor->cliente
-  // -1 segmento perdido en direccion cliente->servidor
-  // -2 segmento perdido en direccion servidor->cliente
+  dir: number; // null espacio vacio
+              // 0 bidireccional cliente<->servidor con VC en cliente
+              // 10 bidireccional cliente<->servidor con VC en servidor
+              //  1 direccion cliente->servidor
+              //  2 direccion servidor->cliente
+              // -1 segmento perdido en direccion cliente->servidor
+              // -2 segmento perdido en direccion servidor->cliente
+              // -10 segmento perdido en direccion cliente->servidor y flecha servidor->cliente
+              // -20 segmento perdido en direccion servidor->cliente y flecha cliente->servidor
   flagcli: string[]; // [SYN, FIN, ACK, AL, EC, RR]
   sncli: number; // numero de secuencia
   ancli: number; // numero de reconocimento
@@ -78,17 +82,19 @@ export class SimulacionComponent implements OnChanges {
 
 
   /**
-   * @description Genera la simulacion 
+   * @description Genera la simulacion
    * @author javierorp
    */
-  generarSimulacion() {
+  generarSimulacion(): Observable<boolean> {
     this.comunicacion = [];
     this.cli = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
     this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
     this.ipclien = this.simular.ipclien;
     this.ipserv = this.simular.ipserv;
 
-    if (this.simular.algort == "1")
+    if(this.simular.segperdclien == "" && this.simular.segperdserv == "")
+      this.simularEC();
+    else if(this.simular.algort == "1")
       this.simularReno();
     else
       this.simularTahoe();
@@ -97,11 +103,11 @@ export class SimulacionComponent implements OnChanges {
   }
 
   /**
-   * @description Simula utilizando como algoritmo de congestion Reno
+   * @description Simula utilizando Evitacion de la Congestion
    * @author javierorp
    * @returns  
    */
-  simularReno() {
+  simularEC():void {
     /*-----INICIALIZACION-----*/
     // Flags
     let nullflag: string[] = ["", "", "", "", "", ""];
@@ -198,7 +204,6 @@ export class SimulacionComponent implements OnChanges {
     }
     let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
     let ultDataEnv: number = denv; // Tamanyo de los ultimos datos enviados
-    console.log(numPqtClien)
     for (; numPqtClienEnv <= numPqtClien; numPqtClienEnv++) {
       if (numPqtClienEnv == numPqtClien) // Si es el ultimo paquete a enviar, se envian los datos restantes
         denv = modPqtClien;
@@ -422,7 +427,7 @@ export class SimulacionComponent implements OnChanges {
   /**
    * @description Comprobar si se activa o no EC
    * @author javierorp
-   * @returns 
+   * @returns Maquina
    */
   comprobarEC(maq: Maquina, umbral: number) {
     let ec: string[] = ["", "", "", "", "EC", "", ""];
@@ -440,14 +445,9 @@ export class SimulacionComponent implements OnChanges {
   /**
      * @description incrementar la ventana de congestion o no
      * @author javierorp
-     * @returns
+     * @returns Maquina
      */
   incrementarVC(maqVC: Maquina, maqACK: Maquina, mss: number) {
-    // if ((maqVC.ec == true && maqVC.vcCtrl == maqVC.vc) || maqVC.ec == false) { // Si EC ya está activo y el número de ACKs es igual a VC, o si EC no ha sido activado, se incrementa VC
-    //   maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
-    //   maqVC.vcCtrl = 0;
-    // }
-
     if (maqVC.ec == false) // Si EC ya está activo y el número de ACKs es igual a VC, o si EC no ha sido activado, se incrementa VC
       maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
     else
@@ -457,14 +457,26 @@ export class SimulacionComponent implements OnChanges {
     return maqVC;
   }
 
-
+    /**
+     * 
+   * @description Simula utilizando como algoritmo de congestion Reno
+   * @author javierorp
+   * @returns  
+   */
+  simularReno():void {
+    console.log("Reno");
+    this.simularEC();
+    return;
+  }
+  
   /**
    * @description Simula utilizando como algoritmo de congestion Tahoe
    * @author javierorp
    * @returns  
    */
   simularTahoe() {
-    this.simularReno();
+    console.log("Tahoe");
+    this.simularEC();
     return;
   }
 }

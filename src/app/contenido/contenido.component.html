@@ -6,7 +6,7 @@
   <mat-sidenav #sidenav mode="side" [opened]="true">
     <div style="text-align: center;">
       <span style="font-weight: bold; text-decoration: underline; margin-bottom: 10px;">{{ 'contenido.parametros' | translate }}</span>
-      <button class="btn infoparametros" mat-button title="{{ 'contenido.parametros-tooltip' | translate }}" (click)="open()">
+      <button class="btn infoparametros" mat-button title="{{ 'contenido.parametros-tooltip' | translate }}"(click)="infoParametros()">
         <fa-icon [icon]="faQuestionCircle"></fa-icon>
       </button>
     </div>
@@ -102,7 +102,8 @@
 
     <!-- Alerta de navegadores compatibles -->
     <div class="alerta">
-      <ngb-alert *ngIf="infoMsg" type="info" (close)="infoMsg = null">{{ infoMsg }}</ngb-alert>
+      <ngb-alert *ngIf="infoMsg" type="info" (close)="infoMsg = null">{{ 'contenido.cookies' | translate }} <fa-icon [icon]="faCookieBite"></fa-icon></ngb-alert>
+      <ngb-alert *ngIf="infoMsg" type="info" (close)="infoMsg = null">{{ 'contenido.aviso' | translate }}</ngb-alert>
 
       <!-- Alerta de errores en el formulario -->
       <div *ngFor="let alerta of alertas">

@@ -4,6 +4,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { AcercadeComponent } from '../acercade/acercade.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
+import { ErrorComponent } from '../error/error.component';
 
 @Component({
   selector: 'app-supbar',
@@ -23,40 +24,46 @@ export class SupbarComponent {
 
   constructor(private titleService: Title, private modalService: NgbModal, private translate: TranslateService) {
 
-    var naviLang =  navigator.language;
+    var naviLang = navigator.language;
 
-    if(naviLang.toUpperCase().indexOf("ES") == 0) {
+    // Idioma por defecto en el navegador
+    if (naviLang.toUpperCase().indexOf("ES") == 0) { // Si el navegador se encuentra en espanyol se selecciona este idioma por defecto
       this.translate.setDefaultLang("es");
       this.idiomaSeleccionado = this.idiomas[0];
       this.bandera = "spain";
     }
-    else {
-    this.translate.setDefaultLang("en");
-    this.idiomaSeleccionado = this.idiomas[1];
-    this.bandera = "united_kingdom";
+    else { // Si el navegador no se encuentra en espayol se selecciona el ingles por defecto
+      this.translate.setDefaultLang("en");
+      this.idiomaSeleccionado = this.idiomas[1];
+      this.bandera = "united_kingdom";
 
     }
 
     this.translate.get('index.titulo').subscribe(value => { titleService.setTitle(value); });
   }
 
+
   /**
-   * TODO: 
    * @description Abre la ventana 'Acerca de...' con la información de la aplicacion
    * @author javierorp
    */
-  open() {
-    const modalRef = this.modalService.open(AcercadeComponent);
-    this.translate.get('acercade.titulo').subscribe(value => { modalRef.componentInstance.titulo = value; });
-    this.translate.get('acercade.texto').subscribe(value => { modalRef.componentInstance.texto = value; });
-    this.translate.get('acercade.texto2').subscribe(value => { modalRef.componentInstance.texto2 = value; });
-    this.translate.get('acercade.repo').subscribe(value => { modalRef.componentInstance.repo = value; });
-    this.translate.get('acercade.cerrar').subscribe(value => { modalRef.componentInstance.cerrar = value; });
+  acercaDe(): void {
+    try {
+      const modalRef = this.modalService.open(AcercadeComponent);
+    } catch (error) {
+      const modalRef = this.modalService.open(ErrorComponent);
+      this.translate.get('acercade.titulo').subscribe(value => { modalRef.componentInstance.desde = value; });
+      modalRef.componentInstance.merror = error;
+    }
   }
 
 
-
-  CambiarIdioma(idioma: string) {
+  /**
+   * @description Cambia el idioma de la aplicacion asi como la bandera del boton de seleccion de idioma
+   * @author javierorp
+   * @param idioma idioma al que se va a cambiar
+   */
+  CambiarIdioma(idioma: string): void {
     this.idiomaSeleccionado = idioma;
     if (idioma == "Español") {
       this.bandera = "spain";
@@ -69,10 +76,6 @@ export class SupbarComponent {
       this.translate.use('en')
     }
     this.translate.get('index.titulo').subscribe(value => { this.titleService.setTitle(value); });
-  }
-
-  public ObtenerIdioma():string{
-    return this.idiomaActivo;
   }
 
 }

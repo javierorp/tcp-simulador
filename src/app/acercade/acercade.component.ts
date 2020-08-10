@@ -8,11 +8,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AcercadeComponent {
 
-  titulo: string = null;
-  texto: string = null;
-  texto2: string = null;
-  repo: string = null;
-  cerrar: string = null;
   appVersion = require('../../../package.json');
 
   constructor(public activeModal: NgbActiveModal) { }

@@ -1,0 +1,21 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">{{ 'error.titulo' | translate }}</h4>
+    </div>
+    <div class="modal-body">
+        <p>{{ 'error.mensaje' | translate}}:
+            <a href="mailto:{{ pck.email }}?subject={{ 'error.problema' | translate }} '{{ desde }}' Component
+            &body={{ 'error.parametros' | translate }}%20{{ parametros }}%0A{{ merror }}%0A-----{{ 'error.tutexto' | translate }}-----%0A%0A">
+                <fa-icon [icon]="faEnvelope"></fa-icon>
+            </a>
+        </p>
+        <span class="icon">
+            <fa-icon class="icon-unlock" [icon]="faSadTear"></fa-icon>
+            <fa-icon class="icon-lock" [icon]="faSadCry"></fa-icon>
+        </span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')"
+            title="Cerrar">{{ 'error.cerrar' | translate}}</button>
+    </div>
+</div>
