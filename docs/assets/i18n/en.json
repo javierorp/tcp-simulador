@@ -13,7 +13,8 @@
   "contenido": {
     "nota": "NOTE",
     "nota-texto": "Lost segments functionality has not yet been added.",
-    "aviso": "This application is optimized for desktop browsers based on Chromium, such as Google Chrome, Vivaldi or Microsoft Edge.",
+    "cookies": "No information of any kind is stored. No cookies are used",
+    "aviso": "Application optimized for Chromium-based desktop browsers such as Google Chrome, Vivaldi or Microsoft Edge",
     "parametros": "Parameters",
     "parametros-tooltip": "Information about the parameters",
     "clien": "Client",
@@ -97,7 +98,8 @@
     "al_letra": "SS",
     "al": "Slow Start",
     "rr_letra": "FR",
-    "rr": "Fast Recovery"
+    "rr": "Fast Recovery",
+    "cargando": "Loading"
   },
   "acercade": {
     "titulo": "About...",
@@ -141,5 +143,13 @@
     "alg-link": "",
     "alg-text": "algorithm to use when there is congestion on the network. In this case you can choose between TCP Tahoe and TCP Reno.",
     "cerrar": "Close"
+  },
+  "error": {
+    "cerrar": "Close",
+    "titulo": "We are sorry...",
+    "mensaje": "There has been a problem and we have not been able to show you the content, please consider reporting it",
+    "problema": "Problem in",
+    "parametros": "Parameters",
+    "tutexto": "Write from here"
   }
 }
