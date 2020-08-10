@@ -1,10 +1,10 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h4 class="modal-title">{{ titulo }}</h4>
+        <h4 class="modal-title">{{ 'acercade.titulo' | translate }}</h4>
     </div>
     <div class="modal-body">
-        <p>{{ texto }}</p>
-        <p>{{ texto2 }}</p>
+        <p>{{ 'acercade.texto' | translate }}</p>
+        <p>{{ 'acercade.texto2' | translate }}</p>
         <a href="https://angular.io/" target="_blank" title="Angular">
             <img src="assets\img\angular-logo.svg" alt="Angular" class="herramientas"
                 style="width: 80px; margin-left: 10px;" />
@@ -25,8 +25,8 @@
     <div class="modal-footer">
         <span class="version" title="{{ appVersion.date }} ">v{{ appVersion.version }}</span>
         <a href="https://github.com/javierorp/tcp-simulador/" class="btn btn-modal" target="_blank"
-            title="Repositorio">{{ repo }}</a>
+            title="Repositorio">{{ 'acercade.repo' | translate }}</a>
         <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')"
-            title="Cerrar">{{ cerrar }}</button>
+            title="Cerrar">{{ 'acercade.cerrar' | translate }}</button>
     </div>
 </div>

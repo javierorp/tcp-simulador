@@ -1,25 +1,25 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h4 class="modal-title">{{ titulo }} <a href="{{ tcp_link }}" target="_blank" title="{{ masinfo }}">+</a></h4>
+        <h4 class="modal-title">{{ 'infoparametros.titulo' | translate }} <a href="{{ 'infoparametros.tcp-link' | translate }}" target="_blank" title="{{  'infoparametros.masinfo' | translate  }}">+</a></h4>
     </div>
     <div class="modal-body">       
-        {{ supuestos }}
+        {{ 'infoparametros.supuestos' | translate }}
         <ul style="list-style-type: square;">
-            <li>{{ supuesto1 }}</li>
-            <li>{{ supuesto2 }}</li>
+            <li>{{ 'infoparametros.supuesto1' | translate }}</li>
+            <li>{{ 'infoparametros.supuesto2' | translate }}</li>
         </ul>
         <span>
-            <b>- <a href="{{ ip_link }}" target="_blank" title="{{ masinfo }}">{{ ip }}:</a></b> {{ ip_text }}<br>
-            <b>- <a href="{{ mss_link }}" target="_blank" title="{{ masinfo }}">{{ mss }}:</a></b> {{ mss_text }}<br>
-            <b>- <a href="{{ datos_link }}" target="_blank" title="{{ masinfo }}">{{ datos }}:</a></b> {{ datos_text }}<br>
-            <b>- <a href="{{ sn_link }}" target="_blank" title="{{ masinfo }}">{{ sn }}:</a></b> {{ sn_text }}<br>
-            <b>- <span style="color: #023163">{{ segperd }}:</span></b> {{ segperd_text }}<br>
-            <b>- <a href="{{ w_link }}" target="_blank" title="{{ masinfo }}">{{ w }}</a></b> {{ w_text }}<br>
-            <b>- <span style="color: #023163">{{ timeout }}:</span></b> {{ timeout_text }}<br>
-            <b>- <span style="color: #023163">{{ alg }}:</span></b> {{ alg_text }}
+            <b>- <a href="{{ 'infoparametros.ip-link' | translate }}" target="_blank" title="{{ 'infoparametros.masinfo' | translate }}">{{ 'infoparametros.ip' | translate }}:</a></b> {{ 'infoparametros.ip-text' | translate }}<br>
+            <b>- <a href="{{ 'infoparametros.mss-link' | translate }}" target="_blank" title="{{ 'infoparametros.masinfo' | translate }}">{{ 'infoparametros.mss' | translate }}:</a></b> {{ 'infoparametros.mss-text' | translate }}<br>
+            <b>- <a href="{{ 'infoparametros.datos-link' | translate }}" target="_blank" title="{{ 'infoparametros.masinfo' | translate }}">{{ 'infoparametros.datos' | translate }}:</a></b> {{ 'infoparametros.datos-text' | translate }}<br>
+            <b>- <a href="{{ 'infoparametros.sn-link' | translate }}" target="_blank" title="{{ 'infoparametros.masinfo' | translate }}">{{ 'infoparametros.sn' | translate }}:</a></b> {{ 'infoparametros.sn-text' | translate }}<br>
+            <b>- <span style="color: #023163">{{ 'infoparametros.segperd' | translate }}:</span></b> {{ 'infoparametros.segperd-text' | translate }}<br>
+            <b>- <a href="{{ 'infoparametros.w-link' | translate }}" target="_blank" title="{{ 'infoparametros.masinfo' | translate }}">{{ 'infoparametros.w' | translate }}</a></b> {{ 'infoparametros.w-text' | translate }}<br>
+            <b>- <span style="color: #023163">{{ 'infoparametros.timeout' | translate }}:</span></b> {{ 'infoparametros.timeout-text' | translate }}<br>
+            <b>- <span style="color: #023163">{{ 'infoparametros.alg' | translate   }}:</span></b> {{ 'infoparametros.alg-text' | translate }}
         </span>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')" title="{{ cerrar }}">{{ cerrar }}</button>
+        <button type="button" class="btn btn-modal" (click)="activeModal.close('Close click')" title="{{ 'infoparametros.cerrar' | translate }}">{{ 'infoparametros.cerrar' | translate }}</button>
     </div>
 </div>
