@@ -139,3 +139,22 @@ span.flagserv {
     font-weight  : bold;
     border-radius: 4px;
 }
+
+.cont-bug {
+    position: fixed;
+    right   : 0;
+    width   : -webkit-fill-available;
+}
+
+.bug {
+    position    : absolute;
+    right       : 0;
+    margin-right: 15px;
+    color       : #004e99;
+    opacity     : 0.5;
+}
+
+.bug:hover {
+    opacity: 1;
+    color  : #004e99;
+}

@@ -2,23 +2,23 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { faServer } from '@fortawesome/free-solid-svg-icons';
+import { faBug } from '@fortawesome/free-solid-svg-icons';
 import { Observable, of } from 'rxjs';
 import { delay, share, combineAll } from 'rxjs/operators';
-import { invalid } from '@angular/compiler/src/render3/view/util';
-import { ReturnStatement } from '@angular/compiler';
-import { env } from 'process';
+import { NgbPopoverConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ErrorComponent } from '../error/error.component';
 
 // Interfaz de los datos a representar
 interface Comunicacion {
   dir: number; // null espacio vacio
-              // 0 bidireccional cliente<->servidor con VC en cliente
-              // 10 bidireccional cliente<->servidor con VC en servidor
-              //  1 direccion cliente->servidor
-              //  2 direccion servidor->cliente
-              // -1 segmento perdido en direccion cliente->servidor
-              // -2 segmento perdido en direccion servidor->cliente
-              // -10 segmento perdido en direccion cliente->servidor y flecha servidor->cliente
-              // -20 segmento perdido en direccion servidor->cliente y flecha cliente->servidor
+  // 0 bidireccional cliente<->servidor con VC en cliente
+  // 10 bidireccional cliente<->servidor con VC en servidor
+  //  1 direccion cliente->servidor
+  //  2 direccion servidor->cliente
+  // -1 segmento perdido en direccion cliente->servidor
+  // -2 segmento perdido en direccion servidor->cliente
+  // -10 segmento perdido en direccion cliente->servidor y flecha servidor->cliente
+  // -20 segmento perdido en direccion servidor->cliente y flecha cliente->servidor
   flagcli: string[]; // [SYN, FIN, ACK, AL, EC, RR]
   sncli: number; // numero de secuencia
   ancli: number; // numero de reconocimento
@@ -54,23 +54,32 @@ interface Maquina {
 @Component({
   selector: 'app-simulacion',
   templateUrl: './simulacion.component.html',
-  styleUrls: ['./simulacion.component.css']
+  styleUrls: ['./simulacion.component.css'],
+  providers: [NgbPopoverConfig]
 })
 export class SimulacionComponent implements OnChanges {
 
   faLaptop = faLaptop;
   faServer = faServer;
+  faBug = faBug;
   comunicacion: Comunicacion[];
   cli: Maquina;
   serv: Maquina;
   ipclien: string = null;
   ipserv: string = null;
   mostrar: Observable<{}>; // Mostrar simulacion o imagen de 'cargando'
+  parametros: string = null;
+  pck = require('../../../package.json');
+
 
   // Obtenemos los datos del componente padre ContenidoComponent
   @Input() simular: Simulacion;
 
-  constructor() { }
+  constructor(private modalService: NgbModal, config: NgbPopoverConfig) {
+    // Estilo del popover para reportar un error en la simulacion
+    config.placement = 'left';
+    config.triggers = 'hover';
+  }
 
   /**
  * @description Cambia el estado de la variable 'mostrar'
@@ -86,20 +95,29 @@ export class SimulacionComponent implements OnChanges {
    * @author javierorp
    */
   generarSimulacion(): Observable<boolean> {
-    this.comunicacion = [];
-    this.cli = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
-    this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
-    this.ipclien = this.simular.ipclien;
-    this.ipserv = this.simular.ipserv;
+    try {
+      this.comunicacion = [];
+      this.cli = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
+      this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
+      this.ipclien = this.simular.ipclien;
+      this.ipserv = this.simular.ipserv;
 
-    if(this.simular.segperdclien == "" && this.simular.segperdserv == "")
-      this.simularEC();
-    else if(this.simular.algort == "1")
-      this.simularReno();
-    else
-      this.simularTahoe();
+      if (this.simular.segperdclien == "" && this.simular.segperdserv == "")
+        this.simularEC();
+      else if (this.simular.algort == "1")
+        this.simularReno();
+      else
+        this.simularTahoe();
 
-    return of(true).pipe(delay(500));; // Ocultar la imagen de carga y mostrar la simulacion
+      this.parametros = JSON.stringify(this.simular);
+      return of(true).pipe(delay(500));; // Ocultar la imagen de carga y mostrar la simulacion
+    } catch (error) {
+      const modalRef = this.modalService.open(ErrorComponent);
+      modalRef.componentInstance.desde = "Simular";
+      modalRef.componentInstance.parametros = JSON.stringify(this.simular);
+      modalRef.componentInstance.merror = error;
+      return new Observable<false>()
+    }
   }
 
   /**
@@ -107,7 +125,7 @@ export class SimulacionComponent implements OnChanges {
    * @author javierorp
    * @returns  
    */
-  simularEC():void {
+  simularEC(): void {
     /*-----INICIALIZACION-----*/
     // Flags
     let nullflag: string[] = ["", "", "", "", "", ""];
@@ -183,7 +201,7 @@ export class SimulacionComponent implements OnChanges {
       denv = modPqtClien;
     else
       denv = mss;
-      // El cliente envía el primer paquete
+    // El cliente envía el primer paquete
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
     numPqtClienEnv++;
 
@@ -253,13 +271,12 @@ export class SimulacionComponent implements OnChanges {
     }
 
     // El servidor espera 1.5 ticks por si recibe otro paquete
-    if(envAck != 2)
+    if (envAck != 2)
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
     // El servidor envia el primer paquete de datos junto al ACK del ultimo paquete
     if (envAck != 0 || (envAck == 0 && modPqtClien != 0)) { // Si el ACK no se ha enviado ya
-      if(envAck == 0 && modPqtClien != 0)
-      {
+      if (envAck == 0 && modPqtClien != 0) {
         this.cli.ult_sn = this.cli.sn;
         this.cli.sn += denv;
       }
@@ -300,7 +317,7 @@ export class SimulacionComponent implements OnChanges {
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
       this.serv.ult_an = this.serv.an;
     }
-    else{
+    else {
       this.cli.an = this.serv.sn + denv;
     }
 
@@ -355,7 +372,7 @@ export class SimulacionComponent implements OnChanges {
     }
 
     // El cliente espera 1.5 ticks por si recibe otro paquete
-    if(envAck != 2)
+    if (envAck != 2)
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
     // El cliente envia el ACK del ultimo paquete
@@ -373,7 +390,7 @@ export class SimulacionComponent implements OnChanges {
     }
 
     // El cliente espera 1.5 tick por si hay intercambio de informacion y luego se procede a cerrar
-    if(envAck == 2 && cierre == "1")
+    if (envAck == 2 && cierre == "1")
       this.comunicacion.push({ numseg: null, dir: null, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
 
 
@@ -457,18 +474,18 @@ export class SimulacionComponent implements OnChanges {
     return maqVC;
   }
 
-    /**
-     * 
-   * @description Simula utilizando como algoritmo de congestion Reno
-   * @author javierorp
-   * @returns  
-   */
-  simularReno():void {
+  /**
+   * 
+ * @description Simula utilizando como algoritmo de congestion Reno
+ * @author javierorp
+ * @returns  
+ */
+  simularReno(): void {
     console.log("Reno");
     this.simularEC();
     return;
   }
-  
+
   /**
    * @description Simula utilizando como algoritmo de congestion Tahoe
    * @author javierorp

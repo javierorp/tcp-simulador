@@ -99,7 +99,10 @@
     "al": "Arranque Lento",
     "rr_letra": "RR",
     "rr": "Recuperación Rápida",
-    "cargando": "Cargando"
+    "cargando": "Cargando",
+    "reportar": "Reportar un error",
+    "reportar-titulo": "¿Ves algún error en la simulación?",
+    "reportar-texto": "Por favor, repórtelo"
   },
   "acercade": {
     "titulo": "Acerca de...",

@@ -99,7 +99,10 @@
     "al": "Slow Start",
     "rr_letra": "FR",
     "rr": "Fast Recovery",
-    "cargando": "Loading"
+    "cargando": "Loading",
+    "reportar": "Report a bug",
+    "reportar-titulo": "Do you see any errors in the simulation?",
+    "reportar-texto": "Please, report it"
   },
   "acercade": {
     "titulo": "About...",

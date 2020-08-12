@@ -1,4 +1,12 @@
 <span *ngIf="mostrar | async; else loading">
+    <a class="cont-bug" style="color: black" href="mailto:{{ pck.email }}?subject={{ 'simulacion.reportar' | translate }}
+    &body={{ 'error.parametros' | translate }}%20{{ parametros }}%0A-----{{ 'error.tutexto' | translate }}-----%0A%0A">
+        <button class="btn bug" title="{{ 'simulacion.reportar' | translate }}"
+            ngbPopover="{{ 'simulacion.reportar-texto' | translate }}" triggers="mouseenter:mouseleave"
+            popoverTitle="{{ 'simulacion.reportar-titulo' | translate }}">
+            <fa-icon [icon]="faBug"></fa-icon>
+        </button>
+    </a>
     <table>
         <tr>
             <th class="clien">
@@ -17,14 +25,13 @@
 
     <table class="flujo">
         <tr *ngFor="let conversacion of comunicacion">
-             <!-- Espacio en blanco en la tabla -->
-             <span *ngIf="conversacion.dir == null">
+            <!-- Espacio en blanco en la tabla -->
+            <span *ngIf="conversacion.dir == null">
                 <td class="info-izq">
                 </td>
                 <td>
                     <span title="">
-                        <img src="assets\img\vacio.svg" alt="null" class="flecha"
-                            draggable="false" />
+                        <img src="assets\img\vacio.svg" alt="null" class="flecha" draggable="false" />
                     </span>
                 </td>
                 <td class="info-dcha">
@@ -38,8 +45,7 @@
                     <span *ngIf="conversacion.flagcli[3] != ''" title="{{ 'simulacion.al' | translate }}" class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
                     <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}" class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                     <span *ngIf="conversacion.flagcli[5] != ''" title="{{ 'simulacion.rr' | translate }}" class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>&nbsp;
-                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
-                        class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}" class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                     <span title="{{ 'simulacion.sn' | translate }}">&nbsp;SN={{ conversacion.sncli }}, </span>
                     <span *ngIf="conversacion.ancli != 0" title="{{ 'simulacion.an' | translate }}">
                         AN={{ conversacion.ancli }},
@@ -86,8 +92,7 @@
                     </span>
                     <span title="{{ 'simulacion.datos' | translate }}">D={{ conversacion.dserv }}, </span>
                     <span title="{{ 'simulacion.w' | translate }}">W={{ conversacion.wserv }}</span>&nbsp;
-                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
-                    class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>&nbsp;
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}" class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>&nbsp;
                     <span *ngIf="conversacion.flagserv[3] != ''" title="{{ 'simulacion.al' | translate }}" class="modo">&nbsp;{{ 'simulacion.al_letra' | translate }}&nbsp;</span>
                     <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}" class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
                     <span *ngIf="conversacion.flagserv[5] != ''" title="{{ 'simulacion.rr' | translate }}" class="modo">&nbsp;{{ 'simulacion.rr_letra' | translate }}&nbsp;</span>
@@ -120,21 +125,17 @@
                     </span>
                 </td>
                 <td class="info-dcha">
-                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
-                        class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>&nbsp;
-                        <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}"
-                        class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
-                    
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}" class="vcserv">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>&nbsp;
+                    <span *ngIf="conversacion.flagserv[4] != ''" title="{{ 'simulacion.ec' | translate }}" class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>
+
                 </td>
             </span>
 
             <!-- Direccion servidor->cliente -->
             <span *ngIf="conversacion.dir == 2">
                 <td class="info-izq">
-                    <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}"
-                        class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>&nbsp;
-                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}"
-                        class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
+                    <span *ngIf="conversacion.flagcli[4] != ''" title="{{ 'simulacion.ec' | translate }}" class="modo">&nbsp;{{ 'simulacion.ec_letra' | translate }}&nbsp;</span>&nbsp;
+                    <span *ngIf="conversacion.vc != 0" title="{{ 'simulacion.vc' | translate }}" class="vccli">&nbsp;{{ 'simulacion.vc_letra' | translate }}={{ conversacion.vc }}&nbsp;</span>
                 </td>
                 <td>
                     <span title="{{ 'simulacion.seg' | translate }} {{ conversacion.numseg }}">
@@ -217,25 +218,3 @@
         <img width="15%" alt="{{ 'simulacion.cargando' | translate }}..." src="assets\img\loading.gif" />
     </div>
 </ng-template>
-<!-- <div>
-    <h3 style="text-align: left;">Valores introducidos:</h3>
-    <h4 style="text-align: left;">Cliente</h4>
-    <p style="text-align: left;">IP: {{ simular.ipclien  }}
-    <br>MSS(B): {{ simular.mssclien  }}
-    <br>Datos(B): {{ simular.datosclien }}
-    <br>SN: {{ simular.snclien }}
-    <br>{{ 'simulacion.seg' | translate }}s perdidos: {{ simular.segperdclien }}
-
-    <h4 style="text-align: left;">Servidor</h4>
-    <p style="text-align: left;">IP: {{ simular.ipserv }}
-    <br>MSS(B): {{ simular.mssserv }}
-    <br>Datos(B): {{ simular.datosserv }}
-    <br>SN: {{ simular.snserv }}
-    <br>{{ 'simulacion.seg' | translate }}s perdidos: {{ simular.segperdserv }}
-    
-    <h4 style="text-align: left;">General</h4>
-    <p style="text-align: left;">Timeout: {{ simular.timeout }}
-    <br>Umbral: {{ simular.umbral }}
-    <br>Algoritmo de congestión: {{ simular.algort }}
-    <br>Cierre de conexión: {{ simular.cierre }}</p>
-</div> -->
