@@ -91,6 +91,12 @@
   border-color    : #004e99;
 }
 
+.alert-warning {
+  color: #6a4f00;
+  background-color: #fff3cd;
+  border-color: #6a4f00;
+}
+
 /* Boton de informacion de los parametros */
 .infoparametros {
   opacity    : 0.6;

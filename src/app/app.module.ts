@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import {NgxPrintModule} from 'ngx-print';
 // Bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Angular Material
@@ -46,6 +47,7 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     NgbModule,
+    NgxPrintModule,
     BrowserAnimationsModule,
     MatSidenavModule,
     FormsModule,

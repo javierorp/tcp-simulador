@@ -14,7 +14,7 @@
     "nota": "NOTE",
     "nota-texto": "Lost segments functionality has not yet been added.",
     "cookies": "No information of any kind is stored. No cookies are used",
-    "aviso": "Application optimized for Chromium-based desktop browsers such as Google Chrome, Vivaldi or Microsoft Edge",
+    "aviso": "Browser not supported. Use a Chromium-based browser, such as Google Chrome, Vivaldi, or Microsoft Edge",
     "parametros": "Parameters",
     "parametros-tooltip": "Information about the parameters",
     "clien": "Client",
@@ -44,7 +44,7 @@
     "wserv": "Reception window(B)",
     "wserv-tooltip": "Reception window (in bytes)",
     "general": "General",
-    "timeout": "Timeout(ticks)",
+    "timeout": "Timeout(tics)",
     "timeout-tooltip": "Maximum waiting time (in seconds) [0 - disable]",
     "umbral": "Threshold/Ssthresh ",
     "umbral-tooltip": "Value which, if exceeded by the congestion window, would be changed to 'Congestion Avoidance'",
@@ -99,7 +99,9 @@
     "al": "Slow Start",
     "rr_letra": "FR",
     "rr": "Fast Recovery",
-    "cargando": "Loading"
+    "cargando": "Loading",
+    "reportar": "Report a bug in the simulation",
+    "imprimir": "Print simulation"
   },
   "acercade": {
     "titulo": "About...",

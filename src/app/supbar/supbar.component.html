@@ -4,7 +4,7 @@
   <a href="{{ 'supbar.link' | translate }}" target="_blank" title="{{ 'supbar.img-uni' | translate }}">
     <img width="120" alt="{{ 'supbar.img-uni' | translate }}" src="{{ 'supbar.logo' | translate }}" />
   </a>
-  <span class="no-seleccionable">{{ 'supbar.titulo' | translate }}</span>
+  <span class="no-seleccionable" *ngIf="!movil">{{ 'supbar.titulo' | translate }}</span>
 
   <button class="btn acercade" mat-button title="{{ 'supbar.btn-acercade' | translate }}" (click)="acercaDe()">
     <fa-icon [icon]="faInfoCircle"></fa-icon>
