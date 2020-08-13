@@ -3,8 +3,9 @@ import { Simulacion } from '../simulacion';
 import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { faServer } from '@fortawesome/free-solid-svg-icons';
 import { faBug } from '@fortawesome/free-solid-svg-icons';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import { Observable, of } from 'rxjs';
-import { delay, share, combineAll } from 'rxjs/operators';
+import { delay, share } from 'rxjs/operators';
 import { NgbPopoverConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorComponent } from '../error/error.component';
 
@@ -62,6 +63,7 @@ export class SimulacionComponent implements OnChanges {
   faLaptop = faLaptop;
   faServer = faServer;
   faBug = faBug;
+  faPrint = faPrint;
   comunicacion: Comunicacion[];
   cli: Maquina;
   serv: Maquina;
@@ -70,6 +72,7 @@ export class SimulacionComponent implements OnChanges {
   mostrar: Observable<{}>; // Mostrar simulacion o imagen de 'cargando'
   parametros: string = null;
   pck = require('../../../package.json');
+  host = window.location.href;
 
 
   // Obtenemos los datos del componente padre ContenidoComponent
@@ -497,3 +500,5 @@ export class SimulacionComponent implements OnChanges {
     return;
   }
 }
+
+

@@ -14,7 +14,7 @@
     "nota": "NOTA",
     "nota-texto": "Aún no se ha añadido la funcionalidad de segmentos perdidos.",
     "cookies": "No se almacena información de ningún tipo. No se utilizan cookies",
-    "aviso": "Aplicación optimizada para navegadores de escritorio basados en Chromium, como Google Chrome, Vivaldi o Microsoft Edge",
+    "aviso": "Navegador no soportado. Utilice un navegador basado en Chromium, como Google Chrome, Vivaldi o Microsoft Edge",
     "parametros": "Parámetros",
     "parametros-tooltip": "Información sobre los parámetros",
     "clien": "Cliente",
@@ -44,7 +44,7 @@
     "wserv": "Ventana de recepción(B)",
     "wserv-tooltip": "Ventana de recepción (en bytes)",
     "general": "General",
-    "timeout": "Timeout(ticks)",
+    "timeout": "Timeout(tics)",
     "timeout-tooltip": "Tiempo máximo de espera (en segundos) [0 - desactivar]",
     "umbral": "Umbral/Ssthresh",
     "umbral-tooltip": "Valor que, si lo supera la ventana de congestión, se pasaría a 'Evitación de la Congestión'",
@@ -100,9 +100,8 @@
     "rr_letra": "RR",
     "rr": "Recuperación Rápida",
     "cargando": "Cargando",
-    "reportar": "Reportar un error",
-    "reportar-titulo": "¿Ves algún error en la simulación?",
-    "reportar-texto": "Por favor, repórtelo"
+    "reportar": "Reportar un error en la simulación",
+    "imprimir": "Imprimir simulación"
   },
   "acercade": {
     "titulo": "Acerca de...",

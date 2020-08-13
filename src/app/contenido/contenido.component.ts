@@ -27,7 +27,7 @@ interface Alerta {
 export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   // Abrir o cerrar barra lateral
-  opened: boolean;
+  sidenavOpened: boolean = true;
 
   // Iconos de los botones
   faBars = faBars; // menu
@@ -90,14 +90,24 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   private _success = new Subject<string>();
   staticAlertClosed = false;
   infoMsg: string = null;
+  infoCookie: boolean = true;
+  infoOpt: boolean = true;
   alertas: Alerta[];
+  navOptimizado: boolean = false;
 
   constructor(private modalService: NgbModal, private translate: TranslateService, private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
+    // Si se visualiza en un movil la barra lateral aparece cerrada
+    if(window.screen.width <= 705)
+      this.sidenavOpened = false;
+
     // Muestra la alerta de los navegadores compatibles durante 5 segundos
     var duracion: number = 10000; //en milisegundos
+
+    if(navigator.userAgent.indexOf("Chrome") > -1)
+        this.navOptimizado = true;
 
     setTimeout(() => this.staticAlertClosed = true, 20000);
 

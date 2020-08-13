@@ -1,12 +1,53 @@
 <span *ngIf="mostrar | async; else loading">
-    <a class="cont-bug" style="color: black" href="mailto:{{ pck.email }}?subject={{ 'simulacion.reportar' | translate }}
+    <a class="cont-opt" style="color: black" href="mailto:{{ pck.email }}?subject={{ 'simulacion.reportar' | translate }}
     &body={{ 'error.parametros' | translate }}%20{{ parametros }}%0A-----{{ 'error.tutexto' | translate }}-----%0A%0A">
-        <button class="btn bug" title="{{ 'simulacion.reportar' | translate }}"
-            ngbPopover="{{ 'simulacion.reportar-texto' | translate }}" triggers="mouseenter:mouseleave"
-            popoverTitle="{{ 'simulacion.reportar-titulo' | translate }}">
+        <button class="btn option" title="{{ 'simulacion.reportar' | translate }}"
+            ngbPopover="{{ 'simulacion.reportar' | translate }}" triggers="mouseenter:mouseleave">
             <fa-icon [icon]="faBug"></fa-icon>
         </button>
     </a>
+    <span class="cont-opt">
+        <button style="margin-top: 40px" class="btn option" title="{{ 'simulacion.imprimir' | translate }}"
+            ngbPopover="{{ 'simulacion.imprimir' | translate }}" triggers="mouseenter:mouseleave"
+
+            printTitle = "{{ 'supbar.titulo' | translate}}"
+            [useExistingCss]="true"
+            printSectionId="simulacion" ngxPrint> 
+            <fa-icon [icon]="faPrint"></fa-icon>
+        </button>
+    </span>
+    <span id ="simulacion">
+        <div id="impParametros" class="imprimir parametros">
+            <h4>{{ 'contenido.parametros' | translate }}</h4>
+            <h5>{{ 'contenido.clien' | translate }}</h5>
+            <p>
+                <b>{{ 'contenido.ipclien' | translate }}: </b> {{ simular.ipclien }}
+                <b>{{ 'contenido.mssclien' | translate }}: </b> {{ simular.mssclien }}
+                <b>{{ 'contenido.datosclien' | translate }}: </b> {{ simular.datosclien }}
+                <b>{{ 'contenido.snclien' | translate }}: </b> {{ simular.snclien }}
+                <span *ngIf="simular.segperdclien"><b>{{ 'contenido.segperdclien' | translate }}: </b> {{ simular.segperdclien }} </span>
+                <b>{{ 'contenido.wclien' | translate }}: </b> {{ simular.wclien }}
+
+            </p>
+            <h5>{{ 'contenido.serv' | translate }}</h5>
+            <p>
+                <b>{{ 'contenido.ipserv' | translate }}: </b> {{ simular.ipserv }}
+                <b>{{ 'contenido.mssserv' | translate }}: </b> {{ simular.mssserv }}
+                <b>{{ 'contenido.datosserv' | translate }}: </b> {{ simular.datosserv }}
+                <b>{{ 'contenido.snserv' | translate }}: </b> {{ simular.snserv }}
+                <span *ngIf="simular.segperdserv"><b>{{ 'contenido.segperdserv' | translate }}: </b> {{ simular.segperdserv }} </span>
+                <b>{{ 'contenido.wserv' | translate }}: </b> {{ simular.wserv }}
+
+            </p>
+            <h5>{{ 'contenido.general' | translate }}</h5>
+            <p>
+                <b>{{ 'contenido.timeout' | translate }}: </b> {{ simular.timeout }}
+                <b>{{ 'contenido.algort' | translate }}: </b> <span *ngIf="simular.algort == '1'">TCP Reno </span><span *ngIf="simular.algort == '2'">TCP Tahoe </span>
+                <b>{{ 'contenido.umbral' | translate }}: </b> {{ simular.umbral }}
+                <b>{{ 'contenido.cierre' | translate }}: </b> <span *ngIf="simular.cierre == '1'">{{ 'contenido.clien' | translate }}</span><span *ngIf="simular.cierre == '2'">{{ 'contenido.serv' | translate }}</span>
+
+            </p>
+        </div>
     <table>
         <tr>
             <th class="clien">
@@ -211,6 +252,11 @@
             </span>
         </tr>
     </table>
+    <footer class="imprimir" style="display:none">
+        <p class="footer">{{ host }}</p>
+        <img src="assets\img\uah_logo_print.jpg" class="uah-logo"/>
+    </footer>
+    </span>
 </span>
 
 <ng-template #loading>
