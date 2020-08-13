@@ -28,6 +28,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   // Abrir o cerrar barra lateral
   sidenavOpened: boolean = true;
+  movil: boolean = false;
 
   // Iconos de los botones
   faBars = faBars; // menu
@@ -100,8 +101,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     // Si se visualiza en un movil la barra lateral aparece cerrada
-    if(window.screen.width <= 705)
-      this.sidenavOpened = false;
+    this.movil = window.screen.width <= 705 ? true : false;
+    this.sidenavOpened = this.movil == true ? false: true;
 
     // Muestra la alerta de los navegadores compatibles durante 5 segundos
     var duracion: number = 10000; //en milisegundos
@@ -130,10 +131,10 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    */
   infoParametros() {
     try {
-      const modalRef = this.modalService.open(InfoparametrosComponent);
+      const modalRef = this.modalService.open(InfoparametrosComponent, {windowClass: 'modal-entrada'});
     }
     catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent);
+      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
       modalRef.componentInstance.desde = "Contenido";
       modalRef.componentInstance.parametros = JSON.stringify(this.simulacion);
       modalRef.componentInstance.merror = error;
@@ -173,6 +174,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre };
 
+      this.sidenavOpened = this.movil == true ? false: true; // Ocultamos la barra de navegacion si es un movil
       // Permitimos que se visualice la simulacion
       this.ejecutar = true;
     }
@@ -330,7 +332,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       return simular;
     }
     catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent);
+      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
       modalRef.componentInstance.desde = "Contenido";
       modalRef.componentInstance.parametros = JSON.stringify(this.simulacion);
       modalRef.componentInstance.merror = error;
@@ -364,7 +366,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.cierre = this.numAleatorio(1, 3, 1).toString();
     }
     catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent);
+      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
       modalRef.componentInstance.desde = "Contenido";
       modalRef.componentInstance.parametros = JSON.stringify(this.simulacion);
       modalRef.componentInstance.merror = error;
@@ -422,7 +424,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.ejecutar = false;
     }
     catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent);
+      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
       modalRef.componentInstance.desde = "Contenido";
       modalRef.componentInstance.parametros = JSON.stringify(this.simulacion);
       modalRef.componentInstance.merror = error;

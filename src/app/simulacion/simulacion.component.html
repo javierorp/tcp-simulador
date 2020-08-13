@@ -1,13 +1,13 @@
 <span *ngIf="mostrar | async; else loading">
     <a class="cont-opt" style="color: black" href="mailto:{{ pck.email }}?subject={{ 'simulacion.reportar' | translate }}
     &body={{ 'error.parametros' | translate }}%20{{ parametros }}%0A-----{{ 'error.tutexto' | translate }}-----%0A%0A">
-        <button class="btn option" title="{{ 'simulacion.reportar' | translate }}"
+        <button class="btn option opt-animation" title="{{ 'simulacion.reportar' | translate }}"
             ngbPopover="{{ 'simulacion.reportar' | translate }}" triggers="mouseenter:mouseleave">
             <fa-icon [icon]="faBug"></fa-icon>
         </button>
     </a>
     <span class="cont-opt">
-        <button style="margin-top: 40px" class="btn option" title="{{ 'simulacion.imprimir' | translate }}"
+        <button style="margin-top: 40px" class="btn option opt-animation" title="{{ 'simulacion.imprimir' | translate }}"
             ngbPopover="{{ 'simulacion.imprimir' | translate }}" triggers="mouseenter:mouseleave"
 
             printTitle = "{{ 'supbar.titulo' | translate}}"
@@ -48,7 +48,7 @@
 
             </p>
         </div>
-    <table>
+    <table class="simu-animation">
         <tr>
             <th class="clien">
                 <fa-icon class="fas fa-laptop fa-2x-laptop" [icon]="faLaptop"
@@ -64,7 +64,7 @@
         </tr>
     </table>
 
-    <table class="flujo">
+    <table class="flujo simu-animation">
         <tr *ngFor="let conversacion of comunicacion">
             <!-- Espacio en blanco en la tabla -->
             <span *ngIf="conversacion.dir == null">
@@ -260,7 +260,7 @@
 </span>
 
 <ng-template #loading>
-    <div class="load" title="{{ 'simulacion.cargando' | translate }}...">
+    <div class="load load-animation" title="{{ 'simulacion.cargando' | translate }}...">
         <img width="15%" alt="{{ 'simulacion.cargando' | translate }}..." src="assets\img\loading.gif" />
     </div>
 </ng-template>

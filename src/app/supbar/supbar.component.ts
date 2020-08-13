@@ -27,9 +27,8 @@ export class SupbarComponent {
     var naviLang = navigator.language;
 
     // Si se visualiza en un movil no aparece el titulo de la pagina
-    if(window.screen.width <= 705)
-      this.movil = true;
-
+    this.movil = window.screen.width <= 705 ? true : false;
+    
     // Idioma por defecto en el navegador
     if (naviLang.toUpperCase().indexOf("ES") == 0) { // Si el navegador se encuentra en espanyol se selecciona este idioma por defecto
       this.translate.setDefaultLang("es");
@@ -53,9 +52,9 @@ export class SupbarComponent {
    */
   acercaDe(): void {
     try {
-      const modalRef = this.modalService.open(AcercadeComponent);
+      const modalRef = this.modalService.open(AcercadeComponent, {windowClass: 'modal-entrada'});
     } catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent);
+      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
       this.translate.get('acercade.titulo').subscribe(value => { modalRef.componentInstance.desde = value; });
       modalRef.componentInstance.merror = error;
     }

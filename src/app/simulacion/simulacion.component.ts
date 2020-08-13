@@ -115,7 +115,7 @@ export class SimulacionComponent implements OnChanges {
       this.parametros = JSON.stringify(this.simular);
       return of(true).pipe(delay(500));; // Ocultar la imagen de carga y mostrar la simulacion
     } catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent);
+      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
       modalRef.componentInstance.desde = "Simular";
       modalRef.componentInstance.parametros = JSON.stringify(this.simular);
       modalRef.componentInstance.merror = error;

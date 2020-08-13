@@ -79,7 +79,10 @@
 
     <!-- Boton de simular, rellenar y limpiar formulario -->
     <div style="margin-bottom: 15px;">
-      <button type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular()">
+      <button *ngIf="movil" type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular(); sidenav.toggle()">
+        <fa-icon [icon]="faPlay"></fa-icon>
+      </button>
+      <button *ngIf="!movil" type="button" class="btn btn-formulario" title="{{ 'contenido.simular' | translate }}" (click)="simular()">
         <fa-icon [icon]="faPlay"></fa-icon>
       </button>
       <button type="button" class="btn btn-formulario" title="{{ 'contenido.rellenar' | translate }}" (click)="rellenarDatos()">
@@ -102,11 +105,11 @@
 
     <!-- Alerta de navegadores compatibles -->
     <div class="alerta">
-      <ngb-alert *ngIf="infoMsg && infoCookie" type="info" (close)="infoCookie = false">{{ 'contenido.cookies' | translate }} <fa-icon [icon]="faCookieBite"></fa-icon></ngb-alert>
-      <ngb-alert *ngIf="infoMsg && !navOptimizado && infoOpt" type="warning" (close)="infoOpt = false">{{ 'contenido.aviso' | translate }}</ngb-alert>
+      <ngb-alert *ngIf="infoMsg && infoCookie" type="info" (close)="infoCookie = false" class="alert-animation">{{ 'contenido.cookies' | translate }} <fa-icon [icon]="faCookieBite"></fa-icon></ngb-alert>
+      <ngb-alert *ngIf="infoMsg && !navOptimizado && infoOpt" type="warning" (close)="infoOpt = false" class="alert-animation">{{ 'contenido.aviso' | translate }}</ngb-alert>
 
       <!-- Alerta de errores en el formulario -->
-      <div *ngFor="let alerta of alertas">
+      <div *ngFor="let alerta of alertas" class="alert-animation">
         <ngb-alert type="danger" (close)="cerrarAlerta(alerta)">
           <strong>{{ alerta.campo }}</strong> {{ alerta.msg }}</ngb-alert>
       </div>
