@@ -103,10 +103,15 @@
       </div>
     </button>
 
-    <!-- Alerta de navegadores compatibles -->
+    <!-- Alertas -->
     <div class="alerta">
-      <ngb-alert *ngIf="infoMsg && infoCookie" type="info" (close)="infoCookie = false" class="alert-animation">{{ 'contenido.cookies' | translate }} <fa-icon [icon]="faCookieBite"></fa-icon></ngb-alert>
+      <!-- Alerta de cookies -->
+      <ngb-alert *ngIf="infoMsg && infoCookie" type="info" (close)="infoCookie = false" class="alert-animation"><fa-icon [icon]="faCookieBite"></fa-icon> {{ 'contenido.cookies' | translate }}</ngb-alert>
+      <!-- Alerta de navegadores compatibles -->
       <ngb-alert *ngIf="infoMsg && !navOptimizado && infoOpt" type="warning" (close)="infoOpt = false" class="alert-animation">{{ 'contenido.aviso' | translate }}</ngb-alert>
+      
+      <!-- Alerta de implementacion en proceso -->
+      <ngb-alert *ngIf="enprocMsg" type="warning" (close)="enprocMsg = false" class="alert-animation"><fa-icon [icon]="faCogs"></fa-icon> {{ 'contenido.enproceso' | translate }}</ngb-alert>
 
       <!-- Alerta de errores en el formulario -->
       <div *ngFor="let alerta of alertas" class="alert-animation">
@@ -115,9 +120,6 @@
       </div>
     </div>
     <!-- Simulacion -->
-    <p style="text-align: left;"><br>
-      <b style="color: red; margin-left: 10px;">{{ 'contenido.nota' | translate }}:</b> {{ 'contenido.nota-texto' | translate }}
-    </p>
     <div class="contsimulacion" *ngIf="ejecutar">
       <app-simulacion [simular]="simulacionEnv"></app-simulacion>
     </div>

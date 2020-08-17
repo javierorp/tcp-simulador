@@ -46,6 +46,7 @@ interface Maquina {
   w: number; // tamanyo de la ventana de recepcion permitida para la entidad contraria
   segperd: string; // segmentos perdidos
   vc: number; // ventana de congestion
+  vcrep: number; // ventana de congestion que se va a mostrar
   flags: string[]; // [SYN, FIN, ACK, AL, EC, RR]
   ec: Boolean; // control de activacion del flag EC
   vcCtrl: number; // control para incrementar o no la VC
@@ -100,8 +101,8 @@ export class SimulacionComponent implements OnChanges {
   generarSimulacion(): Observable<boolean> {
     try {
       this.comunicacion = [];
-      this.cli = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
-      this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, flags: [], ec: false, vcCtrl: 0 };
+      this.cli = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, vcrep: 0, flags: [], ec: false, vcCtrl: 0 };
+      this.serv = { sn: 0, ult_sn: 0, an: 0, ult_an: 0, data: 0, w: 0, segperd: "", vc: 0, vcrep: 0, flags: [], ec: false, vcCtrl: 0 };
       this.ipclien = this.simular.ipclien;
       this.ipserv = this.simular.ipserv;
 
@@ -189,14 +190,14 @@ export class SimulacionComponent implements OnChanges {
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
     this.serv.ult_an = this.serv.an;
     this.serv.an = this.cli.sn + 1;
-    this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: mssserv, vc: this.cli.vc });
+    this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: mssserv, vc: this.cli.vcrep });
     this.serv.flags = nullflag;
     this.cli.ult_sn = this.cli.sn;
     this.cli.sn += 1;
     this.cli.ult_an = this.cli.an;
     this.cli.an = this.serv.sn + 1;
     this.cli.flags = ack;
-    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
+    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
     this.cli.flags = nullflag;
 
     // >>>>> Envio de datos cliente->servidor <<<<<
@@ -220,7 +221,7 @@ export class SimulacionComponent implements OnChanges {
       this.serv.an = this.cli.sn + denv;
       this.incrementarVC(this.cli, this.serv, mss);
       this.comprobarEC(this.cli, umbral);
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
+      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
       this.cli.ult_an = this.serv.an;
     }
     let envAck: number = 0; // Cada dos paquetes enviados por el cliente, el servidor devuelve un ACK
@@ -229,14 +230,14 @@ export class SimulacionComponent implements OnChanges {
       if (numPqtClienEnv == numPqtClien) // Si es el ultimo paquete a enviar, se envian los datos restantes
         denv = modPqtClien;
 
-      if (envAck == this.cli.vc) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      if (envAck == this.cli.vcrep) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
         this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
         this.incrementarVC(this.cli, this.serv, mss);
         this.comprobarEC(this.cli, umbral);
-        this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
+        this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
         this.cli.ult_sn = this.cli.sn;
         this.cli.vcCtrl++;
         this.cli.ult_an = this.cli.an;
@@ -261,7 +262,7 @@ export class SimulacionComponent implements OnChanges {
         this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
         this.incrementarVC(this.cli, this.serv, mss);
         this.comprobarEC(this.cli, umbral);
-        this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
+        this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
         ultDataEnv = denv;
         this.cli.ult_sn = this.cli.sn;
         this.cli.vcCtrl++;
@@ -293,7 +294,7 @@ export class SimulacionComponent implements OnChanges {
       this.serv.ult_sn = this.serv.sn;
       this.incrementarVC(this.cli, this.serv, mss);
       this.comprobarEC(this.cli, umbral);
-      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vc });
+      this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
       this.cli.ult_sn = this.cli.sn;
       this.cli.vcCtrl++;
       this.cli.ult_an = this.cli.an;
@@ -317,7 +318,7 @@ export class SimulacionComponent implements OnChanges {
       this.cli.an = this.serv.sn + denv;
       this.incrementarVC(this.serv, this.cli, mss);
       this.comprobarEC(this.serv, umbral);
-      this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
+      this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
       this.serv.ult_an = this.serv.an;
     }
     else {
@@ -330,14 +331,14 @@ export class SimulacionComponent implements OnChanges {
       if (numPqtServEnv == numPqtServ) // Si es el ultimo paquete a enviar, se envian los datos restantes
         denv = modPqtServ;
 
-      if (envAck == this.serv.vc) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      if (envAck == this.serv.vcrep) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
         this.cli.ult_sn = this.cli.sn;
         this.cli.ult_an = this.cli.an;
         this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
         this.incrementarVC(this.serv, this.cli, mss);
         this.comprobarEC(this.serv, umbral);
-        this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
+        this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
         this.serv.ult_sn = this.serv.sn;
         this.serv.vcCtrl++;
         this.serv.ult_an = this.serv.an;
@@ -362,7 +363,7 @@ export class SimulacionComponent implements OnChanges {
         this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
         this.incrementarVC(this.serv, this.cli, mss);
         this.comprobarEC(this.serv, umbral);
-        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vc });
+        this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep });
         ultDataEnv = denv;
         this.serv.ult_sn = this.serv.sn;
         this.serv.vcCtrl++;
@@ -385,7 +386,7 @@ export class SimulacionComponent implements OnChanges {
       this.cli.an = this.serv.ult_sn + denv;
       this.incrementarVC(this.serv, this.cli, mss);
       this.comprobarEC(this.serv, umbral);
-      this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vc });
+      this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
       this.serv.ult_sn = this.serv.sn;
       this.serv.vcCtrl++;
       this.serv.ult_an = this.serv.an;
@@ -468,10 +469,19 @@ export class SimulacionComponent implements OnChanges {
      * @returns Maquina
      */
   incrementarVC(maqVC: Maquina, maqACK: Maquina, mss: number) {
-    if (maqVC.ec == false) // Si EC ya está activo y el número de ACKs es igual a VC, o si EC no ha sido activado, se incrementa VC
+    if (maqVC.ec == false){ // EC desactivado
       maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
+      maqVC.vcrep = maqVC.vc;
+    }
     else
-      maqVC.vc++;
+    {
+      let tramas: number = Math.ceil((maqACK.an - maqACK.ult_an) / mss);
+
+      for (let i = 1; i <= tramas; i++) {
+        maqVC.vc = maqVC.vc + 1/Math.floor(maqVC.vc);
+      }
+      maqVC.vcrep = Math.round((maqVC.vc + Number.EPSILON) * 100) / 100;
+    }
     maqVC.vcCtrl = 0;
 
     return maqVC;
@@ -484,7 +494,6 @@ export class SimulacionComponent implements OnChanges {
  * @returns  
  */
   simularReno(): void {
-    console.log("Reno");
     this.simularEC();
     return;
   }
@@ -495,7 +504,6 @@ export class SimulacionComponent implements OnChanges {
    * @returns  
    */
   simularTahoe() {
-    console.log("Tahoe");
     this.simularEC();
     return;
   }

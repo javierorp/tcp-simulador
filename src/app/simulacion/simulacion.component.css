@@ -159,27 +159,33 @@ span.flagserv {
     color  : #004e99;
 }
 
-.parametros{
-    text-align: left;
-    margin-top: 10px;
+.parametros {
+    text-align   : left;
+    margin-top   : 10px;
     margin-bottom: 40px;
-    display: none;
+    display      : none;
 }
 
-.uah-logo{
-    width: 200px;
-    display: block;
+.uah-logo {
+    width      : 200px;
+    display    : block;
     margin-left: auto;
-    position: fixed;
-    bottom: 0;
-    right: 0;
+    position   : absolute;
+    right      : 0;
 }
 
-.footer{
-    position: fixed;
-    bottom: 0;
+.text-header {
+    position : absolute;
+    left   : 0;
+    font-size: 14px;
 }
 
-@media print{
-    .imprimir{display:block !important;}
+.header {
+    display : none;
+}
+
+@media print {
+    .imprimir {
+        display   : block !important;
+    }
 }
