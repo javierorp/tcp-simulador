@@ -11,8 +11,7 @@
     "link": "https://www.uah.es/en/"
   },
   "contenido": {
-    "nota": "NOTE",
-    "nota-texto": "Lost segments functionality has not yet been added.",
+    "enproceso": "Sorry, but we are still working on the functionality of lost segments. It will be simulated without loss",
     "cookies": "No information of any kind is stored. No cookies are used",
     "aviso": "Browser not supported. Use a Chromium-based browser, such as Google Chrome, Vivaldi, or Microsoft Edge",
     "parametros": "Parameters",
@@ -105,8 +104,19 @@
   },
   "acercade": {
     "titulo": "About...",
-    "texto": "This project is Bachelor Thesis (TFG in Spanish) for the University of Alcalá (Alcalá de Henares, Madrid, Spain). Thanks also to the support provided by the University of Novi Sad (Vojvodina, Serbia).",
-    "texto2": "To develop it I used:",
+    "acerca": "This project is a Bachelor Thesis (TFG in Spanish) for the University of Alcalá (Alcalá de Henares, Madrid, Spain) carried out by",
+    "autor": "Javier Orti Priego",
+    "autor-web": "https://www.linkedin.com/in/javierortipriego/",
+    "acerca2": "and supervised by",
+    "tutor": "Elisa Rojas Sánchez",
+    "tutor-web": "https://www.uah.es/en/estudios/profesor/Elisa-Rojas-Sanchez/",
+    "agradecimiento": "Acknowledge the assistance provided by",
+    "tutor2": "Milan Segedinac",
+    "tutor2-web": "http://www.ftn.uns.ac.rs/1417837849/milan-segedinac",
+    "agradecimiento2": "from the University of Novi Sad (Vojvodina, Serbia).",
+    "herramientas": "These tools have been used to carry out this project",
+    "licencias": "licenses",
+    "licencias-web": "https://github.com/javierorp/tcp-simulador/blob/master/README.md#licencias",
     "repo": "Repository",
     "cerrar": "Close"
   },
