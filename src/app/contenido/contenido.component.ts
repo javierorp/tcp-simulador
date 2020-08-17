@@ -272,7 +272,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
       // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
       if (this.simulacion.segperdclien != null || this.simulacion.segperdserv != null)
-      this.enprocMsg = true;
+        this.enprocMsg = true;
 
 
       // ----DATOS NUMERICOS----
@@ -410,14 +410,14 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       let mssclien: number = null;
       let datosclien: number = null;
       let snclien: number = null;
-      let segperdclien: string = "";
+      let segperdclien: string = null;
       let wclien: number = null;
       //Servidor
       let ipserv: string = "192.168.0.1";
       let mssserv: number = null;
       let datosserv: number = null;
       let snserv: number = null;
-      let segperdserv: string = "";
+      let segperdserv: string = null;
       let wserv: number = null;
       //General
       let timeout: number = null;
