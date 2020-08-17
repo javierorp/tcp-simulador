@@ -17,6 +17,7 @@
 }
 
 .no-seleccionable {
+  margin-left: 2px;
   -moz-user-select   : none;
   -webkit-user-select: none;
   -ms-user-select    : none;

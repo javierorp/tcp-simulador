@@ -1,11 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { Simulacion } from '../simulacion';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { faEraser } from '@fortawesome/free-solid-svg-icons';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { faRandom } from '@fortawesome/free-solid-svg-icons';
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { faCookieBite } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +32,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   faEraser = faEraser; // limpiar formulario
   faQuestionCircle = faQuestionCircle; // informacion sobre los parametros
   faCookieBite = faCookieBite; // cookie
+  faCogs = faCogs; // engranaje
 
   // Variable para ocultar o no la simulacion
   public ejecutar: Boolean = false;
@@ -95,6 +91,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   infoOpt: boolean = true;
   alertas: Alerta[];
   navOptimizado: boolean = false;
+  enprocMsg: boolean = false;
 
   constructor(private modalService: NgbModal, private translate: TranslateService, private cdr: ChangeDetectorRef) {
   }
@@ -116,7 +113,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
 
-    this.test();
+    // this.test();
   }
 
   ngAfterContentChecked() {
@@ -149,6 +146,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    */
   simular(): void {
     var simular: Boolean = false;
+    this.enprocMsg = false;
 
     // Se compruban que los parametros introducidos sean correctos
     simular = this.comprobarParametros();
@@ -272,6 +270,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
         this.simulacion.segperdserv = segperdserv;
       }
 
+      // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
+      if (this.simulacion.segperdclien != null || this.simulacion.segperdserv != null)
+      this.enprocMsg = true;
+
+
       // ----DATOS NUMERICOS----
       // Se comprueba que los valores introducidos no son mayores a 99999999
       if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
@@ -352,6 +355,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.datosclien = this.numAleatorio(100, 5000, 10);
       this.simulacion.snclien = this.numAleatorio(1, 500, 5);
       this.simulacion.wclien = this.numAleatorio(0, 8000, 1000);
+      this.simulacion.segperdclien = null;
 
       //Servidor
       this.simulacion.ipserv = "192.168." + + this.numAleatorio(0, 11, 1).toString() + "." + this.numAleatorio(0, 255, 1).toString();
@@ -359,6 +363,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.datosserv = this.numAleatorio(100, 5000, 10);
       this.simulacion.snserv = this.numAleatorio(1, 500, 5);
       this.simulacion.wserv = this.numAleatorio(0, 8000, 1000);
+      this.simulacion.segperdserv = null;
+
       //General
       this.simulacion.timeout = this.numAleatorio(0, 10, 1);
       this.simulacion.algort = this.numAleatorio(1, 3, 1).toString();
@@ -397,6 +403,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   limpiar(): void {
     try {
       this.alertas = [];
+      this.enprocMsg = false;
 
       //Cliente
       let ipclien: string = "127.0.0.1";
@@ -453,10 +460,10 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   /* TEST */
   test(): void {
-    // this.test1();
+    this.test1();
     // this.test2();
     // this.test3();
-    this.test4();
+    // this.test4();
     this.simular();
   }
 
@@ -464,7 +471,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
     this.simulacion.mssclien = 200;
-    this.simulacion.datosclien = 1800;
+    this.simulacion.datosclien = 3000;
     this.simulacion.snclien = 400;
     this.simulacion.segperdclien = "";
     this.simulacion.wclien = 7000;
