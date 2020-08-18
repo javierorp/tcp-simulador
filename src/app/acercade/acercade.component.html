@@ -4,13 +4,16 @@
     </div>
     <div class="modal-body">
         <p>
-            {{ 'acercade.acerca' | translate }} <a href="{{ 'acercade.autor-web' | translate }}" target="_blank" title="{{ 'acercade.autor' | translate }}">{{ 'acercade.autor' | translate }}</a>
-            {{ 'acercade.acerca2' | translate }} <a href="{{ 'acercade.tutor-web' | translate }}" target="_blank" title="{{ 'acercade.tutor' | translate }}">{{ 'acercade.tutor' | translate }}</a>.
+            {{ 'acercade.acerca' | translate }} <a href="{{ 'acercade.autor-web' | translate }}" target="_blank"
+                title="{{ 'acercade.autor' | translate }}">{{ 'acercade.autor' | translate }}</a>
+            {{ 'acercade.acerca2' | translate }} <a href="{{ 'acercade.tutor-web' | translate }}" target="_blank"
+                title="{{ 'acercade.tutor' | translate }}">{{ 'acercade.tutor' | translate }}</a>.
             <br>
-            {{ 'acercade.agradecimiento' | translate }} <a href="{{ 'acercade.tutor2-web' | translate }}" target="_blank" title="{{ 'acercade.tutor2' | translate }}">{{ 'acercade.tutor2' | translate }}</a>
-            {{ 'acercade.agradecimiento2' | translate }}
+            {{ 'acercade.agradecimiento' | translate }} <a href="{{ 'acercade.tutor2-web' | translate }}"
+                target="_blank" title="{{ 'acercade.tutor2' | translate }}">{{ 'acercade.tutor2' | translate }}</a>
+            {{ 'acercade.agradecimiento2' | translate }}.
         </p>
-        <p>{{ 'acercade.herramientas' | translate }} (<a href="{{ 'acercade.licencias-web' | translate }}" target="_blank" title="{{ 'acercade.licencias' | translate }}">{{ 'acercade.licencias' | translate }}</a>):</p>
+        <p>{{ 'acercade.herramientas' | translate }}:</p>
         <a href="https://angular.io/" target="_blank" title="Angular">
             <img src="assets\img\angular-logo.svg" alt="Angular" class="herramientas"
                 style="width: 80px; margin-left: 10px;" />
@@ -27,6 +30,13 @@
             <img src="assets\img\github-logo.svg" alt="GitHub" class="herramientas"
                 style="width: 60px; margin-left: 20px;" />
         </a>
+        <p>
+            <br>{{ 'acercade.iconos' | translate }} <a href="https://fontawesome.com/" target="_blank"
+                title="Font Awesome">Font Awesome</a>.
+            <br>{{ 'acercade.ver-licencias' | translate }} <a href="{{ 'acercade.licencias-web' | translate }}"
+                target="_blank"
+                title="{{ 'acercade.licencias' | translate }}">{{ 'acercade.licencias' | translate }}</a>.
+        </p>
     </div>
     <div class="modal-footer">
         <span class="version" title="{{ appVersion.date }} ">v{{ appVersion.version }}</span>

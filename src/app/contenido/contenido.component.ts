@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { Simulacion } from '../simulacion';
-import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -33,6 +33,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   faQuestionCircle = faQuestionCircle; // informacion sobre los parametros
   faCookieBite = faCookieBite; // cookie
   faCogs = faCogs; // engranaje
+  faExclamationTriangle = faExclamationTriangle; // exclamacion triangular
+  faExclamationCircle = faExclamationCircle // exclamación circular
 
   // Variable para ocultar o no la simulacion
   public ejecutar: Boolean = false;
@@ -101,7 +103,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.movil = window.screen.width <= 705 ? true : false;
     this.sidenavOpened = this.movil == true ? false: true;
 
-    // Muestra la alerta de los navegadores compatibles durante 5 segundos
+    // Muestra la alerta de las cookies y/o navegadores compatibles durante 5 segundos
     var duracion: number = 10000; //en milisegundos
 
     if(navigator.userAgent.indexOf("Chrome") > -1)
@@ -145,39 +147,48 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    * @author javierorp
    */
   simular(): void {
-    var simular: Boolean = false;
-    this.enprocMsg = false;
+    try {
+      var simular: Boolean = false;
+      this.enprocMsg = false;
 
-    // Se compruban que los parametros introducidos sean correctos
-    simular = this.comprobarParametros();
+      // Se compruban que los parametros introducidos sean correctos
+      simular = this.comprobarParametros();
 
-    if (simular) {
-      // Asi se consiguen que los datos se pasen por valor en lugar de por referencia
-      var ipclien: string = this.simulacion.ipclien;
-      var mssclien: number = this.simulacion.mssclien;
-      var datosclien: number = this.simulacion.datosclien;
-      var snclien: number = this.simulacion.snclien;
-      var segperdclien: string = this.simulacion.segperdclien;
-      var wclien: number = this.simulacion.wclien;
-      var ipserv: string = this.simulacion.ipserv;
-      var mssserv: number = this.simulacion.mssserv;
-      var datosserv: number = this.simulacion.datosserv;
-      var snserv: number = this.simulacion.snserv;
-      var segperdserv: string = this.simulacion.segperdserv;
-      var wserv: number = this.simulacion.wserv;
-      var timeout: number = this.simulacion.timeout;
-      var umbral: number = this.simulacion.umbral;
-      var algort: string = this.simulacion.algort;
-      var cierre: string = this.simulacion.cierre;
+      if (simular) {
+        // Asi se consiguen que los datos se pasen por valor en lugar de por referencia
+        var ipclien: string = this.simulacion.ipclien;
+        var mssclien: number = this.simulacion.mssclien;
+        var datosclien: number = this.simulacion.datosclien;
+        var snclien: number = this.simulacion.snclien;
+        var segperdclien: string = this.simulacion.segperdclien;
+        var wclien: number = this.simulacion.wclien;
+        var ipserv: string = this.simulacion.ipserv;
+        var mssserv: number = this.simulacion.mssserv;
+        var datosserv: number = this.simulacion.datosserv;
+        var snserv: number = this.simulacion.snserv;
+        var segperdserv: string = this.simulacion.segperdserv;
+        var wserv: number = this.simulacion.wserv;
+        var timeout: number = this.simulacion.timeout;
+        var umbral: number = this.simulacion.umbral;
+        var algort: string = this.simulacion.algort;
+        var cierre: string = this.simulacion.cierre;
+        this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, 
+          wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, 
+          umbral, algort, cierre };
 
-      this.simulacionEnv = { ipclien, mssclien, datosclien, snclien, segperdclien, wclien, ipserv, mssserv, datosserv, snserv, segperdserv, wserv, timeout, umbral, algort, cierre };
-
-      this.sidenavOpened = this.movil == true ? false: true; // Ocultamos la barra de navegacion si es un movil
-      // Permitimos que se visualice la simulacion
-      this.ejecutar = true;
+        this.sidenavOpened = this.movil == true ? false : true; // Ocultamos la barra de navegacion si es un movil
+        // Permitimos que se visualice la simulacion
+        this.ejecutar = true;
+      }
+      else {
+        this.ejecutar = false;
+      }
     }
-    else {
-      this.ejecutar = false;
+    catch (error) {
+      const modalRef = this.modalService.open(ErrorComponent, { windowClass: 'modal-entrada' });
+      modalRef.componentInstance.desde = "Contenido";
+      modalRef.componentInstance.parametros = JSON.stringify(this.simulacion);
+      modalRef.componentInstance.merror = error;
     }
   }
 
@@ -189,157 +200,148 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
    *          ademas genera alertas para los parametros erroneos
    */
   comprobarParametros(): Boolean {
-    try {
-      if (this.simulacion.segperdclien == "error")
-        throw new Error('Test ErrorComponent');
+    if (this.simulacion.segperdclien == "error")
+      throw new Error('Test ErrorComponent');
 
-      var simular: Boolean = false;
+    var simular: Boolean = false;
 
-      // -----IPs-----
-      // Expresion regular para comprobar que la IP sea valida con numeros comprendidos entre 0 y 255
-      var ipRegex = new RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$');
-      // Se eliminan los espacios en blanco de las IPs
-      this.simulacion.ipclien = this.simulacion.ipclien.replace(/\s/g, '');
-      this.simulacion.ipclien = this.simulacion.ipclien.replace(/\s/g, '');
-      //Se eliminan los caracteres que sean letras
-      this.simulacion.ipclien = this.simulacion.ipclien.replace(/[a-zA-Z]+/gi, '');
-      this.simulacion.ipserv = this.simulacion.ipserv.replace(/[a-zA-Z]+/gi, '');
-      // Se cambias los caracteres no numericos por punto (.)
-      this.simulacion.ipserv = this.simulacion.ipserv.replace(/\W+/g, '.');
-      this.simulacion.ipclien = this.simulacion.ipclien.replace(/\W+/g, '.');
+    // -----IPs-----
+    // Expresion regular para comprobar que la IP sea valida con numeros comprendidos entre 0 y 255
+    var ipRegex = new RegExp('^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$');
+    // Se eliminan los espacios en blanco de las IPs
+    this.simulacion.ipclien = this.simulacion.ipclien.replace(/\s/g, '');
+    this.simulacion.ipclien = this.simulacion.ipclien.replace(/\s/g, '');
+    //Se eliminan los caracteres que sean letras
+    this.simulacion.ipclien = this.simulacion.ipclien.replace(/[a-zA-Z]+/gi, '');
+    this.simulacion.ipserv = this.simulacion.ipserv.replace(/[a-zA-Z]+/gi, '');
+    // Se cambias los caracteres no numericos por punto (.)
+    this.simulacion.ipserv = this.simulacion.ipserv.replace(/\W+/g, '.');
+    this.simulacion.ipclien = this.simulacion.ipclien.replace(/\W+/g, '.');
 
-      //-----SEGMENTOS PERDIDOS-----
-      // Expresion regular para comprbar si segperd son numeros separados por comas
-      var segperdRegex = new RegExp('[0-9]+(,[0-9]+)+/g');
-      var segperdclien: string = this.simulacion.segperdclien;
-      var segperdserv: string = this.simulacion.segperdserv;
+    //-----SEGMENTOS PERDIDOS-----
+    // Expresion regular para comprbar si segperd son numeros separados por comas
+    var segperdRegex = new RegExp('[0-9]+(,[0-9]+)+/g');
+    var segperdclien: string = this.simulacion.segperdclien;
+    var segperdserv: string = this.simulacion.segperdserv;
 
-      if (segperdclien != null) { //Cliente
-        segperdclien = segperdclien.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
-        segperdclien = segperdclien.replace(/\s/g, ''); // se eliminan los espacios
-        segperdclien = segperdclien.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+    if (segperdclien != null) { //Cliente
+      segperdclien = segperdclien.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
+      segperdclien = segperdclien.replace(/\s/g, ''); // se eliminan los espacios
+      segperdclien = segperdclien.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
 
-        var segperdNum = segperdclien.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
-        segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
-        segperdclien = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
+      var segperdNum = segperdclien.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+      segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+      segperdclien = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
 
-        // Eliminamos los valores duplicados
-        var segperdArr = segperdclien.split(',');
-        for (var i = 0; i < segperdArr.length; i++) {
-          for (var j = i + 1; j < (segperdArr.length); j++) {
-            if (segperdArr[i] == segperdArr[j])
-              delete segperdArr[j];
-          }
+      // Eliminamos los valores duplicados
+      var segperdArr = segperdclien.split(',');
+      for (var i = 0; i < segperdArr.length; i++) {
+        for (var j = i + 1; j < (segperdArr.length); j++) {
+          if (segperdArr[i] == segperdArr[j])
+            delete segperdArr[j];
         }
-        segperdclien = segperdArr.toString();
-        segperdclien = segperdclien.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
-        segperdclien = (segperdclien[0] == ',') ? segperdclien.substring(1) : segperdclien; // si el primer caracter es una coma se elimina
-        segperdclien = (segperdclien[segperdclien.length - 1] == ',') ? segperdclien.substring(0, segperdclien.length - 1) : segperdclien; // si el ultimo caracter es una coma se elimina
-
-        if (segperdclien == "0")
-          segperdclien = ""
-
-        this.simulacion.segperdclien = segperdclien;
       }
+      segperdclien = segperdArr.toString();
+      segperdclien = segperdclien.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+      segperdclien = (segperdclien[0] == ',') ? segperdclien.substring(1) : segperdclien; // si el primer caracter es una coma se elimina
+      segperdclien = (segperdclien[segperdclien.length - 1] == ',') ? segperdclien.substring(0, segperdclien.length - 1) : segperdclien; // si el ultimo caracter es una coma se elimina
 
-      if (segperdserv != null) { //Servidor
-        segperdserv = segperdserv.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
-        segperdserv = segperdserv.replace(/\s/g, ''); // se eliminan los espacios
-        segperdserv = segperdserv.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+      if (segperdclien == "0")
+        segperdclien = ""
 
-        var segperdNum = segperdserv.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
-        segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
-        segperdserv = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
+      this.simulacion.segperdclien = segperdclien;
+    }
 
-        // Eliminamos los valores duplicados
-        var segperdArr = segperdserv.split(',');
-        for (var i = 0; i < segperdArr.length; i++) {
-          for (var j = i + 1; j < (segperdArr.length); j++) {
-            if (segperdArr[i] == segperdArr[j])
-              delete segperdArr[j];
-          }
+    if (segperdserv != null) { //Servidor
+      segperdserv = segperdserv.replace(/[a-zA-Z]+/gi, ''); // se eliminan los caracteres que sean letras
+      segperdserv = segperdserv.replace(/\s/g, ''); // se eliminan los espacios
+      segperdserv = segperdserv.replace(/\W+/g, ','); // se cambian todos los caracteres no numericos por comas (,)
+
+      var segperdNum = segperdserv.split(',').map(Number); // se transforma la cadena de caracteres a un array numerico
+      segperdNum = segperdNum.sort((n1, n2) => n1 - n2); // se ordenan los numeros de menor a mayor
+      segperdserv = segperdNum.toString(); // se transforma el array numerico en una cadena de caracteres
+
+      // Eliminamos los valores duplicados
+      var segperdArr = segperdserv.split(',');
+      for (var i = 0; i < segperdArr.length; i++) {
+        for (var j = i + 1; j < (segperdArr.length); j++) {
+          if (segperdArr[i] == segperdArr[j])
+            delete segperdArr[j];
         }
-        segperdserv = segperdArr.toString();
-        segperdserv = segperdserv.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
-        segperdserv = (segperdserv[0] == ',') ? segperdserv.substring(1) : segperdserv; // si el primer caracter es una coma se elimina
-        segperdserv = (segperdserv[segperdserv.length - 1] == ',') ? segperdserv.substring(0, segperdserv.length - 1) : segperdserv; // si el ultimo caracter es una coma se elimina
-
-        if (segperdserv == "0")
-          segperdserv = ""
-
-        this.simulacion.segperdserv = segperdserv;
       }
+      segperdserv = segperdArr.toString();
+      segperdserv = segperdserv.replace(/\W+/g, ','); // se vuelve a ejecutar esta regex para eliminar las comas duplicadas
+      segperdserv = (segperdserv[0] == ',') ? segperdserv.substring(1) : segperdserv; // si el primer caracter es una coma se elimina
+      segperdserv = (segperdserv[segperdserv.length - 1] == ',') ? segperdserv.substring(0, segperdserv.length - 1) : segperdserv; // si el ultimo caracter es una coma se elimina
 
-      // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
-      if (this.simulacion.segperdclien != null || this.simulacion.segperdserv != null)
-        this.enprocMsg = true;
+      if (segperdserv == "0")
+        segperdserv = ""
 
-
-      // ----DATOS NUMERICOS----
-      // Se comprueba que los valores introducidos no son mayores a 99999999
-      if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
-      if (this.simulacion.datosclien > 99999999) this.simulacion.datosclien = 99999999;
-      if (this.simulacion.snclien > 9999999) this.simulacion.snclien = 9999999;
-      if (this.simulacion.wclien > 99999999) this.simulacion.wclien = 99999999;
-      if (this.simulacion.mssserv > 99999999) this.simulacion.mssserv = 99999999;
-      if (this.simulacion.datosserv > 99999999) this.simulacion.datosserv = 99999999;
-      if (this.simulacion.snserv > 9999999) this.simulacion.snserv = 9999999;
-      if (this.simulacion.wserv > 99999999) this.simulacion.wserv = 99999999;
-      if (this.simulacion.timeout == null) this.simulacion.timeout = 0;
-      if (this.simulacion.timeout > 99999999) this.simulacion.timeout = 99999999;
-      if (this.simulacion.umbral > 99999999) this.simulacion.umbral = 99999999;
-
-      // -----ALERTAS-----
-      // Se eliminan todas las alertas
-      this.alertas = [];
-      //Se comprueban todos los parametros y se incluyen las alertas en caso de ser necesarias
-      //Cliente
-      if (!ipRegex.test(this.simulacion.ipclien))
-        this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.ipclien') + ": ", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
-      if (this.simulacion.mssclien < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.mssclien') + ": ", msg: this.translate.instant('contenido.error-mss') });
-      if (this.simulacion.datosclien < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.datosclien') + ": ", msg: this.translate.instant('contenido.error-datosclien') });
-      if (this.simulacion.snclien < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snclien') + ": ", msg: this.translate.instant('contenido.error-snclien') });
-      if (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien))
-        this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdclien') });
-      if (this.simulacion.wclien < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wclien') + ": ", msg: this.translate.instant('contenido.error-wclien') });
-      //Servidor
-      if (!ipRegex.test(this.simulacion.ipserv))
-        this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.ipserv') + ": ", msg: this.translate.instant('contenido.error-ipserv') });
-      if (this.simulacion.mssserv < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.mssserv') + ": ", msg: this.translate.instant('contenido.error-mssserv') });
-      if (this.simulacion.datosserv < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.datosserv') + ": ", msg: this.translate.instant('contenido.error-datosserv') });
-      if (this.simulacion.snserv < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snserv') + ": ", msg: this.translate.instant('contenido.error-snserv') });
-      if (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv))
-        this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdserv') });
-      if (this.simulacion.wserv < 1)
-        this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wserv') + ": ", msg: this.translate.instant('contenido.error-wserv') });
-      //General
-      if (this.simulacion.timeout < 0 || this.simulacion.timeout == null)
-        this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.timeout') + ": ", msg: this.translate.instant('contenido.error-timeout') });
-      if (this.simulacion.algort == "")
-        this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.algort') + ": ", msg: this.translate.instant('contenido.error-algort') });
-      if (this.simulacion.umbral <= 1 || this.simulacion.umbral == null)
-        this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.umbral') + ": ", msg: this.translate.instant('contenido.error-umbral') });
-      if (this.simulacion.cierre == "")
-        this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.cierre') + ": ", msg: this.translate.instant('contenido.error-cierre') });
-
-      //Se comprueba si se debe simular o no, retorna 'true' si no hay alertas generadas y 'false' en caso contrario
-      simular = this.alertas.length == 0 ? true : false;
-
-      return simular;
+      this.simulacion.segperdserv = segperdserv;
     }
-    catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
-      modalRef.componentInstance.desde = "Contenido";
-      modalRef.componentInstance.parametros = JSON.stringify(this.simulacion);
-      modalRef.componentInstance.merror = error;
-    }
+
+    // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
+    if ((this.simulacion.segperdclien != null && this.simulacion.segperdclien != "")  || (this.simulacion.segperdserv != null && this.simulacion.segperdserv != ""))
+      this.enprocMsg = true;
+
+    // ----DATOS NUMERICOS----
+    // Se comprueba que los valores introducidos no son mayores a 99999999
+    if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
+    if (this.simulacion.datosclien > 99999999) this.simulacion.datosclien = 99999999;
+    if (this.simulacion.snclien > 9999999) this.simulacion.snclien = 9999999;
+    if (this.simulacion.wclien > 99999999) this.simulacion.wclien = 99999999;
+    if (this.simulacion.mssserv > 99999999) this.simulacion.mssserv = 99999999;
+    if (this.simulacion.datosserv > 99999999) this.simulacion.datosserv = 99999999;
+    if (this.simulacion.snserv > 9999999) this.simulacion.snserv = 9999999;
+    if (this.simulacion.wserv > 99999999) this.simulacion.wserv = 99999999;
+    if (this.simulacion.timeout == null) this.simulacion.timeout = 0;
+    if (this.simulacion.timeout > 99999999) this.simulacion.timeout = 99999999;
+    if (this.simulacion.umbral > 99999999) this.simulacion.umbral = 99999999;
+
+    // -----ALERTAS-----
+    // Se eliminan todas las alertas
+    this.alertas = [];
+    //Se comprueban todos los parametros y se incluyen las alertas en caso de ser necesarias
+    //Cliente
+    if (!ipRegex.test(this.simulacion.ipclien))
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.ipclien') + ": ", msg: "Debe ser del tipo [0-255].[0-255].[0-255].[0-255]" });
+    if (this.simulacion.mssclien < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.mssclien') + ": ", msg: this.translate.instant('contenido.error-mss') });
+    if (this.simulacion.datosclien < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.datosclien') + ": ", msg: this.translate.instant('contenido.error-datosclien') });
+    if (this.simulacion.snclien < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snclien') + ": ", msg: this.translate.instant('contenido.error-snclien') });
+    if (this.simulacion.segperdclien != null && this.simulacion.segperdclien.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdclien))
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdclien') + ": ", msg: this.translate.instant('contenido.error-segperdclien') });
+    if (this.simulacion.wclien < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.clien') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wclien') + ": ", msg: this.translate.instant('contenido.error-wclien') });
+    //Servidor
+    if (!ipRegex.test(this.simulacion.ipserv))
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.ipserv') + ": ", msg: this.translate.instant('contenido.error-ipserv') });
+    if (this.simulacion.mssserv < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.mssserv') + ": ", msg: this.translate.instant('contenido.error-mssserv') });
+    if (this.simulacion.datosserv < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.datosserv') + ": ", msg: this.translate.instant('contenido.error-datosserv') });
+    if (this.simulacion.snserv < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.snserv') + ": ", msg: this.translate.instant('contenido.error-snserv') });
+    if (this.simulacion.segperdserv != null && this.simulacion.segperdserv.indexOf(',') != -1 && segperdRegex.test(this.simulacion.segperdserv))
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.segperdserv') + ": ", msg: this.translate.instant('contenido.error-segperdserv') });
+    if (this.simulacion.wserv < 1)
+      this.alertas.push({ campo: this.translate.instant('contenido.serv') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.wserv') + ": ", msg: this.translate.instant('contenido.error-wserv') });
+    //General
+    if (this.simulacion.timeout < 0 || this.simulacion.timeout == null)
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.timeout') + ": ", msg: this.translate.instant('contenido.error-timeout') });
+    if (this.simulacion.algort == "")
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.algort') + ": ", msg: this.translate.instant('contenido.error-algort') });
+    if (this.simulacion.umbral <= 1 || this.simulacion.umbral == null)
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.umbral') + ": ", msg: this.translate.instant('contenido.error-umbral') });
+    if (this.simulacion.cierre == "")
+      this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.cierre') + ": ", msg: this.translate.instant('contenido.error-cierre') });
+
+    //Se comprueba si se debe simular o no, retorna 'true' si no hay alertas generadas y 'false' en caso contrario
+    simular = this.alertas.length == 0 ? true : false;
+
+    return simular;
   }
 
 
