@@ -161,7 +161,7 @@
     "umbral": "Umbral/Ssthresh",
     "umbral-link": "https://es.wikipedia.org/wiki/Slow-start#Umbral_de_congestión",
     "umbral-text": "Límite de la ventana de congestión a partir del cual se pasará al modo de Evitación de la Congestión (EC).",
-    "cierre": "Connection closure",
+    "cierre": "Cierre de conexión",
     "cierre-link": "",
     "cierre-text": "Qué dispositivo iniciará el fin de conexión.",
     "cerrar": "Cerrar"
