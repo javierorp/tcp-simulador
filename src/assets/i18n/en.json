@@ -161,7 +161,7 @@
     "umbral": "Threshold/Ssthresh",
     "umbral-link": "https://en.wikipedia.org/wiki/TCP_congestion_control#Slow_start",
     "umbral-text": "Congestion window limit from which to switch to Congestion Avoidance (CA) mode.",
-    "cierre": "Cierre de conexión",
+    "cierre": "Connection closure",
     "cierre-link": "",
     "cierre-text": "Which device will initiate the end of connection.",
     "cerrar": "Close"
