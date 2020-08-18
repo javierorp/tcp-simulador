@@ -166,6 +166,12 @@ span.flagserv {
     display      : none;
 }
 
+@media print {
+    .parametros {
+        display: block !important;
+    }
+}
+
 .uah-logo {
     width      : 200px;
     display    : block;
@@ -176,16 +182,10 @@ span.flagserv {
 
 .text-header {
     position : absolute;
-    left   : 0;
+    left     : 0;
     font-size: 14px;
 }
 
 .header {
-    display : none;
-}
-
-@media print {
-    .imprimir {
-        display   : block !important;
-    }
+    display: none;
 }

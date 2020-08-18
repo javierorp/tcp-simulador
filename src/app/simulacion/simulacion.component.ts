@@ -97,6 +97,7 @@ export class SimulacionComponent implements OnChanges {
   /**
    * @description Genera la simulacion
    * @author javierorp
+   * @returns Observable true si todo ha ido bien o false en caso de algun error
    */
   generarSimulacion(): Observable<boolean> {
     try {
@@ -115,9 +116,10 @@ export class SimulacionComponent implements OnChanges {
 
       this.parametros = JSON.stringify(this.simular);
       return of(true).pipe(delay(500));; // Ocultar la imagen de carga y mostrar la simulacion
+
     } catch (error) {
-      const modalRef = this.modalService.open(ErrorComponent, {windowClass: 'modal-entrada'});
-      modalRef.componentInstance.desde = "Simular";
+      const modalRef = this.modalService.open(ErrorComponent, { windowClass: 'modal-entrada' });
+      modalRef.componentInstance.desde = "Simulacion";
       modalRef.componentInstance.parametros = JSON.stringify(this.simular);
       modalRef.componentInstance.merror = error;
       return new Observable<false>()
@@ -150,6 +152,7 @@ export class SimulacionComponent implements OnChanges {
     this.cli.w = this.simular.wclien;
     this.cli.segperd = this.simular.segperdclien;
     this.cli.vc = 1;
+    this.cli.vcrep = 1;
     this.cli.flags = syn;
     this.cli.ec = false;
     this.cli.vcCtrl = 0;
@@ -163,6 +166,7 @@ export class SimulacionComponent implements OnChanges {
     this.serv.w = this.simular.wserv;
     this.serv.segperd = this.simular.segperdserv;
     this.serv.vc = 1;
+    this.serv.vcrep = 1;
     this.serv.flags = synack;
     this.serv.ec = false;
     this.serv.vcCtrl = 0;
@@ -303,7 +307,6 @@ export class SimulacionComponent implements OnChanges {
       this.cli.flags = nullflag;
       numPqtServEnv++;
     }
-
 
     // >>>>> Envio de datos servidor->cliente <<<<<
     if (numPqtServ != 0) // Si hay mas de un paquete a enviar
@@ -448,9 +451,11 @@ export class SimulacionComponent implements OnChanges {
   /**
    * @description Comprobar si se activa o no EC
    * @author javierorp
-   * @returns Maquina
+   * @param maq Objeto del tipo Maquina que sera modificado
+   * @param umbral Umbral utilizado en la simulacion
+   * @returns maq
    */
-  comprobarEC(maq: Maquina, umbral: number) {
+  comprobarEC(maq: Maquina, umbral: number): Maquina {
     let ec: string[] = ["", "", "", "", "EC", "", ""];
     let nullflag: string[] = ["", "", "", "", "", ""];
 
@@ -463,22 +468,25 @@ export class SimulacionComponent implements OnChanges {
     return maq;
   }
 
+
   /**
-     * @description incrementar la ventana de congestion o no
-     * @author javierorp
-     * @returns Maquina
-     */
-  incrementarVC(maqVC: Maquina, maqACK: Maquina, mss: number) {
-    if (maqVC.ec == false){ // EC desactivado
+   * @description Incrementar la ventana de congestion o no y de que forma
+   * @author javierorp
+   * @param maqVC receptor, del tipo Maquina
+   * @param maqACK emisor, del tipo Maquina
+   * @param mss MSS utilizado en la simulacion
+   * @returns  maqVC
+   */
+  incrementarVC(maqVC: Maquina, maqACK: Maquina, mss: number): Maquina {
+    if (maqVC.ec == false) { // EC desactivado
       maqVC.vc += Math.ceil((maqACK.an - maqACK.ult_an) / mss);
       maqVC.vcrep = maqVC.vc;
     }
-    else
-    {
+    else {
       let tramas: number = Math.ceil((maqACK.an - maqACK.ult_an) / mss);
 
       for (let i = 1; i <= tramas; i++) {
-        maqVC.vc = maqVC.vc + 1/Math.floor(maqVC.vc);
+        maqVC.vc = maqVC.vc + 1 / Math.floor(maqVC.vc);
       }
       maqVC.vcrep = Math.round((maqVC.vc + Number.EPSILON) * 100) / 100;
     }
@@ -487,26 +495,30 @@ export class SimulacionComponent implements OnChanges {
     return maqVC;
   }
 
+
   /**
-   * 
- * @description Simula utilizando como algoritmo de congestion Reno
- * @author javierorp
- * @returns  
- */
+   * TODO: implementar la simulacion utilizando TCP Reno
+   * @description Simula utilizando como algoritmo de congestion Reno
+   * @author javierorp
+   * @returns
+   */
   simularReno(): void {
     this.simularEC();
     return;
   }
 
+
   /**
+   * TODO: implementar la simulacion utilizando TCP Tahoe
    * @description Simula utilizando como algoritmo de congestion Tahoe
    * @author javierorp
-   * @returns  
+   * @returns
    */
-  simularTahoe() {
+  simularTahoe(): void {
     this.simularEC();
     return;
   }
+
 }
 
 

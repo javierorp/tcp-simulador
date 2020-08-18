@@ -14,10 +14,10 @@
         </button>
     </span>
     <span id="simulacion">
-        <div id="impParametros" class="imprimir parametros">
+        <div id="impParametros" class="parametros">
             <h6 style="text-align: center;">{{ 'supbar.titulo' | translate }}</h6>
-                <p class="text-header">{{ host }}</p>
-                <img src="assets\img\uah_logo_print.jpg" class="uah-logo"/>
+            <p class="text-header">{{ host }}</p>
+            <img src="assets\img\uah_logo_print.jpg" class="uah-logo" />
             <h4 style="margin-top: 35px;">{{ 'contenido.parametros' | translate }}</h4>
             <h5>{{ 'contenido.clien' | translate }}</h5>
             <p>
@@ -28,7 +28,6 @@
                 <span *ngIf="simular.segperdclien"><b>{{ 'contenido.segperdclien' | translate }}: </b>
                     {{ simular.segperdclien }} </span>
                 <b>{{ 'contenido.wclien' | translate }}: </b> {{ simular.wclien }}
-
             </p>
             <h5>{{ 'contenido.serv' | translate }}</h5>
             <p>
@@ -39,7 +38,6 @@
                 <span *ngIf="simular.segperdserv"><b>{{ 'contenido.segperdserv' | translate }}: </b>
                     {{ simular.segperdserv }} </span>
                 <b>{{ 'contenido.wserv' | translate }}: </b> {{ simular.wserv }}
-
             </p>
             <h5>{{ 'contenido.general' | translate }}</h5>
             <p>
@@ -50,7 +48,6 @@
                 <b>{{ 'contenido.cierre' | translate }}: </b> <span
                     *ngIf="simular.cierre == '1'">{{ 'contenido.clien' | translate }}</span><span
                     *ngIf="simular.cierre == '2'">{{ 'contenido.serv' | translate }}</span>
-
             </p>
         </div>
         <table class="simu-animation">
