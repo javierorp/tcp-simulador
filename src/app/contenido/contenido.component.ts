@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterContentChecked, ViewChild } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime } from 'rxjs/operators';
 import { ErrorComponent } from '../error/error.component';
+import { SimulacionComponent } from '../simulacion/simulacion.component';
 
 // Interfaz para las alertas
 interface Alerta {
@@ -38,6 +39,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   // Variable para ocultar o no la simulacion
   public ejecutar: Boolean = false;
+
+  // Componente hijo donde se ejecuta la simulacion
+  @ViewChild(SimulacionComponent, {static: false}) simulacionComp: SimulacionComponent;
 
   // Objeto simulacion que obtiene los datos del formulario
   simulacion: Simulacion = {
@@ -123,6 +127,15 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.cdr.detectChanges();
   }
 
+  /**
+   * @description Destuye el componente Simulacion si existiese
+   * @author javierorp
+   */
+  destruirSimulacionComp(): void {
+    if (this.simulacionComp) {
+      this.simulacionComp.ngOnDestroy();
+    }
+  }
 
   /**
    * @description Abre una ventana con la informacion sobre los parametros
@@ -150,6 +163,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     try {
       var simular: Boolean = false;
       this.enprocMsg = false;
+      this.destruirSimulacionComp(); // Destruimos la simulacion anterior
 
       // Se compruban que los parametros introducidos sean correctos
       simular = this.comprobarParametros();
@@ -462,10 +476,11 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   /* TEST */
   test(): void {
-    this.test1();
+    // this.test1();
     // this.test2();
     // this.test3();
     // this.test4();
+    this.testFallo();
     this.simular();
   }
 
@@ -553,5 +568,25 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.simulacion.cierre = "2";
   }
 
+  testFallo(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.5.63";
+    this.simulacion.mssclien = 1950;
+    this.simulacion.datosclien = 3130;
+    this.simulacion.snclien = 475;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 6000;
+    // servidor
+    this.simulacion.ipserv = "192.168.1.169";
+    this.simulacion.mssserv = 1850;
+    this.simulacion.datosserv = 1420;
+    this.simulacion.snserv = 445;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 8;
+    this.simulacion.umbral = 6;
+    this.simulacion.algort = "2";
+    this.simulacion.cierre = "1";
+  }
 
 }
