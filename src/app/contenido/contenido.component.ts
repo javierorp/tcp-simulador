@@ -114,8 +114,6 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this._success.subscribe((message) => this.infoMsg = message);
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
-
-    // this.test();
   }
 
   ngAfterContentChecked() {
@@ -459,99 +457,5 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     param = Math.floor(param);
     return param;
   }
-
-  /* TEST */
-  test(): void {
-    this.test1();
-    // this.test2();
-    // this.test3();
-    // this.test4();
-    this.simular();
-  }
-
-  test1(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 200;
-    this.simulacion.datosclien = 3000;
-    this.simulacion.snclien = 400;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 7000;
-    // servidor
-    this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 1390;
-    this.simulacion.datosserv = 1790;
-    this.simulacion.snserv = 95;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 10;
-    this.simulacion.umbral = 2;
-    this.simulacion.algort = "1";
-    this.simulacion.cierre = "1";
-  }
-
-  test2(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 430;
-    this.simulacion.datosclien = 2060;
-    this.simulacion.snclien = 400;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 7000;
-    // servidor
-    this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 420;
-    this.simulacion.datosserv = 3350;
-    this.simulacion.snserv = 95;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 10;
-    this.simulacion.umbral = 4;
-    this.simulacion.algort = "1";
-    this.simulacion.cierre = "1";
-  }
-
-  test3(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 400;
-    this.simulacion.datosclien = 200;
-    this.simulacion.snclien = 400;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 7000;
-    // servidor
-    this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 400;
-    this.simulacion.datosserv = 200;
-    this.simulacion.snserv = 95;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 10;
-    this.simulacion.umbral = 4;
-    this.simulacion.algort = "1";
-    this.simulacion.cierre = "1";
-  }
-
-  test4(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 410;
-    this.simulacion.datosclien = 990;
-    this.simulacion.snclien = 35;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 8000;
-    // servidor
-    this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 480;
-    this.simulacion.datosserv = 3170;
-    this.simulacion.snserv = 200;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 4000;
-    this.simulacion.timeout = 5;
-    this.simulacion.umbral = 9;
-    this.simulacion.algort = "1";
-    this.simulacion.cierre = "2";
-  }
-
 
 }
