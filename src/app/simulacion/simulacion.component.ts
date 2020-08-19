@@ -184,10 +184,13 @@ export class SimulacionComponent implements OnChanges {
     let numPqtClien: number = Math.floor(this.cli.data / mss);
     let numPqtClienEnv: number = 0;
     let modPqtClien: number = this.cli.data % mss;
+    let envMaxClien: number = Math.floor(this.serv.w / mss);
     //Servidor
     let numPqtServ: number = Math.floor(this.serv.data / mss);
     let numPqtServEnv: number = 0;
     let modPqtServ: number = this.serv.data % mss;
+    let envMaxServ: number = Math.floor(this.cli.w / mss);
+
 
     // ----- Conexion -----
     // Enviamos los segmentos de SYN; SYN, ACK; y ACK
@@ -234,11 +237,12 @@ export class SimulacionComponent implements OnChanges {
       if (numPqtClienEnv == numPqtClien) // Si es el ultimo paquete a enviar, se envian los datos restantes
         denv = modPqtClien;
 
-      if (envAck == this.cli.vcrep) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      if (envAck == Math.min(this.cli.vcrep, envMaxClien)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
-        this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
+        let inc: number = this.cli.ult_sn - this.serv.ult_an;
+        this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
         this.incrementarVC(this.cli, this.serv, mss);
         this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
@@ -334,11 +338,12 @@ export class SimulacionComponent implements OnChanges {
       if (numPqtServEnv == numPqtServ) // Si es el ultimo paquete a enviar, se envian los datos restantes
         denv = modPqtServ;
 
-      if (envAck == this.serv.vcrep) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
+      if (envAck == Math.min(this.serv.vcrep, envMaxServ)) // Si se han enviado los paquetes que permite la VC pero no se ha recibido aun un ACK, se envia
       {
         this.cli.ult_sn = this.cli.sn;
         this.cli.ult_an = this.cli.an;
-        this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
+        let inc: number = this.serv.ult_sn - this.cli.ult_an;
+        this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
         this.incrementarVC(this.serv, this.cli, mss);
         this.comprobarEC(this.serv, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
