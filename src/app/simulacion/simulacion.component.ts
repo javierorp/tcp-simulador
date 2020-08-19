@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faLaptop } from '@fortawesome/free-solid-svg-icons';
 import { faServer } from '@fortawesome/free-solid-svg-icons';
@@ -59,7 +59,7 @@ interface Maquina {
   styleUrls: ['./simulacion.component.css'],
   providers: [NgbPopoverConfig]
 })
-export class SimulacionComponent implements OnChanges {
+export class SimulacionComponent implements OnChanges, OnDestroy {
 
   faLaptop = faLaptop;
   faServer = faServer;
@@ -93,6 +93,7 @@ export class SimulacionComponent implements OnChanges {
     this.mostrar = this.generarSimulacion().pipe(share());
   }
 
+  ngOnDestroy() { }
 
   /**
    * @description Genera la simulacion
@@ -143,7 +144,6 @@ export class SimulacionComponent implements OnChanges {
     let al: string[] = ["", "", "", "", "", "AL", ""];
     let rr: string[] = ["", "", "", "", "", "", "RR"];
     // Cliente
-    let mssclien: number = this.simular.mssclien;
     this.cli.sn = this.simular.snclien;
     this.cli.ult_sn = 0;
     this.cli.an = 0;
@@ -157,7 +157,6 @@ export class SimulacionComponent implements OnChanges {
     this.cli.ec = false;
     this.cli.vcCtrl = 0;
     // Servidor
-    let mssserv: number = this.simular.mssserv;
     this.serv.sn = this.simular.snserv;
     this.serv.ult_sn = 0;
     this.serv.an = 0;
@@ -177,27 +176,29 @@ export class SimulacionComponent implements OnChanges {
     let cierre: string = this.simular.cierre;
     /*-----VARIABLES-----*/
     // General
-    let mss: number = Math.min(mssclien, mssserv); // Se elige el minimo MSS
+    let mss: number = Math.min(this.simular.mssclien, this.simular.mssserv); // Se elige el minimo MSS
     let nseg: number = 0;
     let denv: number = mss; // Datos a enviar
     // Cliente
-    let numPqtClien: number = Math.floor(this.cli.data / mss);
+    let mssClien: number = Math.min(mss, this.serv.w);
+    let numPqtClien: number = Math.floor(this.cli.data / mssClien);
     let numPqtClienEnv: number = 0;
-    let modPqtClien: number = this.cli.data % mss;
-    let envMaxClien: number = Math.floor(this.serv.w / mss);
+    let modPqtClien: number = this.cli.data % mssClien;
+    let envMaxClien: number = Math.floor(this.serv.w / mssClien);
     //Servidor
-    let numPqtServ: number = Math.floor(this.serv.data / mss);
+    let mssServ: number = Math.min(mss, this.cli.w);
+    let numPqtServ: number = Math.floor(this.serv.data / mssServ);
     let numPqtServEnv: number = 0;
-    let modPqtServ: number = this.serv.data % mss;
-    let envMaxServ: number = Math.floor(this.cli.w / mss);
+    let modPqtServ: number = this.serv.data % mssServ;
+    let envMaxServ: number = Math.floor(this.cli.w / mssServ);
 
 
     // ----- Conexion -----
     // Enviamos los segmentos de SYN; SYN, ACK; y ACK
-    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: mssclien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
+    this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: 0, dcli: 0, wcli: this.cli.w, msscli: mssClien, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
     this.serv.ult_an = this.serv.an;
     this.serv.an = this.cli.sn + 1;
-    this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: mssserv, vc: this.cli.vcrep });
+    this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: nullflag, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: mssServ, vc: this.cli.vcrep });
     this.serv.flags = nullflag;
     this.cli.ult_sn = this.cli.sn;
     this.cli.sn += 1;
@@ -211,7 +212,7 @@ export class SimulacionComponent implements OnChanges {
     if (numPqtClien == 0)
       denv = modPqtClien;
     else
-      denv = mss;
+      denv = mssClien;
     // El cliente envía el primer paquete
     this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: nullflag, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: 0 });
     numPqtClienEnv++;
@@ -226,7 +227,7 @@ export class SimulacionComponent implements OnChanges {
       this.serv.sn += 1;
       this.serv.ult_an = this.serv.an;
       this.serv.an = this.cli.sn + denv;
-      this.incrementarVC(this.cli, this.serv, mss);
+      this.incrementarVC(this.cli, this.serv, mssClien);
       this.comprobarEC(this.cli, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: nullflag, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
       this.cli.ult_an = this.serv.an;
@@ -243,7 +244,7 @@ export class SimulacionComponent implements OnChanges {
         this.serv.ult_an = this.serv.an;
         let inc: number = this.cli.ult_sn - this.serv.ult_an;
         this.serv.an = this.cli.ult_sn + (inc == 0 ? denv : inc);
-        this.incrementarVC(this.cli, this.serv, mss);
+        this.incrementarVC(this.cli, this.serv, mssClien);
         this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
         this.cli.ult_sn = this.cli.sn;
@@ -268,7 +269,7 @@ export class SimulacionComponent implements OnChanges {
         this.serv.ult_sn = this.serv.sn;
         this.serv.ult_an = this.serv.an;
         this.serv.an = this.cli.ult_sn + (this.cli.ult_sn - this.serv.ult_an);
-        this.incrementarVC(this.cli, this.serv, mss);
+        this.incrementarVC(this.cli, this.serv, mssServ);
         this.comprobarEC(this.cli, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 0, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: denv, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: 0, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
         ultDataEnv = denv;
@@ -298,9 +299,9 @@ export class SimulacionComponent implements OnChanges {
       if (numPqtServ == 0)
         denv = modPqtServ;
       else
-        denv = mss;
+        denv = mssServ;
       this.serv.ult_sn = this.serv.sn;
-      this.incrementarVC(this.cli, this.serv, mss);
+      this.incrementarVC(this.cli, this.serv, mssClien);
       this.comprobarEC(this.cli, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 2, flagcli: this.cli.flags, sncli: 0, ancli: 0, dcli: 0, wcli: 0, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.cli.vcrep });
       this.cli.ult_sn = this.cli.sn;
@@ -323,7 +324,7 @@ export class SimulacionComponent implements OnChanges {
       this.cli.sn = this.serv.ult_an;
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + denv;
-      this.incrementarVC(this.serv, this.cli, mss);
+      this.incrementarVC(this.serv, this.cli, mssServ);
       this.comprobarEC(this.serv, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
       this.serv.ult_an = this.serv.an;
@@ -344,7 +345,7 @@ export class SimulacionComponent implements OnChanges {
         this.cli.ult_an = this.cli.an;
         let inc: number = this.serv.ult_sn - this.cli.ult_an;
         this.cli.an = this.serv.ult_sn + (inc == 0 ? denv : inc);
-        this.incrementarVC(this.serv, this.cli, mss);
+        this.incrementarVC(this.serv, this.cli, mssServ);
         this.comprobarEC(this.serv, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
         this.serv.ult_sn = this.serv.sn;
@@ -369,7 +370,7 @@ export class SimulacionComponent implements OnChanges {
         this.cli.ult_sn = this.cli.sn;
         this.cli.ult_an = this.cli.an;
         this.cli.an = this.serv.ult_sn + (this.serv.ult_sn - this.cli.ult_an);
-        this.incrementarVC(this.serv, this.cli, mss);
+        this.incrementarVC(this.serv, this.cli, mssServ);
         this.comprobarEC(this.serv, umbral);
         this.comunicacion.push({ numseg: ++nseg, dir: 10, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: this.serv.sn, anserv: this.serv.an, dserv: denv, wserv: this.serv.w, mssserv: 0, vc: this.serv.vcrep });
         ultDataEnv = denv;
@@ -392,7 +393,7 @@ export class SimulacionComponent implements OnChanges {
       this.cli.ult_sn = this.cli.sn;
       this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.ult_sn + denv;
-      this.incrementarVC(this.serv, this.cli, mss);
+      this.incrementarVC(this.serv, this.cli, mssServ);
       this.comprobarEC(this.serv, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });
       this.serv.ult_sn = this.serv.sn;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, AfterContentChecked, ViewChild } from '@angular/core';
 import { Simulacion } from '../simulacion';
 import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { debounceTime } from 'rxjs/operators';
 import { ErrorComponent } from '../error/error.component';
+import { SimulacionComponent } from '../simulacion/simulacion.component';
 
 // Interfaz para las alertas
 interface Alerta {
@@ -38,6 +39,9 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   // Variable para ocultar o no la simulacion
   public ejecutar: Boolean = false;
+
+  // Componente hijo donde se ejecuta la simulacion
+  @ViewChild(SimulacionComponent, {static: false}) simulacionComp: SimulacionComponent;
 
   // Objeto simulacion que obtiene los datos del formulario
   simulacion: Simulacion = {
@@ -114,6 +118,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this._success.subscribe((message) => this.infoMsg = message);
     this._success.pipe(debounceTime(duracion)).subscribe(() => this.infoMsg = null);
     this.translate.get('contenido.aviso').subscribe(value => { this._success.next(value); });
+
+    // this.test();
   }
 
   ngAfterContentChecked() {
@@ -121,6 +127,15 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     this.cdr.detectChanges();
   }
 
+  /**
+   * @description Destuye el componente Simulacion si existiese
+   * @author javierorp
+   */
+  destruirSimulacionComp(): void {
+    if (this.simulacionComp) {
+      this.simulacionComp.ngOnDestroy();
+    }
+  }
 
   /**
    * @description Abre una ventana con la informacion sobre los parametros
@@ -148,6 +163,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     try {
       var simular: Boolean = false;
       this.enprocMsg = false;
+      this.destruirSimulacionComp(); // Destruimos la simulacion anterior
 
       // Se compruban que los parametros introducidos sean correctos
       simular = this.comprobarParametros();
@@ -456,6 +472,121 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   limpiarParametros(param: number): number {
     param = Math.floor(param);
     return param;
+  }
+
+  /* TEST */
+  test(): void {
+    // this.test1();
+    // this.test2();
+    // this.test3();
+    // this.test4();
+    this.testFallo();
+    this.simular();
+  }
+
+  test1(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 200;
+    this.simulacion.datosclien = 3000;
+    this.simulacion.snclien = 400;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 7000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 1390;
+    this.simulacion.datosserv = 1790;
+    this.simulacion.snserv = 95;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 10;
+    this.simulacion.umbral = 2;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "1";
+  }
+
+  test2(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 430;
+    this.simulacion.datosclien = 2060;
+    this.simulacion.snclien = 400;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 7000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 420;
+    this.simulacion.datosserv = 3350;
+    this.simulacion.snserv = 95;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 10;
+    this.simulacion.umbral = 4;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "1";
+  }
+
+  test3(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 400;
+    this.simulacion.datosclien = 200;
+    this.simulacion.snclien = 400;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 7000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 400;
+    this.simulacion.datosserv = 200;
+    this.simulacion.snserv = 95;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 10;
+    this.simulacion.umbral = 4;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "1";
+  }
+
+  test4(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.0.1";
+    this.simulacion.mssclien = 410;
+    this.simulacion.datosclien = 990;
+    this.simulacion.snclien = 35;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 8000;
+    // servidor
+    this.simulacion.ipserv = "192.168.0.1";
+    this.simulacion.mssserv = 480;
+    this.simulacion.datosserv = 3170;
+    this.simulacion.snserv = 200;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 4000;
+    this.simulacion.timeout = 5;
+    this.simulacion.umbral = 9;
+    this.simulacion.algort = "1";
+    this.simulacion.cierre = "2";
+  }
+
+  testFallo(): void {
+    // cliente
+    this.simulacion.ipclien = "127.0.5.63";
+    this.simulacion.mssclien = 1950;
+    this.simulacion.datosclien = 3130;
+    this.simulacion.snclien = 475;
+    this.simulacion.segperdclien = "";
+    this.simulacion.wclien = 6000;
+    // servidor
+    this.simulacion.ipserv = "192.168.1.169";
+    this.simulacion.mssserv = 1850;
+    this.simulacion.datosserv = 1420;
+    this.simulacion.snserv = 445;
+    this.simulacion.segperdserv = "";
+    this.simulacion.wserv = 1000;
+    this.simulacion.timeout = 8;
+    this.simulacion.umbral = 6;
+    this.simulacion.algort = "2";
+    this.simulacion.cierre = "1";
   }
 
 }
