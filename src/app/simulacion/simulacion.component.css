@@ -101,6 +101,8 @@ span.ipserv {
 /* Gif de carga */
 div.load {
     margin-top: 5%;
+    justify-content: center;
+    display: flex;
 }
 
 /* Ventana de congestion*/

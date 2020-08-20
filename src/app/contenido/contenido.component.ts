@@ -109,8 +109,13 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
     // Muestra la alerta de las cookies y/o navegadores compatibles durante 5 segundos
     var duracion: number = 10000; //en milisegundos
+    let navegador: string = navigator.userAgent;
 
-    if(navigator.userAgent.indexOf("Chrome") > -1)
+    if(navegador.indexOf("Chrome") > -1)
+        this.navOptimizado = true;
+    if(navegador.indexOf("Firefox") > -1)
+        this.navOptimizado = true;
+    if(navegador.indexOf("Safari") > -1)
         this.navOptimizado = true;
 
     setTimeout(() => this.staticAlertClosed = true, 20000);

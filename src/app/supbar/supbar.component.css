@@ -24,6 +24,12 @@
   user-select        : none;
 }
 
+@media only screen and (max-width: 710px){
+  .no-seleccionable {
+      display: none;
+  }
+}
+
 /* Boton Acerca de...*/
 .acercade {
   color      : #fff;
