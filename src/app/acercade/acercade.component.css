@@ -3,6 +3,13 @@
     margin-left: -20%;
 }
 
+@media only screen and (max-width: 1150px){
+    .modal-content {
+        width: auto;
+        margin-left: auto;
+    }
+}
+
 .modal-body {
     text-align: justify;
 }

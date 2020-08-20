@@ -19,15 +19,11 @@ export class SupbarComponent {
   idiomas: string[] = ["Español", "English"];
   idiomaSeleccionado: string = "Español";
   bandera: string = "spain";
-  movil: boolean = false;
   public idiomaActivo = 'es';
 
   constructor(private titleService: Title, private modalService: NgbModal, private translate: TranslateService) {
 
     var naviLang = navigator.language;
-
-    // Si se visualiza en un movil no aparece el titulo de la pagina
-    this.movil = window.screen.width <= 705 ? true : false;
     
     // Idioma por defecto en el navegador
     if (naviLang.toUpperCase().indexOf("ES") == 0) { // Si el navegador se encuentra en espanyol se selecciona este idioma por defecto
