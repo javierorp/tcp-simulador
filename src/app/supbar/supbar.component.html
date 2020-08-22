@@ -1,10 +1,14 @@
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
 
-  <a href="{{ 'supbar.link' | translate }}" target="_blank" title="{{ 'supbar.img-uni' | translate }}">
+  <a href="{{ 'supbar.uah-url' | translate }}" target="_blank" title="{{ 'supbar.img-uni' | translate }}">
     <img width="120" alt="{{ 'supbar.img-uni' | translate }}" src="{{ 'supbar.logo' | translate }}" />
   </a>
   <span class="no-seleccionable">{{ 'supbar.titulo' | translate }}</span>
+
+  <button class="btn manual" mat-button title="{{ 'supbar.btn-manual' | translate }}" (click)="manualUsuario()">
+    <fa-icon [icon]="faBook"></fa-icon>
+  </button>
 
   <button class="btn acercade" mat-button title="{{ 'supbar.btn-acercade' | translate }}" (click)="acercaDe()">
     <fa-icon [icon]="faInfoCircle"></fa-icon>

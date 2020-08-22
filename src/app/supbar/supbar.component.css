@@ -24,7 +24,7 @@
   user-select        : none;
 }
 
-@media only screen and (max-width: 710px){
+@media only screen and (max-width: 770px){
   .no-seleccionable {
       display: none;
   }
@@ -45,6 +45,22 @@
   border-color    : #fff;
 }
 
+.manual {
+  color      : #fff;
+  border     : none;
+  margin-left: 2px;
+  margin-right: 55px !important;
+  position   : absolute;
+  right      : 0;
+}
+
+.manual:hover {
+  color           : #004e99;
+  background-color: #fff;
+  border-color    : #fff;
+}
+
+
 .mat-button {
   min-width   : 10px;
   margin-right: 10px;
@@ -55,7 +71,7 @@
 .seleccion {
   position    : absolute;
   right       : 0;
-  margin-right: 50px;
+  margin-right: 98px;
   margin-top  : 3px;
 }
 
