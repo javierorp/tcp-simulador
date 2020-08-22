@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterContentChecked, ViewChild } from '@angular/core';
 import { Simulacion } from '../simulacion';
-import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle, faHandPointUp } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -35,7 +35,8 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   faCookieBite = faCookieBite; // cookie
   faCogs = faCogs; // engranaje
   faExclamationTriangle = faExclamationTriangle; // exclamacion triangular
-  faExclamationCircle = faExclamationCircle // exclamación circular
+  faExclamationCircle = faExclamationCircle; // exclamación circular
+  faHandPointUp = faHandPointUp; // mano con dedo indice levantado
 
   // Variable para ocultar o no la simulacion
   public ejecutar: Boolean = false;
@@ -94,6 +95,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   staticAlertClosed = false;
   infoMsg: string = null;
   infoCookie: boolean = true;
+  infoMovil: boolean = false;
   infoOpt: boolean = true;
   alertas: Alerta[];
   navOptimizado: boolean = false;
@@ -103,9 +105,10 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   }
 
   ngOnInit() {
-    // Si se visualiza en un movil la barra lateral aparece cerrada
+    // Si se visualiza en un movil la barra lateral aparece cerrada y se activa la alerta de informacion en movil
     this.movil = window.screen.width <= 705 ? true : false;
     this.sidenavOpened = this.movil == true ? false: true;
+    this.infoMovil = this.movil == true ? true: false;
 
     // Muestra la alerta de las cookies y/o navegadores compatibles durante 5 segundos
     var duracion: number = 10000; //en milisegundos
@@ -114,8 +117,6 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
     if(navegador.indexOf("Chrome") > -1)
         this.navOptimizado = true;
     if(navegador.indexOf("Firefox") > -1)
-        this.navOptimizado = true;
-    if(navegador.indexOf("Safari") > -1)
         this.navOptimizado = true;
 
     setTimeout(() => this.staticAlertClosed = true, 20000);
