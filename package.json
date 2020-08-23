@@ -1,7 +1,7 @@
 {
   "name": "tcp-simulador",
-  "version": "0.2.0",
-  "date": "22/08/2020",
+  "version": "0.2.01",
+  "date": "23/08/2020",
   "email": "javierorp@outlook.com",
   "scripts": {
     "ng": "ng",

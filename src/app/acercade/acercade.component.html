@@ -1,6 +1,9 @@
 <div class="modal-content">
     <div class="modal-header">
         <h4 class="modal-title">{{ 'acercade.titulo' | translate }}</h4>
+        <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="activeModal.close('Cross click')" title="{{ 'acercade.cerrar' | translate }}">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
         <p>

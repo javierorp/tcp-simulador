@@ -1,3 +1,7 @@
+button[aria-label="Close"]:focus {
+    outline: none;
+}
+
 .btn-modal {
     color       : #004e99;
     border-color: #004e99;
