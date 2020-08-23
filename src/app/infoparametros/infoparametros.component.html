@@ -1,6 +1,9 @@
 <div class="modal-content">
     <div class="modal-header">
         <h4 class="modal-title">{{ 'infoparametros.titulo' | translate }} <a href="{{ 'infoparametros.tcp-link' | translate }}" target="_blank" title="{{  'infoparametros.masinfo' | translate  }}">+</a></h4>
+        <button ngbAutofocus type="button" class="close" aria-label="Close" (click)="activeModal.close('Cross click')" title="{{ 'infoparametros.cerrar' | translate }}">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">       
         <b>{{ 'infoparametros.encuentas' | translate }}:</b>

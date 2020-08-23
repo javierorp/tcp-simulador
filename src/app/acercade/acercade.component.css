@@ -1,13 +1,18 @@
 .modal-content {
-    width: 150%;
-    margin-left: -20%;
+    width      : 150%;
+    margin-left: -25%;
 }
 
-@media only screen and (max-width: 1150px){
+@media only screen and (max-width: 765px) {
     .modal-content {
-        width: auto;
-        margin-left: auto;
+        width       : auto;
+        margin-right: auto;
+        margin-left : auto;
     }
+}
+
+button[aria-label="Close"]:focus {
+    outline: none;
 }
 
 .modal-body {
@@ -36,10 +41,10 @@ img.herramientas:hover {
     opacity: 1.0;
 }
 
-.version{
-    position: absolute;
-    left: 0;
+.version {
+    position   : absolute;
+    left       : 0;
     margin-left: 15px;
-    font-size: 14px;
-    color: grey;
+    font-size  : 14px;
+    color      : grey;
 }
