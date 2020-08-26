@@ -132,7 +132,7 @@
     "masinfo": "+ information",
     "encuentas": "The following is taken into account for the simulation",
     "encuenta1": "The propagation time will be 'half a tick'",
-    "encuenta2": "The data length of SYN, SYN ACK, ACK, FIN will be 0 bytes",
+    "encuenta2": "The data length of SYN, ACK and FIN flags will be 0 bytes",
     "encuenta3": "Communications will be between two entities, 'client' (which starts the communication and sends data) and 'server' (which responds with more data)",
     "introducir": "The parameters you can fill in are",
     "obligatorio": "mandatory",
