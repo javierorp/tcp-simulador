@@ -330,6 +330,9 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
       this.serv.ult_an = this.serv.an;
     }
     else {
+      this.cli.ult_sn = this.cli.sn;
+      this.cli.sn = this.serv.ult_an;
+      this.cli.ult_an = this.cli.an;
       this.cli.an = this.serv.sn + denv;
     }
 
@@ -390,9 +393,11 @@ export class SimulacionComponent implements OnChanges, OnDestroy {
 
     // El cliente envia el ACK del ultimo paquete
     if (envAck != 0 || (envAck == 0 && numPqtServEnv == 1)) { // Si el ACK no se ha enviado ya
+      if (envAck != 0){
+        this.cli.ult_an = this.cli.an;
+        this.cli.an = this.serv.ult_sn + denv;
+      }
       this.cli.ult_sn = this.cli.sn;
-      this.cli.ult_an = this.cli.an;
-      this.cli.an = this.serv.ult_sn + denv;
       this.incrementarVC(this.serv, this.cli, mssServ);
       this.comprobarEC(this.serv, umbral);
       this.comunicacion.push({ numseg: ++nseg, dir: 1, flagcli: this.cli.flags, sncli: this.cli.sn, ancli: this.cli.an, dcli: 0, wcli: this.cli.w, msscli: 0, flagserv: this.serv.flags, snserv: 0, anserv: 0, dserv: 0, wserv: 0, mssserv: 0, vc: this.serv.vcrep });

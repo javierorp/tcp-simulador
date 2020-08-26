@@ -129,12 +129,12 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   }
 
   ngAfterContentChecked() {
-    // Forzamos la detecion de cambios despues de que el contenido se haya comprobado para evitar el error ExpressionChangedAfterItHasBeenCheckedError
+    // Forzamos la deteccion de cambios despues de que el contenido se haya comprobado para evitar el error ExpressionChangedAfterItHasBeenCheckedError
     this.cdr.detectChanges();
   }
 
   /**
-   * @description Destuye el componente Simulacion si existiese
+   * @description Destruye el componente Simulacion si existiese
    * @author javierorp
    */
   destruirSimulacionComp(): void {
@@ -482,31 +482,28 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
 
   /* TEST */
   test(): void {
-    // this.test1();
+    this.test1();
     // this.test2();
-    // this.test3();
-    // this.test4();
-    this.testFallo();
     this.simular();
   }
 
   test1(): void {
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 200;
-    this.simulacion.datosclien = 3000;
-    this.simulacion.snclien = 400;
+    this.simulacion.mssclien = 1390;
+    this.simulacion.datosclien = 2310;
+    this.simulacion.snclien = 55;
     this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 7000;
+    this.simulacion.wclien = 2000;
     // servidor
     this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 1390;
-    this.simulacion.datosserv = 1790;
-    this.simulacion.snserv = 95;
+    this.simulacion.mssserv = 950;
+    this.simulacion.datosserv = 410;
+    this.simulacion.snserv = 220;
     this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 10;
-    this.simulacion.umbral = 2;
+    this.simulacion.wserv = 6000;
+    this.simulacion.timeout = 6;
+    this.simulacion.umbral = 9;
     this.simulacion.algort = "1";
     this.simulacion.cierre = "1";
   }
@@ -514,85 +511,24 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   test2(): void {
     // cliente
     this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 430;
-    this.simulacion.datosclien = 2060;
-    this.simulacion.snclien = 400;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 7000;
-    // servidor
-    this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 420;
-    this.simulacion.datosserv = 3350;
-    this.simulacion.snserv = 95;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 10;
-    this.simulacion.umbral = 4;
-    this.simulacion.algort = "1";
-    this.simulacion.cierre = "1";
-  }
-
-  test3(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 400;
-    this.simulacion.datosclien = 200;
-    this.simulacion.snclien = 400;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 7000;
-    // servidor
-    this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 400;
-    this.simulacion.datosserv = 200;
-    this.simulacion.snserv = 95;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 10;
-    this.simulacion.umbral = 4;
-    this.simulacion.algort = "1";
-    this.simulacion.cierre = "1";
-  }
-
-  test4(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.0.1";
-    this.simulacion.mssclien = 410;
-    this.simulacion.datosclien = 990;
-    this.simulacion.snclien = 35;
+    this.simulacion.mssclien = 1680;
+    this.simulacion.datosclien = 3270;
+    this.simulacion.snclien = 40;
     this.simulacion.segperdclien = "";
     this.simulacion.wclien = 8000;
     // servidor
     this.simulacion.ipserv = "192.168.0.1";
-    this.simulacion.mssserv = 480;
-    this.simulacion.datosserv = 3170;
-    this.simulacion.snserv = 200;
+    this.simulacion.mssserv = 1800;
+    this.simulacion.datosserv = 2530;
+    this.simulacion.snserv = 290;
     this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 4000;
-    this.simulacion.timeout = 5;
-    this.simulacion.umbral = 9;
+    this.simulacion.wserv = 5000;
+    this.simulacion.timeout = 7;
+    this.simulacion.umbral = 2;
     this.simulacion.algort = "1";
-    this.simulacion.cierre = "2";
-  }
-
-  testFallo(): void {
-    // cliente
-    this.simulacion.ipclien = "127.0.5.63";
-    this.simulacion.mssclien = 1950;
-    this.simulacion.datosclien = 3130;
-    this.simulacion.snclien = 475;
-    this.simulacion.segperdclien = "";
-    this.simulacion.wclien = 6000;
-    // servidor
-    this.simulacion.ipserv = "192.168.1.169";
-    this.simulacion.mssserv = 1850;
-    this.simulacion.datosserv = 1420;
-    this.simulacion.snserv = 445;
-    this.simulacion.segperdserv = "";
-    this.simulacion.wserv = 1000;
-    this.simulacion.timeout = 8;
-    this.simulacion.umbral = 6;
-    this.simulacion.algort = "2";
     this.simulacion.cierre = "1";
   }
+
+
 
 }

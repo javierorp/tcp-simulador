@@ -132,7 +132,7 @@
     "masinfo": "+ información",
     "encuentas": "Para la simulación se tiene en cuenta lo siguiente",
     "encuenta1": "El tiempo de propagación será de \"medio tic\"",
-    "encuenta2": "La longitud de datos de SYN, SYN ACK, ACK, FIN será de 0 bytes",
+    "encuenta2": "La longitud de datos de los flags SYN, ACK y FIN será de 0 bytes",
     "encuenta3": "Las comunicaciones serán entre dos entidades, \"cliente\" (que comienza la comunicación y envía datos) y \"servidor\" (que responde con más datos)",
     "introducir": "Los parámetros que puede rellenar son",
     "obligatorio": "obligatorio",
