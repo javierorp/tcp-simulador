@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, AfterContentChecked, ViewChild } from '@angular/core';
 import { Simulacion } from '../simulacion';
-import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle, faHandPointUp } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faEraser, faPlay, faRandom, faQuestionCircle, faCookieBite, faCogs, faExclamationTriangle, faExclamationCircle, faHandPointUp, faPollH } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { InfoparametrosComponent } from '../infoparametros/infoparametros.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +37,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   faExclamationTriangle = faExclamationTriangle; // exclamacion triangular
   faExclamationCircle = faExclamationCircle; // exclamación circular
   faHandPointUp = faHandPointUp; // mano con dedo indice levantado
+  faPollH = faPollH; // encuesta
 
   // Variable para ocultar o no la simulacion
   public ejecutar: Boolean = false;
@@ -100,6 +101,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   alertas: Alerta[];
   navOptimizado: boolean = false;
   enprocMsg: boolean = false;
+  infoEncuesta: boolean = true;
 
   constructor(private modalService: NgbModal, private translate: TranslateService, private cdr: ChangeDetectorRef) {
   }

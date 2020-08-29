@@ -109,9 +109,13 @@
       <ngb-alert *ngIf="infoMsg && infoCookie" type="info" (close)="infoCookie = false" class="alert-animation"><fa-icon [icon]="faCookieBite"></fa-icon> {{ 'contenido.cookies' | translate }}.</ngb-alert>
       <!-- Alerta de navegadores compatibles -->
       <ngb-alert *ngIf="infoMsg && !navOptimizado && infoOpt" type="warning" (close)="infoOpt = false" class="alert-animation"><fa-icon [icon]="faExclamationTriangle"></fa-icon> {{ 'contenido.aviso' | translate }}.</ngb-alert>
-      <!-- Alerta de navegadores compatibles -->
+      <!-- Alerta de usabilidad en dispositivo movil -->
       <ngb-alert *ngIf="movil && infoMovil" type="info" (close)="infoMovil = false" class="alert-animation"><fa-icon [icon]="faHandPointUp"></fa-icon> {{ 'contenido.movil' | translate }} <fa-icon [icon]="faBars"></fa-icon> {{ 'contenido.movil2' | translate }}.</ngb-alert>
+      <!-- Alerta de encuenta disponible -->
+       <ngb-alert *ngIf="infoEncuesta" type="info" (close)="infoEncuesta = false" class="alert-animation"><fa-icon [icon]="faPollH"></fa-icon> {{ 'contenido.encuesta' | translate }} <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAANGb5fdUMU5GWTJXTFpFSENVQlJUVzlSWjJDVVdIRy4u" target="_blank"
+        title="https://forms.office.com/Pages/ResponsePage...">{{ 'contenido.encuesta2' | translate }}</a>. {{ 'contenido.encuesta3' | translate }}.</ngb-alert>
       
+
       <!-- Alerta de implementacion en proceso -->
       <ngb-alert *ngIf="enprocMsg" type="warning" (close)="enprocMsg = false" class="alert-animation"><fa-icon [icon]="faCogs"></fa-icon> {{ 'contenido.enproceso' | translate }}.</ngb-alert>
 
