@@ -302,10 +302,6 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.simulacion.segperdserv = segperdserv;
     }
 
-    // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
-    if ((this.simulacion.segperdclien != null && this.simulacion.segperdclien != "")  || (this.simulacion.segperdserv != null && this.simulacion.segperdserv != ""))
-      this.enprocMsg = true;
-
     // ----DATOS NUMERICOS----
     // Se comprueba que los valores introducidos no son mayores a 99999999
     if (this.simulacion.mssclien > 99999999) this.simulacion.mssclien = 99999999;
@@ -361,7 +357,15 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
       this.alertas.push({ campo: this.translate.instant('contenido.general') + " - " + this.translate.instant('contenido.error') + " " + this.translate.instant('contenido.cierre') + ": ", msg: this.translate.instant('contenido.error-cierre') });
 
     //Se comprueba si se debe simular o no, retorna 'true' si no hay alertas generadas y 'false' en caso contrario
-    simular = this.alertas.length == 0 ? true : false;
+    if (this.alertas.length == 0) {
+      simular = true;
+      // Si hay segmentos perdidos mostramos la advertencia sobre funcionalidad en proceso
+      if ((this.simulacion.segperdclien != null && this.simulacion.segperdclien != "") || (this.simulacion.segperdserv != null && this.simulacion.segperdserv != ""))
+        this.enprocMsg = true;
+    }
+    else {
+      simular = false;
+    }
 
     return simular;
   }

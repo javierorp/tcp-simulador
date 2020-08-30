@@ -92,9 +92,15 @@
 }
 
 .alert-warning {
-  color: #6a4f00;
+  color           : #6a4f00;
   background-color: #fff3cd;
-  border-color: #6a4f00;
+  border-color    : #6a4f00;
+}
+
+.alert-danger {
+  color           : #721c24;
+  background-color: #f8d7da;
+  border-color    : #721c24;
 }
 
 /* Boton de informacion de los parametros */
