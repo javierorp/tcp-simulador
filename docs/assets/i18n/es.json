@@ -144,7 +144,7 @@
     "politicaACK3": "Si todos los segmentos anteriores han sido reconocidos y llega un nuevo segmento con el número de reconocimiento esperado, se envía un ACK retardado. Durante 1.5 tics se espera la llegada de otro segmento correcto y, en el caso de que no se reciba, se envía un ACK inmediato",
     "politicaACK4": "Se envía un ACK único acumulativo que reconozca ambos segmentos en el caso de que se reciba un segmento con número de secuencia esperado y haya otro segmento en orden esperando la transmisión de su ACK",
     "politicaACK5": "Si se detecta un vacío, es decir, se recibe un segmento con un número de secuencia mayor del esperado, se envía un ACK duplicado de inmediato con el número de secuencia del siguiente octeto esperado (límite inferior del vacío)",
-    "politicaACK6": "Si el segmento que se recibe completa parcial o totalmente el vacío detectado en los datos recibidos, se envía un ACK de inmediato si el segmento comienza con el límite inferior del hueco",
+    "politicaACK6": "Si el segmento que se recibe completa parcial o totalmente el vacío detectado en los datos recibidos se envía un ACK de inmediato si el segmento comienza con el límite inferior del hueco",
     "introducir": "Los parámetros que puede rellenar son",
     "obligatorio": "obligatorio",
     "ip": "IP (Internet Protocol)",

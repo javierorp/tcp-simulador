@@ -144,7 +144,7 @@
     "politicaACK3": "If all previous segments have been recognized and a new segment arrives with the expected acknowledgement number, a delayed ACK is sent. During 1.5 ticks the arrival of another correct segment is expected and, in case it is not received, an immediate ACK is sent",
     "politicaACK4": "A unique cumulative ACK is sent that recognizes both segments in the event that a segment with an expected sequence number is received and there is another segment in order waiting for your ACK to be transmitted",
     "politicaACK5": "If a gap is detected, i.e. a segment with a higher than expected sequence number is received, a duplicate ACK is immediately sent with the sequence number of the next expected octet (lower gap limit)",
-    "politicaACK6": "If the segment that is received partially or totally completes the gap detected in the received data, an ACK is sent immediately if the segment begins with the lower limit of the gap",
+    "politicaACK6": "If the segment that is received partially or totally completes the gap detected in the received data an ACK is sent immediately if the segment begins with the lower limit of the gap",
     "introducir": "The parameters you can fill in are",
     "obligatorio": "mandatory",
     "ip": "IP (Internet Protocol)",
