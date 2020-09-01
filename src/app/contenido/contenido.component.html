@@ -107,6 +107,8 @@
     <div class="alerta">
       <!-- Alerta de cookies -->
       <ngb-alert *ngIf="infoMsg && infoCookie" type="info" (close)="infoCookie = false" class="alert-animation"><fa-icon [icon]="faCookieBite"></fa-icon> {{ 'contenido.cookies' | translate }}.</ngb-alert>
+      <!-- Alerta de guia disponible -->
+      <ngb-alert *ngIf="infoGuia" type="info" (close)="infoGuia = false" class="alert-animation"><fa-icon [icon]="faEye"></fa-icon> {{ 'contenido.guia' | translate }} <fa-icon [icon]="faBook"></fa-icon> {{ 'contenido.guia2' | translate }}.</ngb-alert>
       <!-- Alerta de navegadores compatibles -->
       <ngb-alert *ngIf="infoMsg && !navOptimizado && infoOpt" type="warning" (close)="infoOpt = false" class="alert-animation"><fa-icon [icon]="faExclamationTriangle"></fa-icon> {{ 'contenido.aviso' | translate }}.</ngb-alert>
       <!-- Alerta de usabilidad en dispositivo movil -->
