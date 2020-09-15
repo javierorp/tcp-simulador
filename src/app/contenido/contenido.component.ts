@@ -104,7 +104,7 @@ export class ContenidoComponent implements OnInit, AfterContentChecked {
   navOptimizado: boolean = false;
   enprocMsg: boolean = false;
   infoGuia: boolean = true;
-  infoEncuesta: boolean = true;
+  infoEncuesta: boolean = false;
 
   constructor(private modalService: NgbModal, private translate: TranslateService, private cdr: ChangeDetectorRef) {
   }
