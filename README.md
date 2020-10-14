@@ -1,5 +1,7 @@
 # TFG - Simulador gráfico de comunicaciones TCP
 
+Este proyecto se encuentra bajo licencia [GNU General Public License v3.0 (GPL3)](https://github.com/javierorp/tcp-simulador/blob/master/LICENSE).
+
 Este proyecto es un Trabajo de Fin de Grado (TFG) para la Universidad de Alcalá (Alcalá de Henares, Madrid, España) realizado por [Javier Orti Priego](https://www.linkedin.com/in/javierortipriego/) y dirigido por [Elisa Rojas Sánchez](https://www.uah.es/es/estudios/profesor/Elisa-Rojas-Sanchez/).
 
 Agradecer la ayuda prestada por [Milan Segedinac](http://www.ftn.uns.ac.rs/1417837849/milan-segedinac) de la Universidad de Novi Sad (Voivodina, Serbia).
@@ -28,6 +30,8 @@ El código de la aplicación está disponible en https://github.com/javierorp/tc
 
 
 # Bachelor Thesis - Graphic simulator of TCP communications
+
+This project is licensed under [GNU General Public License v3.0 (GPL3)](https://github.com/javierorp/tcp-simulador/blob/master/LICENSE).
 
 This project is a Bachelor Thesis (TFG in Spanish) for the University of Alcalá (Alcalá de Henares, Madrid, Spain) carried out by [Javier Orti Priego](https://www.linkedin.com/in/javierortipriego/) and supervised by [Elisa Rojas Sánchez](https://www.uah.es/en/estudios/profesor/Elisa-Rojas-Sanchez/).
 
