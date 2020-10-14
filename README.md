@@ -10,21 +10,19 @@ La aplicación está disponible en https://javierorp.github.io/tcp-simulador/
 
 El código de la aplicación está disponible en https://github.com/javierorp/tcp-simulador/
 
+
+
 ## Licencias
 
+- **Este proyecto:** https://github.com/javierorp/tcp-simulador/blob/master/LICENSE
 - **Angular:** https://angular.io/license
-
 - **Bootstrap:** https://getbootstrap.com/docs/4.0/about/license/
-
 - **Visual Studio Code:** https://code.visualstudio.com/license
-
 - **GutHub:** https://docs.github.com/en/github/site-policy/github-terms-of-service
-
 - **GitHub Pages:** https://docs.github.com/en/github/working-with-github-pages/about-github-pages
-
 - **Font Awesome:** https://fontawesome.com/license/free
 
-  
+
 
 
 # Bachelor Thesis - Graphic simulator of TCP communications
@@ -41,6 +39,7 @@ The application code is available at https://github.com/javierorp/tcp-simulador/
 
 ## Licenses
 
+- **This project:** https://github.com/javierorp/tcp-simulador/blob/master/LICENSE
 - **Angular:** https://angular.io/license
 - **Bootstrap:** https://getbootstrap.com/docs/4.0/about/license/
 - **Visual Studio Code:** https://code.visualstudio.com/license
